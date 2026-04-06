@@ -1,5 +1,13 @@
+import warnings
+warnings.filterwarnings(
+    "ignore",
+    message="Unable to import Axes3D",
+    category=UserWarning,
+    module="matplotlib.projections"
+)
+
+
 import tkinter as tk
-from tkinter import filedialog
 root = tk.Tk()
 root.withdraw()   # Must be created BEFORE importing originpro
 
@@ -483,20 +491,21 @@ def import_cif_files(file_list, wavelength_mode):
 # ----------------------------------------------------------------------
 
 if __name__ == "__main__":
-    # Read the LabTalk variable set by cifPicker.py
-    raw_list = op.get_lt_str('__cif_file_list$')
+    # Read the LabTalk variable fname$
+    raw_list = op.get_lt_str('fname$')
 
     if not raw_list:
-        raise ValueError("No CIF file list found in __cif_file_list$")
+        raise ValueError("No CIF file list found in fname$")
 
-    # Convert semicolon-separated string into Python list
-    file_list = [f for f in raw_list.split(";") if f.strip()]
+    # Normalize Windows newlines and split into lines
+    file_list = [
+        f.strip()
+        for f in raw_list.replace("\r\n", "\n").split("\n")
+        if f.strip()
+    ]
 
     # Read wavelength mode from LabTalk argument
     wavelength_mode = sys.argv[1] if len(sys.argv) > 1 else "CuKa"
-
-    #print("DEBUG: file_list =", file_list)
-    #print("DEBUG: wavelength_mode =", wavelength_mode)
 
     import_cif_files(file_list, wavelength_mode)
 
