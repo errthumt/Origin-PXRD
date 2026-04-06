@@ -12,7 +12,7 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
 4. Review the instructions for use below for further guidance.
 
 ## Manual Install (Origin 2022-2024)
-Disclaimer: Thie plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later.
+Disclaimer: This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later.
 1. Locate your Origin User Files Folder.
    * In Origin 2024 or later, your user files folder can be found from inside Origin: Help > Open Folder > User Files Folder
 2. Download all files found on the Manual Install Page
@@ -48,9 +48,9 @@ You may need to switch GUI mode.
 
 **Calculate CIF Patterns:** Calculated patterns can be brought directly into origin from .CIF files. Each import command creates a new workbook in origin. All patterns normalized to [0,1]
 
-* Cu-Ka (3-90deg): Calculates powder patterns for 3–90° 2θ using default Cu‑Ka doublet splitting. Step size = 0.01°.
+* **Cu-Ka (3-90deg):** Calculates powder patterns for 3–90° 2θ using default Cu‑Ka doublet splitting. Step size = 0.01°.
 
-* Custom Parameters: After selecting CIF files, opens a window to specify (similar to VESTA's options, but with further tunability):
+* **Custom Parameters:** After selecting CIF files, opens a window to specify (similar to VESTA's options, but with further tunability):
   - Number of fE wavelengths
   - Wavelengths and relative intensities
   - 2θ ranges
@@ -58,11 +58,11 @@ You may need to switch GUI mode.
   - ADVANCED PARAMETERS: U, V, W, X, Y, and Axial S
   - Other presets: Additional presets can be added easily. Reach out to Travis if there is an import setting that you anticipate using frequently. It will be added to the next installer version.
 
-When importing RAS or CIF files:
+    ### When importing RAS or CIF files:
 
-**Select Files:** Opens a window to add/remove desired files. After all files have been added to the window, select "Import" or "OK" to proceed
+    - **Select Files:** Opens a window to add/remove desired files. After all files have been added to the window, select "Import" or "OK" to proceed
 
-**Select Folder:** Opens a window to select a folder containing all desired files. Origin will import every file in the selected folder that matches the intended filetype.
+    - **Select Folder:** Opens a window to select a folder containing all desired files. Origin will import every file in the selected folder that matches the intended filetype.
 
 **Transform Columns:** These options only appear when a worksheet is open in Origin
 * **Add Q Columns:** Detects any column in the current worksheet with "deg" as units. Prompts the user for wavelength, then adds a new column in Q space next to each column.
@@ -70,9 +70,10 @@ When importing RAS or CIF files:
 * **Square Columns:** Adds a new column next to each applicable column (see selection methods below) that squares the values in the original column.
 * **Sqrt Columns:** Adds a new column next to each applicable column (see selection methods below) that takes the square root of values in the original column.
 
-Selection Methods for Rescale, Square, and Sqrt Transformations:
-All "AU": Adds the new column for every column in the current worksheet with "AU" in the Units row.
-Select Columns: Opens a new window to select desired columns. Multiple rows can be highlighted using <Ctrl>-<Click> or <Shift>-<Click>
+    ### Selection Methods for Rescale, Square, and Sqrt Transformations:
+    - **All "AU":** Adds the new column for every column in the current worksheet with "AU" in the Units row.
+  
+    - **Select Columns:** Opens a new window to select desired columns. Multiple rows can be highlighted using <Ctrl>-<Click> or <Shift>-<Click>
 
 ## Graph Templates
 Installed graph templates can be found in Plot > User Templates
