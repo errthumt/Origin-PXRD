@@ -20,8 +20,10 @@ Disclaimer: Thie plugin should work as far back as Origin 2022. However, it has 
   PLACEHOLDER TEXT
 4. In Origin, open the script window with: Window > Script Window
 5. Copy/Paste the ENTIRE command below as one line into the script window:
-    <p style="font-family: 'Courier New', monospace;">pip -chk numpy bibtexparser matplotlib monty narwhals orjson palettable pandas plotly pymatgen requests scipy spglib sympy tabulate tqdm uncertainties</p>
-6. Ensure that your text cursor is at the end of the pasted line (not on a new line) and press <Enter>
-7. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
-8. After the python packages have been installed (CMD line should end with "Press any key to continue..."), restart Origin with a fresh project.
-9. Review the instructions for use below for further guidance.
+    ```
+    pip -chk numpy bibtexparser matplotlib monty narwhals orjson palettable pandas plotly pymatgen requests scipy spglib sympy tabulate tqdm uncertainties
+    ```
+7. Ensure that your text cursor is at the end of the pasted line (not on a new line) and press <Enter>
+8. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
+9. After the python packages have been installed (CMD line should end with "Press any key to continue..."), restart Origin with a fresh project.
+10. Review the instructions for use below for further guidance.
