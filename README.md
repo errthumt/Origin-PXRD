@@ -57,24 +57,23 @@ You may need to switch GUI mode.
   - Step Size
   - ADVANCED PARAMETERS: U, V, W, X, Y, and Axial S
   - Other presets: Additional presets can be added easily. Reach out to Travis if there is an import setting that you anticipate using frequently. It will be added to the next installer version.
+---
+  ### When importing RAS or CIF files:
+  - **Select Files:** Opens a window to add/remove desired files. After all files have been added to the window, select "Import" or "OK" to proceed
 
-    ### When importing RAS or CIF files:
-
-    - **Select Files:** Opens a window to add/remove desired files. After all files have been added to the window, select "Import" or "OK" to proceed
-
-    - **Select Folder:** Opens a window to select a folder containing all desired files. Origin will import every file in the selected folder that matches the intended filetype.
-
+  - **Select Folder:** Opens a window to select a folder containing all desired files. Origin will import every file in the selected folder that matches the intended filetype.
+---
 **Transform Columns:** These options only appear when a worksheet is open in Origin
 * **Add Q Columns:** Detects any column in the current worksheet with "deg" as units. Prompts the user for wavelength, then adds a new column in Q space next to each column.
 * **Rescale Columns:** Adds a new column next to each applicable column (see selection methods below) with a new row titled "ScaleFactor". Data from the original column is multiplied by the scale factor in the new column. Scale factors can be adjusted and columns will auto-update.
 * **Square Columns:** Adds a new column next to each applicable column (see selection methods below) that squares the values in the original column.
 * **Sqrt Columns:** Adds a new column next to each applicable column (see selection methods below) that takes the square root of values in the original column.
+---
+  ### Selection Methods for Rescale, Square, and Sqrt Transformations:
+  - **All "AU":** Adds the new column for every column in the current worksheet with "AU" in the Units row.
 
-    ### Selection Methods for Rescale, Square, and Sqrt Transformations:
-    - **All "AU":** Adds the new column for every column in the current worksheet with "AU" in the Units row.
-  
-    - **Select Columns:** Opens a new window to select desired columns. Multiple rows can be highlighted using <Ctrl>-<Click> or <Shift>-<Click>
-
+  - **Select Columns:** Opens a new window to select desired columns. Multiple rows can be highlighted using <Ctrl>-<Click> or <Shift>-<Click>
+---
 ## Graph Templates
 Installed graph templates can be found in Plot > User Templates
 * **Stacked PXRD:** Each plot is offset by one unit. Good for displaying multiple normalized patterns.
