@@ -9,7 +9,8 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
 1. Download and run the most recent installer. It will open the installation project inside Origin.
 2. In the pop up menus, select which plugin features you want to install.
 3. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
-4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), restart Origin with a fresh project.
+4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
+5. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
 5. Review the instructions for use below for further guidance.
 
 ## Manual Install (Origin 2022-2024)
