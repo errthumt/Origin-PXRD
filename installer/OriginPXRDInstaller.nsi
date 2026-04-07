@@ -33,7 +33,7 @@ Var TempDir
 Section "Install"
 
     ; Create a unique temp directory
-    StrCpy $TempDir "$TEMP\OriginPXRD_$R0"
+    StrCpy $TempDir "$TEMP\OriginPXRD_${VERSION}"
     CreateDirectory "$TempDir"
 
     ; Extract build folder contents into temp dir
