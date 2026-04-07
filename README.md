@@ -14,7 +14,7 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
 5. Review the instructions for use below for further guidance.
 
 ## Manual Install (Origin 2022-2024)
-Disclaimer: This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later.
+**Disclaimer:** This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later. 
 1. Locate your Origin User Files Folder.
    * In Origin 2024 or later, your user files folder can be found from inside Origin: Help > Open Folder > User Files Folder
 2. Download [the most recent zip release](manual_install) and extract it to an easy-to-find location
@@ -33,16 +33,17 @@ Disclaimer: This plugin should work as far back as Origin 2022. However, it has 
 10. Review the instructions for use below for further guidance.
 
 # Instructions for Use
----
-**After installing the plugin and restarting Origin, a new dropdown should appear on the top banner titled 'PXRD'**
----
+**Please Note:** If you opted to install Graph Templates without the PXRD Menu, refer to the Graph Templates section below. Some options (like In-Situ processing) are available to install independently, but require you to execute commands through the script window instead of the menu.
+
+**After installing the plugin (with PXRD Menu) and restarting Origin, a new dropdown should appear on the top banner titled 'PXRD'**
+
 ## If "PXRD" dropdown does not appear:
 1. Select Preferences > Custom Menu Organizer
 2. Verify that there is an entry titled "PXRD"
 3. If the entry is not there, inside the menu organizer, select File > Open... and search for PXRD.omc in the User Files Folder
 4. Close the menu organizer and look for the dropdown
 
-### If "PXRD" dropwdown STILL does not appear:
+### If "PXRD" dropdown STILL does not appear:
 You may need to switch GUI mode.
 
 <ins>**Origin 2025b:**</ins> Preferences > GUI Mode > PXRD
