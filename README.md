@@ -47,7 +47,7 @@ You may need to switch GUI mode.
 
 <ins>**Origin 2025b:**</ins> Preferences > GUI Mode > PXRD
 
-**Origin 2024–2025:** Preferences > Menu > PXRD
+<ins>**Origin 2024–2025:**</ins> Preferences > Menu > PXRD
 
 ## PXRD MENU OPTIONS:
 <ins>**Import RAS Files:**</ins> Rigaku powder patterns can be imported directly from .RAS files without converting using PowDLL. Each import command creates a new workbook in Origin. All patterns normalized to [0,1].
@@ -76,7 +76,7 @@ You may need to switch GUI mode.
 * <ins>**Sqrt Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) that takes the square root of values in the original column.
 ---
   ### Selection Methods for Rescale, Square, and Sqrt Transformations:
-  - **All "AU":** Adds the new column for every column in the current worksheet with "AU" in the Units row.
+  - <ins>**All "AU":**</ins> Adds the new column for every column in the current worksheet with "AU" in the Units row.
 
   - <ins>**Select Columns:**</ins> Opens a new window to select desired columns. Multiple rows can be highlighted using \<Ctrl\>-\<Click\> or \<Shift\>-\<Click\>
 ---
