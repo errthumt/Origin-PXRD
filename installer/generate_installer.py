@@ -20,7 +20,7 @@ def create_manual_install_zip(version: str):
     output_dir = REPO_ROOT / "manual_install"
     output_dir.mkdir(exist_ok=True)
 
-    zip_path = output_dir / f"OriginPXRD_{version}.zip"
+    zip_path = output_dir / f"OriginPXRD_v{version}.zip"
 
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         for file in option_root.rglob("*"):
