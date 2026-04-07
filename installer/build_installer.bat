@@ -8,6 +8,7 @@ echo.
 
 cd ..
 
+:: Check if we are inside a git repo
 git rev-parse --is-inside-work-tree >nul 2>&1
 if errorlevel 1 (
     echo ERROR: This folder is not a Git repository.
@@ -15,17 +16,20 @@ if errorlevel 1 (
     exit /b 1
 )
 
+:: Get current version from git describe
 for /f "delims=" %%v in ('git describe --tags --always') do set CURRENT_VERSION=%%v
 
 echo Current version: %CURRENT_VERSION%
 echo.
 
+:: Ask whether to bump version, showing current version inline
 set /p BUMP="Do you want to create a new version tag? (current: %CURRENT_VERSION%) (y/n): "
 
 if /I "%BUMP%"=="y" (
     echo.
     set /p NEWTAG="Enter new version tag (example: v1.4.3): "
 
+    :: Trim spaces (prevents false 'empty' detection)
     set "NEWTAG=!NEWTAG: =!"
 
     if "!NEWTAG!"=="" (
@@ -38,19 +42,29 @@ if /I "%BUMP%"=="y" (
     echo Creating tag !NEWTAG!...
     git commit --allow-empty -m "Release bump"
     git tag !NEWTAG!
+    if errorlevel 1 (
+        echo ERROR: Failed to create tag.
+        pause
+        exit /b 1
+    )
+
+    echo Pushing tag to origin...
     git push origin !NEWTAG!
+    if errorlevel 1 (
+        echo ERROR: Failed to push tag.
+        pause
+        exit /b 1
+    )
 
     echo.
     echo Tag !NEWTAG! created and pushed successfully.
     echo.
-
-    set VERSION=!NEWTAG!
 ) else (
     echo Keeping existing version: %CURRENT_VERSION%
     echo.
-    set VERSION=%CURRENT_VERSION%
 )
 
+:: Confirm installer generation
 set /p CONFIRM="Generate installer now? (y/n): "
 
 if /I not "%CONFIRM%"=="y" (
@@ -60,26 +74,19 @@ if /I not "%CONFIRM%"=="y" (
 )
 
 echo.
-echo Building NSIS installer...
+echo Running generate_installer.py...
 echo.
 
-set "ROOT=%cd%"
-set "INSTALLER_DIR=%ROOT%\installer"
-set "RELEASE_DIR=%INSTALLER_DIR%\release"
-
-if not exist "%RELEASE_DIR%" mkdir "%RELEASE_DIR%"
-
-pushd "%INSTALLER_DIR%"
-makensis.exe /DVERSION=%VERSION% OriginPXRDInstaller.nsi
-popd
-
-move "%INSTALLER_DIR%\OriginPXRDInstaller.exe" "%RELEASE_DIR%\OriginPXRDInstaller_%VERSION%.exe" >nul
+python "installer/generate_installer.py"
+if errorlevel 1 (
+    echo ERROR: Installer generation failed.
+    pause
+    exit /b 1
+)
 
 echo.
 echo ============================================
-echo   Installer built successfully:
-echo   %RELEASE_DIR%\OriginPXRDInstaller_%VERSION%.exe
+echo      Installer generation complete
 echo ============================================
-echo.
 pause
-exit /b 0
+exit

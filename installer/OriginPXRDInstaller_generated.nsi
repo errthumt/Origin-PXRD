@@ -1,24 +1,24 @@
 !define APPNAME "Origin PXRD Tools"
 !define COMPANY "Kovnir Group - Iowa State Dept of Chemistry"
-!define VERSION "${VERSION}"
+!define VERSION "1.2.1-1-g0c354ba"
 
 ; -----------------------------
 ; Version metadata (fixes "Name")
 ; -----------------------------
-Name "${APPNAME} ${VERSION}"
-OutFile "release\OriginPXRDInstaller_${VERSION}.exe"
+Name "${APPNAME} 1.2.1-1-g0c354ba"
+OutFile "release\OriginPXRDInstaller_1.2.1-1-g0c354ba.exe"
 
-VIProductVersion "${NSIS_VERSION}"
-VIFileVersion    "${NSIS_VERSION}"
+VIProductVersion "1.2.1.1"
+VIFileVersion    "1.2.1.1"
 
 VIAddVersionKey "ProductName"        "${APPNAME}"
 VIAddVersionKey "FileDescription"    "${APPNAME} Installer"
 VIAddVersionKey "CompanyName"        "${COMPANY}"
 VIAddVersionKey "LegalCopyright"     "© ${COMPANY}"
-VIAddVersionKey "ProductVersion"     "${VERSION}"
-VIAddVersionKey "FileVersion"        "${VERSION}"
+VIAddVersionKey "ProductVersion"     "1.2.1-1-g0c354ba"
+VIAddVersionKey "FileVersion"        "1.2.1-1-g0c354ba"
 VIAddVersionKey "InternalName"       "${APPNAME}"
-VIAddVersionKey "OriginalFilename"   "OriginPXRDInstaller_${VERSION}.exe"
+VIAddVersionKey "OriginalFilename"   "OriginPXRDInstaller_1.2.1-1-g0c354ba.exe"
 
 RequestExecutionLevel user
 SetCompressor /SOLID lzma
