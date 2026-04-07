@@ -6,7 +6,7 @@
 ; Version metadata (fixes "Name")
 ; -----------------------------
 Name "${APPNAME} ${VERSION}"
-OutFile "release\OriginPXRDInstaller_${VERSION}.exe"
+OutFile "release\OriginPXRD_Installer_v${VERSION}.exe"
 
 VIProductVersion "${NSIS_VERSION}"
 VIFileVersion    "${NSIS_VERSION}"
@@ -18,7 +18,7 @@ VIAddVersionKey "LegalCopyright"     "© ${COMPANY}"
 VIAddVersionKey "ProductVersion"     "${VERSION}"
 VIAddVersionKey "FileVersion"        "${VERSION}"
 VIAddVersionKey "InternalName"       "${APPNAME}"
-VIAddVersionKey "OriginalFilename"   "OriginPXRDInstaller_${VERSION}.exe"
+VIAddVersionKey "OriginalFilename"   "OriginPXRD_Installer_v${VERSION}.exe"
 
 RequestExecutionLevel user
 SetCompressor /SOLID lzma

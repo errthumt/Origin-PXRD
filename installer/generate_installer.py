@@ -1,6 +1,7 @@
 import subprocess
 from pathlib import Path
 import shutil
+import zipfile
 
 # Directories
 INSTALLER_ROOT = Path(__file__).parent
@@ -10,6 +11,23 @@ REPO_ROOT = INSTALLER_ROOT.parent
 nsi_template = INSTALLER_ROOT / "OriginPXRDInstaller.nsi"
 nsi_output = INSTALLER_ROOT / "OriginPXRDInstaller_generated.nsi"
 
+def create_manual_install_zip(version: str):
+    """
+    Create manual_install/OriginPXRD_<version>.zip containing the contents of
+    build/option_files/, preserving relative paths.
+    """
+    option_root = REPO_ROOT / "build" / "option_files"
+    output_dir = REPO_ROOT / "manual_install"
+    output_dir.mkdir(exist_ok=True)
+
+    zip_path = output_dir / f"OriginPXRD_{version}.zip"
+
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+        for file in option_root.rglob("*"):
+            if file.is_file():
+                z.write(file, file.relative_to(option_root))
+
+    print(f"Manual install ZIP created: {zip_path}")
 
 def find_makensis():
     """
@@ -106,9 +124,10 @@ template = nsi_template.read_text()
 template = template.replace("${VERSION}", version)
 template = template.replace("${NSIS_VERSION}", nsis_version)
 nsi_output.write_text(template)
-
+create_manual_install_zip(version)
 
 # 3. Run NSIS compiler
 subprocess.check_call([str(MAKENSIS), str(nsi_output)])
 
-print(f"Installer generated: OriginPXRDInstaller_v{version}.exe")
+print(f"Installer generated: OriginPXRD_Installer_v{version}.exe")
+
