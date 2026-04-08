@@ -3,6 +3,8 @@ A plugin for importing experimental patterns and calculating theoretical pattern
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
 
+[Jump to Release Notes](#release-notes)
+
 **Have a bug to report or feature to request? Use one of the links below (for Github accounts only) or [use this form](https://forms.office.com/r/9bfw1zLiDh)**
 * [Create a bug report](https://github.com/errthumt/Origin-PXRD/issues/new?template=bug_report.md)
 * [Request a feature](https://github.com/errthumt/Origin-PXRD/issues/new?template=feature_request.md)
@@ -90,3 +92,12 @@ You may need to switch GUI mode.
 Installed graph templates can be found in Plot > User Templates
 * <ins>**Stacked PXRD:**</ins> Each plot is offset by one unit. Good for displaying multiple normalized patterns.
 * <ins>**Sample+Refs:**</ins> The first added plots are displayed as full-sized patterns on the top portion. Additional patterns can be added to the "Reference Patterns" layer to be displayed below at 1/2 scale.
+
+
+# Release Notes
+## Release 1.2.5
+The first public GitHub release.
+* Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
+* Added install option for processing In-Situ Beamtime data. Currently only compatible with temperature metadata (no flow options yet). Go to PXRD > In-Situ Processing
+  * March 2026 11-ID-C: Normalizes all patterns (normalized by data set, not by individual pattern) and extracts temperature from all metadata files. Adds temperature as a "Temp" row at the top.
+* Added In-Situ Contour graph template. Configured to expect [0,1] normalization and temperatures in "Temp" row. Reach out to Travis with any issues.
