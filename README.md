@@ -100,4 +100,5 @@ The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
 * Added install option for processing In-Situ Beamtime data. Currently only compatible with temperature metadata (no flow options yet). Go to PXRD > In-Situ Processing
   * March 2026 11-ID-C: Normalizes all patterns (normalized by data set, not by individual pattern) and extracts temperature from all metadata files. Adds temperature as a "Temp" row at the top.
-* Added In-Situ Contour graph template. Configured to expect [0,1] normalization and temperatures in "Temp" row. Reach out to Travis with any issues.
+* Added In-Situ Contour graph template. Configured to expect [0,1] normalization and temperatures in "Temp" row. Reach out to Travis for help using this template.
+* Added In-Situ Browser graph template. Useful for scrolling through many powder patterns at once.
