@@ -3,6 +3,11 @@ A plugin for importing experimental patterns and calculating theoretical pattern
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
 
+**Have a bug to report or feature to request? Use one of the links below (for Github accounts only) or [use this form](https://forms.office.com/r/9bfw1zLiDh)**
+* [Create a bug report](https://github.com/errthumt/Origin-PXRD/issues/new?template=bug_report.yml)
+* [Request a feature](https://github.com/errthumt/Origin-PXRD/issues/new?template=feature_request.yml)
+* [Other feedback](https://github.com/errthumt/Origin-PXRD/issues/new)
+
 # Installation Instructions
 
 ## Automatic Install (Origin 2025 or later):
