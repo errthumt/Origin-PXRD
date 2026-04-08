@@ -16,7 +16,7 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
 3. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
 4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
 5. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
-5. Review the instructions for use below for further guidance.
+5. Review the [instructions for use](#instructions-for-use) for further guidance.
 
 ## Manual Install (Origin 2022-2024)
 **Disclaimer:** This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later. 
@@ -35,10 +35,10 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
 7. Ensure that your text cursor is at the end of the pasted line (not on a new line) and press \<Enter\>
 8. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
 9. After the python packages have been installed (CMD line should end with "Press any key to continue..."), close restart Origin with a fresh project.
-10. Review the instructions for use below for further guidance.
+10. Review tthe [instructions for use](#instructions-for-use) for further guidance.
 
 # Instructions for Use
-**Please Note:** If you opted to install Graph Templates without the PXRD Menu, refer to the Graph Templates section below. Some options (like In-Situ processing) are available to install independently, but require you to execute commands through the script window instead of the menu.
+**Please Note:** If you opted to install Graph Templates without the PXRD Menu, they will work independently (See [Graph Templates](#graph-templates)). Some other options (like In-Situ processing) are available to install independently, but require you to execute commands through the script window if you did not install the menu.
 
 **After installing the plugin (with PXRD Menu) and restarting Origin, a new dropdown should appear on the top banner titled 'PXRD'**
 
