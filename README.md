@@ -62,7 +62,7 @@ You may need to switch GUI mode.
 
 <ins>**Calculate CIF Patterns:**</ins> Calculated patterns can be brought directly into origin from .CIF files. Each import command creates a new workbook in origin. All patterns normalized to [0,1]
 
-* <ins>**Cu-Ka (3-90deg):**</ins> Calculates powder patterns for 3–90° 2θ using default Cu‑Ka doublet splitting. Step size = 0.01°.
+* <ins>**Cu-Ka (3-90deg):**</ins> Calculates powder patterns for 3–90° 2θ using default Cu‑Ka doublet splitting. Step size = 0.02°.
 
 * <ins>**Custom Parameters:**</ins> After selecting CIF files, opens a window to specify (similar to VESTA's options, but with further tunability):
   - Number of fE wavelengths
@@ -95,6 +95,11 @@ Installed graph templates can be found in Plot > User Templates
 
 
 # Release Notes
+## Release 1.2.6
+Feature Requests, bugfixes, UI improvements
+* Updated file selection dialogs to start in folder containing current saved project.
+* Updated CIF workflow to prevent errors when cancelling out of menus.
+* (Feature Request: David) Changed default CuKa step size to 0.02
 ## Release 1.2.5
 The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
