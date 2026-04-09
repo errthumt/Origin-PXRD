@@ -73,7 +73,7 @@ def import_ras_files():
 # ------------------------------------------------------------
 def import_ras_from_folder():
 
-    folder_path = op.lt_exec('dlgPath title:="Select folder containing RAS files"; findFiles ext:=*.ras;')
+    folder_path = op.lt_exec('dlgPath init:=%X title:="Select folder containing RAS files"; findFiles ext:=*.ras;')
 
     if not folder_path:
         op.lt_exec('type -b "No folder selected.";')
@@ -92,7 +92,7 @@ def import_ras_from_folder():
 # 3) Multi-folder, multi-file selection dialog
 # ------------------------------------------------------------
 def import_ras_from_file_dialog():
-    file_select = op.lt_exec('dlgFile multi:=1 title:="Select RAS files for import" group:=*.ras')
+    file_select = op.lt_exec('dlgFile init:=%X multi:=1 title:="Select RAS files for import" group:=*.ras')
     file_paths = op.get_lt_str('fname$')
     if not file_select or not file_paths:
         op.lt_exec('type -b "No files selected"')

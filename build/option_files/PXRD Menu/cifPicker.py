@@ -5,7 +5,7 @@ import sys
 import os
 
 def pick_cif_files():
-    file_select = op.lt_exec('dlgFile multi:=1 group:=*.cif title:="Select CIF files to calculate patterns for"')
+    file_select = op.lt_exec('dlgFile init:=%X multi:=1 group:=*.cif title:="Select CIF files to calculate patterns for"')
     file_names = op.get_lt_str('fname$')
     if not file_select or not file_names:
         op.lt_exec('type -b "No files selected"')
@@ -13,7 +13,7 @@ def pick_cif_files():
     return True
 
 def pick_folder_files():
-    folder_selected = op.lt_exec('dlgPath title:="Select folder containing CIF files"; findFiles ext:=*.cif')
+    folder_selected = op.lt_exec('dlgPath init:=%X title:="Select folder containing CIF files"; findFiles ext:=*.cif')
     if not folder_selected:
         op.lt_exec('type -b "No folder selected"')
         return False

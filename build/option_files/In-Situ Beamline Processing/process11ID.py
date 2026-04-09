@@ -5,7 +5,7 @@ import re
 import originpro as op
 from pathlib import Path
 
-op.lt_exec('dlgPath title:="Select sample ID folder (contains xye folder and all metadata files)";')
+op.lt_exec('dlgPath init:=%X title:="Select sample ID folder (contains xye folder and all metadata files)";')
 root = Path(op.get_lt_str("path$"))
 
 # --- USER CONFIGURATION ---
