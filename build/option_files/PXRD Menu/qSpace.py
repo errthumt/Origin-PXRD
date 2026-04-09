@@ -4,6 +4,13 @@ import tkinter as tk
 from tkinter import simpledialog
 import sys
 
+def col_index_to_letter(idx):
+    letters = ""
+    idx += 1  # convert to 1-based
+    while idx > 0:
+        idx, rem = divmod(idx - 1, 26)
+        letters = chr(65 + rem) + letters
+    return letters
 
 # ------------------------------------------------------------
 # 1) Prompt user for wavelength
@@ -34,10 +41,11 @@ def get_wavelength():
 # ------------------------------------------------------------
 # 2) Convert a single 2θ column to Q-space
 # ------------------------------------------------------------
-def convert_column_to_q(wks, col, lambda_A):
+def convert_column_to_q(wks, col, wl_row):
     """
     Convert the given 0-based column index (col) from 2θ → Q.
     Creates a new column immediately to the right.
+    Uses a dynamic formula referencing the Wavelength (Å) user parameter row.
     """
 
     # 1) Add new column at end
@@ -59,24 +67,24 @@ def convert_column_to_q(wks, col, lambda_A):
     # 4) Set Q column as X designation
     wks.cols_axis('x', q_col, q_col, False)
 
-    # 5) Compute Q values
-    raw_vals = wks.to_list(col)
-    Q_out = [""] * len(raw_vals)
+    # 5) Build dynamic formula
+    orig_letter = col_index_to_letter(col)
+    new_letter  = col_index_to_letter(q_col)
 
-    for i, v in enumerate(raw_vals):
-        try:
-            twotheta = float(v)
-            theta = np.radians(twotheta / 2.0)
-            Q_out[i] = (4 * np.pi / lambda_A) * np.sin(theta)
-        except:
-            Q_out[i] = ""
+    d_row = wl_row + 1  # convert to 1-based
 
-    wks.from_list(q_col, Q_out)
+    formula_text = (
+        f"(4*pi / {orig_letter}[D{d_row}]) * "
+        f"sin(radians({orig_letter}/2))"
+    )
 
-    # 6) Units
-    wks.set_label(q_col, "A\\+(-1)", 'U')
+    # 6) Apply formula
+    wks.set_formula(q_col, formula_text)
 
-    # 7) Copy SourceFile
+    # 7) Units
+    wks.set_label(q_col, "Å\\+(-1)", 'U')
+
+    # 8) Copy SourceFile
     try:
         sourcefiles = wks.get_labels('SourceFile')
     except:
@@ -88,7 +96,6 @@ def convert_column_to_q(wks, col, lambda_A):
     sourcefiles[q_col] = sourcefiles[col]
     wks.set_label(q_col, sourcefiles[q_col], 'SourceFile')
 
-
 # ------------------------------------------------------------
 # 3) Dispatch logic: all_deg OR selected columns
 # ------------------------------------------------------------
@@ -98,9 +105,6 @@ def dispatch_qspace(mode="all_deg"):
     mode = "selected"  → convert only user-selected columns
     """
 
-    lambda_A = get_wavelength()
-    if lambda_A is None:
-        return
 
     wks = op.find_sheet()
     units = wks.get_labels('U')
@@ -124,7 +128,8 @@ def dispatch_qspace(mode="all_deg"):
 
     # Convert in reverse order to avoid index shifting
     for col in reversed(col_indices):
-        convert_column_to_q(wks, col, lambda_A)
+        wl_row = wks._user_param_row("Wavelength (Å)",True)
+        convert_column_to_q(wks, col, wl_row)
 
     # Auto-fit column widths
     op.lt_exec('''
