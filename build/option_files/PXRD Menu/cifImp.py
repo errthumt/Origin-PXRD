@@ -270,6 +270,8 @@ def get_default_parameters():
         "axial_S": 0.015,
     }
 
+import math
+
 def get_custom_parameters():
     # Default PXRD parameters
     DEFAULT_WAVELENGTHS = [1.5406, 1.54439]
@@ -288,6 +290,54 @@ def get_custom_parameters():
     win.title("CIF Import Parameters")
 
     # -----------------------------
+    # MODE TOGGLE (2θ <-> Q)
+    # -----------------------------
+    mode_var = tk.StringVar(value="2theta")  # "2theta" or "q"
+
+    mode_label = tk.Label(win, text="Mode: 2θ", font=("Segoe UI", 9, "bold"))
+    mode_label.grid(row=2, column=0, sticky="w", padx=(0, 5))
+
+    def safe_asin(x):
+        return math.asin(max(min(x, 1), -1))
+
+    def convert_2theta_to_q():
+        lam = wl_entries[0].get()
+        tmin = math.radians(tmin_var.get() / 2)
+        tmax = math.radians(tmax_var.get() / 2)
+
+        qmin = (4 * math.pi / lam) * math.sin(tmin)
+        qmax = (4 * math.pi / lam) * math.sin(tmax)
+
+        tmin_var.set(round(qmin, 5))
+        tmax_var.set(round(qmax, 5))
+
+    def convert_q_to_2theta():
+        lam = wl_entries[0].get()
+        qmin = tmin_var.get()
+        qmax = tmax_var.get()
+
+        tmin = 2 * math.degrees(safe_asin(qmin * lam / (4 * math.pi)))
+        tmax = 2 * math.degrees(safe_asin(qmax * lam / (4 * math.pi)))
+
+        tmin_var.set(round(tmin, 5))
+        tmax_var.set(round(tmax, 5))
+
+    def toggle_mode():
+        if mode_var.get() == "2theta":
+            mode_var.set("q")
+            convert_2theta_to_q()
+            mode_label.config(text="Mode: Q-space")
+            mode_button.config(text="Switch to 2θ")
+        else:
+            mode_var.set("2theta")
+            convert_q_to_2theta()
+            mode_label.config(text="Mode: 2θ")
+            mode_button.config(text="Switch to Q-space")
+
+    mode_button = tk.Button(win, text="Switch to Q-space", width=14, command=toggle_mode)
+    mode_button.grid(row=3, column=0, sticky="w", padx=(0, 5))
+
+    # -----------------------------
     # WAVELENGTH SECTION
     # -----------------------------
     def update_wavelength_fields(*args):
@@ -303,8 +353,18 @@ def get_custom_parameters():
 
             default_wl = DEFAULT_WAVELENGTHS[i] if i < len(DEFAULT_WAVELENGTHS) else DEFAULT_WAVELENGTHS[0]
             wv = tk.DoubleVar(value=default_wl)
-            tk.Entry(wl_frame, textvariable=wv, width=10).grid(row=i, column=1)
+            entry = tk.Entry(wl_frame, textvariable=wv, width=10)
+            entry.grid(row=i, column=1)
             wl_entries.append(wv)
+
+            # Recalculate if wavelength changes
+            def recalc(*_):
+                if mode_var.get() == "q":
+                    convert_2theta_to_q()
+                else:
+                    convert_q_to_2theta()
+
+            wv.trace_add("write", recalc)
 
             tk.Label(wl_frame, text=f"Weight:").grid(row=i, column=2, sticky="e")
 
@@ -314,6 +374,13 @@ def get_custom_parameters():
             wt_entries.append(wt)
 
     def submit():
+        # Always return 2θ values
+        if mode_var.get() == "q":
+            convert_q_to_2theta()
+            mode_var.set("2theta")
+            mode_label.config(text="Mode: 2θ")
+            mode_button.config(text="Switch to Q-space")
+
         win.destroy()
 
     tk.Label(win, text="Number of fE wavelengths:").grid(row=0, column=0, sticky="e")
@@ -331,23 +398,23 @@ def get_custom_parameters():
     # -----------------------------
     # BASIC PARAMETERS
     # -----------------------------
-    tk.Label(win, text="2θ Min (deg):").grid(row=2, column=0, sticky="e")
+    tk.Label(win, text="Min:").grid(row=2, column=1, sticky="e")
     tmin_var = tk.DoubleVar(value=DEFAULT_TMIN)
-    tk.Entry(win, textvariable=tmin_var).grid(row=2, column=1)
+    tk.Entry(win, textvariable=tmin_var).grid(row=2, column=2)
 
-    tk.Label(win, text="2θ Max (deg):").grid(row=3, column=0, sticky="e")
+    tk.Label(win, text="Max:").grid(row=3, column=1, sticky="e")
     tmax_var = tk.DoubleVar(value=DEFAULT_TMAX)
-    tk.Entry(win, textvariable=tmax_var).grid(row=3, column=1)
+    tk.Entry(win, textvariable=tmax_var).grid(row=3, column=2)
 
-    tk.Label(win, text="Step Size (deg):").grid(row=4, column=0, sticky="e")
+    tk.Label(win, text="Step Size (deg):").grid(row=4, column=1, sticky="e")
     step_var = tk.DoubleVar(value=DEFAULT_STEP)
-    tk.Entry(win, textvariable=step_var).grid(row=4, column=1)
+    tk.Entry(win, textvariable=step_var).grid(row=4, column=2)
 
     # -----------------------------
     # ADVANCED PARAMETERS (HIDDEN)
     # -----------------------------
     advanced_frame = tk.Frame(win)
-    advanced_visible = False  # toggle state
+    advanced_visible = False
 
     def toggle_advanced():
         nonlocal advanced_visible
@@ -362,32 +429,17 @@ def get_custom_parameters():
     adv_button = tk.Button(win, text="Show Advanced ▼", command=toggle_advanced)
     adv_button.grid(row=5, column=0, columnspan=3, pady=5)
 
-    # Advanced fields inside advanced_frame
-    tk.Label(advanced_frame, text="U:").grid(row=0, column=0, sticky="e")
-    U_var = tk.DoubleVar(value=DEFAULT_U)
-    tk.Entry(advanced_frame, textvariable=U_var).grid(row=0, column=1)
+    labels = ["U:", "V:", "W:", "X:", "Y:", "Axial S:"]
+    defaults = [DEFAULT_U, DEFAULT_V, DEFAULT_W, DEFAULT_X, DEFAULT_Y, DEFAULT_S]
+    vars_list = []
 
-    tk.Label(advanced_frame, text="V:").grid(row=1, column=0, sticky="e")
-    V_var = tk.DoubleVar(value=DEFAULT_V)
-    tk.Entry(advanced_frame, textvariable=V_var).grid(row=1, column=1)
+    for i, (lbl, default) in enumerate(zip(labels, defaults)):
+        tk.Label(advanced_frame, text=lbl).grid(row=i, column=0, sticky="e")
+        var = tk.DoubleVar(value=default)
+        tk.Entry(advanced_frame, textvariable=var).grid(row=i, column=1)
+        vars_list.append(var)
 
-    tk.Label(advanced_frame, text="W:").grid(row=2, column=0, sticky="e")
-    W_var = tk.DoubleVar(value=DEFAULT_W)
-    tk.Entry(advanced_frame, textvariable=W_var).grid(row=2, column=1)
-
-    tk.Label(advanced_frame, text="X:").grid(row=3, column=0, sticky="e")
-    X_var = tk.DoubleVar(value=DEFAULT_X)
-    tk.Entry(advanced_frame, textvariable=X_var).grid(row=3, column=1)
-
-    tk.Label(advanced_frame, text="Y:").grid(row=4, column=0, sticky="e")
-    Y_var = tk.DoubleVar(value=DEFAULT_Y)
-    tk.Entry(advanced_frame, textvariable=Y_var).grid(row=4, column=1)
-
-    tk.Label(advanced_frame, text="Axial S:").grid(row=5, column=0, sticky="e")
-    S_var = tk.DoubleVar(value=DEFAULT_S)
-    tk.Entry(advanced_frame, textvariable=S_var).grid(row=5, column=1)
-
-    # Start hidden
+    U_var, V_var, W_var, X_var, Y_var, S_var = vars_list
     advanced_frame.grid_remove()
 
     # -----------------------------
@@ -412,8 +464,6 @@ def get_custom_parameters():
     }
 
 
-
-
 def get_parameters(mode):
     if mode.lower() == "cuka":
         return get_default_parameters()
@@ -433,6 +483,8 @@ def import_cif_files(file_list, wavelength_mode):
 
     params = get_parameters(wavelength_mode)
     #print("DEBUG: Parameters loaded:", params)
+
+    wavelength = params["fe_wavelengths"][0]
 
     wb = op.new_book('w', lname='CIF Imports')
     #print("DEBUG: Workbook created")
@@ -477,6 +529,9 @@ def import_cif_files(file_list, wavelength_mode):
     wks.activate()
     op.lt_exec(LABTALK_CLEANUP)
     
+    wks._user_param_row("Wavelength (Å)",True)
+    wks.set_label(0,wavelength, "Wavelength (Å)")
+
     for uParam in ("Group Info","Method"):
         idx = wks._user_param_row(uParam,True) + 1
         op.lt_exec(f"wks.labels(#D{idx});")
