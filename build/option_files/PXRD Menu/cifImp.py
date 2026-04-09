@@ -494,19 +494,17 @@ if __name__ == "__main__":
     # Read the LabTalk variable fname$
     raw_list = op.get_lt_str('fname$')
 
-    if not raw_list:
-        raise ValueError("No CIF file list found in fname$")
+    if raw_list:
+        # Normalize Windows newlines and split into lines
+        file_list = [
+            f.strip()
+            for f in raw_list.replace("\r\n", "\n").split("\n")
+            if f.strip()
+        ]
 
-    # Normalize Windows newlines and split into lines
-    file_list = [
-        f.strip()
-        for f in raw_list.replace("\r\n", "\n").split("\n")
-        if f.strip()
-    ]
+        # Read wavelength mode from LabTalk argument
+        wavelength_mode = sys.argv[1] if len(sys.argv) > 1 else "CuKa"
 
-    # Read wavelength mode from LabTalk argument
-    wavelength_mode = sys.argv[1] if len(sys.argv) > 1 else "CuKa"
-
-    import_cif_files(file_list, wavelength_mode)
+        import_cif_files(file_list, wavelength_mode)
 
 
