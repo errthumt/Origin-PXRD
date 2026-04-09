@@ -100,6 +100,8 @@ Feature Requests, bugfixes, UI improvements
 * Updated file selection dialogs to start in folder containing current saved project.
 * Updated CIF workflow to prevent errors when cancelling out of menus.
 * (Feature Request: David) Changed default CuKa step size to 0.02
+* Column selections for transformations are now done using Origin's native column selection instead of a UI.
+* Q-Space columns now allow for column selection.
 ## Release 1.2.5
 The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
