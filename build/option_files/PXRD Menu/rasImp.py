@@ -10,23 +10,7 @@ import sys
 def import_ras_files():
 
     labtalk_cmd = fr'''
-    @SWS = 0;
-
-    impASC fname:=fname$
-    options.Sparklines:=0
-    options.FirstMode:=3
-    options.Mode:=1
-    options.headers.AutoSubHeaderLines:=0
-    options.headers.CountHeaderLines:=1
-    options.headers.HeaderLeadingChar:=*
-    options.Cols.NumCols:=2
-    options.Cols.ColDesignations:=(XY)
-    options.names.FNameToSht:=0
-    options.names.FNameToBk:=0
-    options.names.FNameToUDL:=1
-    options.Miscs.NonNum:=5
-    options.scripts.ScriptAfterAllImport:=]>;
-
+    impFile filtername:="rasImp.oif" location:=user;
     page.longname$ = "RAS Imports";
     wks.name$ = "RAS Imports";
 
@@ -45,11 +29,43 @@ def import_ras_files():
     // Hide Formula Row
     wks.labels(-O);
     '''
-    
+    wb = op.new_book('w',lname="RAS Imports")
+    wks = wb[0]
+
     op.lt_exec(labtalk_cmd)
-    
-    # Declare worksheet
-    wks = op.find_sheet()
+
+    # ------------------------------------------------------------
+    # Extract wavelength from each file and write to user parameter
+    # ------------------------------------------------------------
+
+    # 1) Get the list of imported file paths from fname$
+    file_paths = op.get_lt_str('fname$').split("\r\n")
+    file_paths = [p for p in file_paths if p.strip()]  # clean empties
+
+    # 2) Get the user parameter row index
+    wl_row = wks._user_param_row("Wavelength (Å)", True)
+
+    # 3) Iterate through files in order
+    for i, path in enumerate(file_paths):
+        wl_value = None
+
+        # Read header and extract wavelength
+        try:
+            with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                for line in f:
+                    if "HW_XG_WAVE_LENGTH_ALPHA1" in line:
+                        # Extract the number inside quotes
+                        parts = line.split('"')
+                        if len(parts) >= 2:
+                            wl_value = float(parts[1])
+                        break
+        except Exception as e:
+            print(f"Failed to read wavelength from {path}: {e}")
+
+        # 4) Write wavelength into the correct 2θ column
+        if wl_value is not None:
+            two_theta_col = 2*i  # 0-based column index for 2θ
+            wks.set_label(two_theta_col,wl_value,"Wavelength (Å)")
     
     # Hide Group and Method
     for uParam in ("Group Info","Method"):
