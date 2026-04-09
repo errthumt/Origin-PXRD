@@ -76,6 +76,9 @@ wks.labels(-O)
 op.set_lt_str("path$",f"{output_folder}\\")
 op.lt_exec(import_lt)
 
+wks._user_param_row("Wavelength (Å)",True)
+wks.set_label(0,0.11595,"Wavelength (Å)")
+
 ncols = wks.cols
 maxInt = 0
 for col in range(ncols-1,0,-1):
