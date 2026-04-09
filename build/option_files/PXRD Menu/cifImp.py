@@ -276,7 +276,7 @@ def get_custom_parameters():
     DEFAULT_WEIGHTS     = [1.0,    0.5]
     DEFAULT_TMIN        = 3.0
     DEFAULT_TMAX        = 90.0
-    DEFAULT_STEP        = 0.01
+    DEFAULT_STEP        = 0.02
     DEFAULT_U           = 0.0
     DEFAULT_V           = 0.0
     DEFAULT_W           = 0.012
