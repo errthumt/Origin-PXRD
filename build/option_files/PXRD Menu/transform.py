@@ -13,75 +13,22 @@ def col_index_to_letter(idx):
     return letters
 
 
-# ------------------------------------------------------------
-# GUI: USER SELECTS COLUMNS FROM A TABLE
-# ------------------------------------------------------------
 def gui_select_columns(wks):
     """
-    Opens a modal, Origin-safe Tkinter window showing:
-    Index | Long Name | Comment | SourceFile
-    Returns a list of selected column indices.
+    Replacement for the old Tkinter GUI.
+    Now returns the list of 0-based column indices
+    that the user has selected in the active worksheet.
     """
-
-    longnames = wks.get_labels('L')
-    comments  = wks.get_labels('C')
-
-    try:
-        sourcefiles = wks.get_labels('SourceFile')
-    except:
-        sourcefiles = [""] * wks.cols
 
     selected = []
 
-    # --- Origin-safe Tk root ---
-    root = tk.Tk()
-    root.withdraw()  # hide root
-
-    # --- Modal dialog ---
-    win = tk.Toplevel(root)
-    win.title("Select Columns to Rescale")
-    win.geometry("700x400")
-    win.grab_set()  # modal
-
-    frame = ttk.Frame(win)
-    frame.pack(fill="both", expand=True, padx=10, pady=10)
-
-    cols = ("Index", "Long Name", "Comment", "SourceFile")
-    tree = ttk.Treeview(frame, columns=cols, show="headings", selectmode="extended")
-
-    for c in cols:
-        tree.heading(c, text=c)
-        tree.column(c, width=150)
-
-    # Populate rows
-    for i in range(wks.cols):
-        tree.insert("", "end", values=(
-            i,
-            longnames[i] or "",
-            comments[i] or "",
-            sourcefiles[i] or ""
-        ))
-
-    tree.pack(fill="both", expand=True)
-
-    # Confirm button
-    def confirm():
-        nonlocal selected
-        items = tree.selection()
-        selected = [int(tree.item(i, "values")[0]) for i in items]
-        win.destroy()
-
-    ttk.Button(win, text="OK", command=confirm).pack(pady=10)
-
-    # --- Modal wait (NO mainloop!) ---
-    win.wait_window()
-
-    # --- Clean shutdown (critical in Origin) ---
-    root.quit()
-    root.destroy()
+    # Origin uses 1-based column indices
+    for i in range(1, wks.cols + 1):
+        is_selected = op.lt_int(f"wks.isColSel({i})")
+        if is_selected == 1:
+            selected.append(i - 1)  # convert to 0-based
 
     return selected
-
 
 
 # ------------------------------------------------------------
