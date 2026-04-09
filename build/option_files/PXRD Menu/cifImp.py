@@ -270,7 +270,7 @@ def get_default_parameters():
         "axial_S": 0.015,
     }
 
-def get_custom_parameters(start_dir):
+def get_custom_parameters():
     # Default PXRD parameters
     DEFAULT_WAVELENGTHS = [1.5406, 1.54439]
     DEFAULT_WEIGHTS     = [1.0,    0.5]
@@ -415,13 +415,10 @@ def get_custom_parameters(start_dir):
 
 
 def get_parameters(mode):
-    proj_path = op.path('p')
-    start_dir = os.path.dirname(proj_path) if proj_path and os.path.isfile(proj_path) else os.getcwd()
-
     if mode.lower() == "cuka":
         return get_default_parameters()
     else:
-        return get_custom_parameters(start_dir)
+        return get_custom_parameters()
 
 
 
