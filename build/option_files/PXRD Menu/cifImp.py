@@ -261,7 +261,7 @@ def get_default_parameters():
         "fe_wavelengths": [1.5406, 1.54439],
         "fe_weights": [1.0, 0.5],
         "two_theta_range": (3.0, 90.0),
-        "step": 0.01,
+        "step": 0.02,
         "U": 0.0,
         "V": 0.0,
         "W": 0.012,
