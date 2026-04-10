@@ -1,4 +1,6 @@
 import warnings
+
+# Axes3D is not included with Origin's native matplotlib, but it is not necessary for this package
 warnings.filterwarnings(
     "ignore",
     message="Unable to import Axes3D",
@@ -9,16 +11,23 @@ warnings.filterwarnings(
 
 import tkinter as tk
 root = tk.Tk()
-root.withdraw()   # Must be created BEFORE importing originpro
+root.withdraw() # Origin is picky about when to display tk windows.
 
 import os
 import sys
-import originpro as op
+import originpro as op #type: ignore
 
-import numpy as np
-from pymatgen.core import Structure
-from pymatgen.analysis.diffraction.xrd import XRDCalculator
+import numpy as np #type: ignore
+from pymatgen.core import Structure #type: ignore
+from pymatgen.analysis.diffraction.xrd import XRDCalculator #type: ignore
 
+import math
+
+# Extra dampening to match VESTA's peak heights
+_B_EXTRA = 0.4
+
+# Fix column headers, normalize columns, remove function row.
+# Executed as a labtalk command near the end of this script.
 LABTALK_CLEANUP = r'''
 @SWS = 0;
 
@@ -48,9 +57,8 @@ wks.labels(-O);
 '''
 
 
-# ----------------------------------------------------------------------
-#  ATOMIC SCATTERING FACTORS (f0 + f' + f'')
-# ----------------------------------------------------------------------
+
+#  Atomic Scattering Factors (f0 + f' + f'')
 ANOMALOUS = {
     "H":  {"f1": 0.000, "f2": 0.000},
     "He": {"f1": 0.000, "f2": 0.000},
@@ -146,15 +154,15 @@ ANOMALOUS = {
     "U":  {"f1": -13.400, "f2": 12.400},
 }
 
+# Gets and unpacks scattering factors for a given element. Returns 0's if not found.
 def fprime_fdoubleprime(element):
     data = ANOMALOUS.get(element)
     if data:
         return data["f1"], data["f2"]
+    print(f'WARNING: No scattering factors tabulated for element "{element}". Returned as zero')
     return 0.0, 0.0
 
-# ----------------------------------------------------------------------
-#  TCH PSEUDO-VOIGT
-# ----------------------------------------------------------------------
+#  TCH pseudo-approximation of Voight peak shape
 def tch_pseudo_voigt(two_theta, t0, H_G, H_L):
     H = (H_G**5 + 2.69269*H_G**4*H_L + 2.42843*H_G**3*H_L**2 +
          4.47163*H_G**2*H_L**3 + 0.07842*H_G*H_L**4 + H_L**5)**0.2
@@ -172,9 +180,7 @@ def tch_pseudo_voigt(two_theta, t0, H_G, H_L):
     pv /= pv.sum() + 1e-12
     return pv
 
-# ----------------------------------------------------------------------
-#  FCJ ASYMMETRY
-# ----------------------------------------------------------------------
+#  Gaussian approximation of Finger-Cox-Jephcoat axial divergence asymmetry (peak tailing)
 def fcj_asymmetry(two_theta, t0, H, S=0.015):
     delta = S * np.tan(np.radians(t0/2))
     shift = delta * (two_theta - t0)
@@ -196,8 +202,10 @@ def calculate_pattern_vesta_exact(
     Y=0.0,
     axial_S=0.015
 ):
+    # Read CIF file using pymatgen's Structure module
     structure = Structure.from_file(cif_path)
 
+    # Build list of B values for each atom site
     atom_B = []
     pi2 = np.pi**2
     for site in structure.sites:
@@ -212,50 +220,68 @@ def calculate_pattern_vesta_exact(
             B = 0.0
         atom_B.append(B)
 
+    # Generate 2theta column and empty intensity column of same length.
     tmin, tmax = two_theta_range
     two_theta = np.arange(tmin, tmax + step, step)
     intensity = np.zeros_like(two_theta)
 
+    # Generate intensity as the sum of all fe intensities by weights.
     for wl, wt in zip(fe_wavelengths, fe_weights):
+        # Basic reflections calculated using pymatgen's XRDCalculator.get_pattern()
         xrd = XRDCalculator(wavelength=wl)
         pattern = xrd.get_pattern(structure, two_theta_range=two_theta_range)
 
+        # Modify reflections with scattering factors
         for idx, (t0, I0) in enumerate(zip(pattern.x, pattern.y)):
+            # Useful constants
             theta = np.radians(t0 / 2)
             sin_th = np.sin(theta)
             cos_th = np.cos(theta)
 
-            hkl = pattern.hkls[idx][0]["hkl"]
+            # Get atoms
             atoms = structure.sites
 
+            ''' No longer in use: anomalous scattering correction
+            # Get hkl's
+            hkl = pattern.hkls[idx][0]["hkl"]
+
+            # Start with base scattering factors.
             fscale = 0.0
             for atom, B in zip(atoms, atom_B):
                 f1, f2 = fprime_fdoubleprime(atom.species_string)
                 fscale += (f1 + f2)
-            # optional: I0 *= (1 + fscale * 0.02)
-
+            '''
+                
+            # Useful constants
             s = sin_th / wl
             pi2 = np.pi**2
-            B_extra = 0.4
 
+            # Extra dampening defined at head of this file.
+            B_extra = _B_EXTRA
+
+            # Debye-Waller damping by B-factors
             DW_atoms = np.mean([np.exp(-2 * pi2 * B * s**2) for B in atom_B])
+            # Fudge factor to match experimental/VESTA heights.
             DW_extra = np.exp(-2 * pi2 * B_extra * s**2)
 
+            # Modify base intensity with damping
             I0 *= DW_atoms * DW_extra
 
+            # Caglioti broadening: Gaussian (H_G) and Lorentzian (HL) hybrid
             H_G = np.sqrt(U*np.tan(theta)**2 + V*np.tan(theta) + W)
             H_L = X*np.tan(theta) + Y/np.cos(theta)
 
+            # Each peak is calculated indepedently as a function of all 2theta values.
             pv = tch_pseudo_voigt(two_theta, t0, H_G, H_L)
             asym = fcj_asymmetry(two_theta, t0, H_G, S=axial_S)
 
+            # Peak is a normalized Voight-shape, with tailing added, multiplied by intensity and wavelength weight.
+            # Each individual peak is constructed as a function of all 2theta values. They are all overlaid onto the intensity series.
             intensity += wt * I0 * pv * asym
 
+    # Returns series, not indiviual values
     return two_theta, intensity
 
-# ----------------------------------------------------------------------
-#  PARAMETER HANDLING
-# ----------------------------------------------------------------------
 def get_default_parameters():
     return {
         "fe_wavelengths": [1.5406, 1.54439],
@@ -270,7 +296,33 @@ def get_default_parameters():
         "axial_S": 0.015,
     }
 
-import math
+parameter_presets = {
+    "CuKa": {
+        "fe_wavelengths": [1.5406, 1.54439],
+        "fe_weights": [1.0, 0.5],
+        "two_theta_range": (3.0, 90.0),
+        "step": 0.02,
+        "U": 0.0,
+        "V": 0.0,
+        "W": 0.012,
+        "X": 0.0,
+        "Y": 0.0,
+        "axial_S": 0.015,
+    },
+    # Quick-refined in FullProf
+    "11-ID-C March 2026": {
+        "fe_wavelengths": [0.11595],
+        "fe_weights": [1.0],
+        "two_theta_range": (0.15, 7.6275),
+        "step": 0.0025,
+        "U": 0.125,
+        "V": 0,
+        "W": 0.0004,
+        "X": 0,
+        "Y": 0,
+        "axial_S": .015,
+    }
+}
 
 def get_custom_parameters():
     # Default PXRD parameters
@@ -289,11 +341,9 @@ def get_custom_parameters():
     win = tk.Toplevel()
     win.title("CIF Import Parameters")
 
-    # -----------------------------
-    # MODE TOGGLE (2θ <-> Q)
-    # -----------------------------
-    mode_var = tk.StringVar(value="2theta")  # "2theta" or "q"
 
+    # Mode toggle (2θ <-> Q)
+    mode_var = tk.StringVar(value="2theta")  # "2theta" or "q"
     mode_label = tk.Label(win, text="Mode: 2θ", font=("Segoe UI", 9, "bold"))
     mode_label.grid(row=2, column=0, sticky="w", padx=(0, 5))
 
@@ -337,9 +387,7 @@ def get_custom_parameters():
     mode_button = tk.Button(win, text="Switch to Q-space", width=14, command=toggle_mode)
     mode_button.grid(row=3, column=0, sticky="w", padx=(0, 5))
 
-    # -----------------------------
-    # WAVELENGTH SECTION
-    # -----------------------------
+    # Update wavelengths on toggle
     def update_wavelength_fields(*args):
         for widget in wl_frame.winfo_children():
             widget.destroy()
@@ -374,7 +422,7 @@ def get_custom_parameters():
             wt_entries.append(wt)
 
     def submit():
-        # Always return 2θ values
+        # Always return 2θ values. Toggle if necessary
         if mode_var.get() == "q":
             convert_q_to_2theta()
             mode_var.set("2theta")
@@ -395,9 +443,7 @@ def get_custom_parameters():
     fe_count_var.trace_add("write", update_wavelength_fields)
     update_wavelength_fields()
 
-    # -----------------------------
-    # BASIC PARAMETERS
-    # -----------------------------
+    # Basic Parameters
     tk.Label(win, text="Min:").grid(row=2, column=1, sticky="e")
     tmin_var = tk.DoubleVar(value=DEFAULT_TMIN)
     tk.Entry(win, textvariable=tmin_var).grid(row=2, column=2)
@@ -410,9 +456,7 @@ def get_custom_parameters():
     step_var = tk.DoubleVar(value=DEFAULT_STEP)
     tk.Entry(win, textvariable=step_var).grid(row=4, column=2)
 
-    # -----------------------------
-    # ADVANCED PARAMETERS (HIDDEN)
-    # -----------------------------
+    # Advanced parameters (hidden)
     advanced_frame = tk.Frame(win)
     advanced_visible = False
 
@@ -442,9 +486,7 @@ def get_custom_parameters():
     U_var, V_var, W_var, X_var, Y_var, S_var = vars_list
     advanced_frame.grid_remove()
 
-    # -----------------------------
-    # OK BUTTON
-    # -----------------------------
+    # OK Button
     tk.Button(win, text="OK", command=submit).grid(row=7, column=1, pady=10)
 
     win.grab_set()
@@ -463,41 +505,28 @@ def get_custom_parameters():
         "axial_S": S_var.get(),
     }
 
-
 def get_parameters(mode):
-    if mode.lower() == "cuka":
-        return get_default_parameters()
+    params = parameter_presets.get(mode)
+    if params:
+        return params
     else:
         return get_custom_parameters()
 
-
-
-
-# ----------------------------------------------------------------------
-#  HIGH-LEVEL IMPORT: FROM LIST OF FILES
-# ----------------------------------------------------------------------
+#  Major import function
 def import_cif_files(file_list, wavelength_mode):
-    #print("DEBUG: Entered import_cif_files()")
-    #print("DEBUG: file_list =", file_list)
-    #print("DEBUG: wavelength_mode =", wavelength_mode)
-
+    # Get parameters, unpack wavelength
     params = get_parameters(wavelength_mode)
-    #print("DEBUG: Parameters loaded:", params)
-
     wavelength = params["fe_wavelengths"][0]
 
+    # Create new book
     wb = op.new_book('w', lname='CIF Imports')
-    #print("DEBUG: Workbook created")
-
     wks = wb[0]
-    #print("DEBUG: Worksheet created")
 
+    # Start with no existing 2theta column, starting with first column.
     first_two_theta = None
     col_index = 0
 
     for cif_path in sorted(file_list):
-        #print("DEBUG: Processing file:", cif_path)
-
         two_theta, intensity = calculate_pattern_vesta_exact(
             cif_path,
             fe_wavelengths=params["fe_wavelengths"],
@@ -511,37 +540,34 @@ def import_cif_files(file_list, wavelength_mode):
             Y=params["Y"],
             axial_S=params["axial_S"],
         )
-        #print("DEBUG: Pattern calculated for:", cif_path)
 
+        # Only write 2theta column once.
         if first_two_theta is None:
-            #print("DEBUG: Writing 2θ column")
             first_two_theta = two_theta
             wks.from_list(col_index, first_two_theta, lname='2Theta')
             col_index += 1
 
-        #print("DEBUG: Writing intensity column for:", cif_path)
+        # Write intensity for each CIF
         sample_name = os.path.splitext(os.path.basename(cif_path))[0]
         wks.from_list(col_index, intensity, lname=sample_name)
         col_index += 1
 
-    #print("DEBUG: Running LabTalk cleanup")
+    # Labtalk cleanup
     wb.activate()
     wks.activate()
     op.lt_exec(LABTALK_CLEANUP)
     
+    # Create wavelength row expected by Q-space menu
     wks._user_param_row("Wavelength (Å)",True)
     wks.set_label(0,wavelength, "Wavelength (Å)")
 
+    # Hide unwanted parameters.
     for uParam in ("Group Info","Method"):
         idx = wks._user_param_row(uParam,True) + 1
         op.lt_exec(f"wks.labels(#D{idx});")
         
-    #print("DEBUG: LabTalk cleanup finished")
 
-# ----------------------------------------------------------------------
-#  DISPATCHER (LABTALK ARGUMENTS)
-# ----------------------------------------------------------------------
-
+# Dispatch with extra labtalk argument for parameter mode.
 if __name__ == "__main__":
     # Read the LabTalk variable fname$
     raw_list = op.get_lt_str('fname$')
