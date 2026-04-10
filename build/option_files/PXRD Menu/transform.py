@@ -57,28 +57,41 @@ def collect_applicable_columns(mode="au"):
 def add_columns(col_indices, transform):
     wks = op.find_sheet()
 
-    # -------------------------------
-    # TRANSFORM DISPATCH TABLE
-    # -------------------------------
-    def scale_setup(wks):
+    # Setup large-scale method for rescale transformation.
+    def wks_scale_setup(wks):
         idx = wks._user_param_row('ScaleFactor', True)
         return idx + 1  # D-row index
+    
+    def col_scale_setup(wks,col):
+        wks.set_label(col,0.5,'ScaleFactor')
+        return None
 
+    # Transforms have a setup routine, a longname template, comment template and a formula row template
     TRANSFORMS = {
+        # "transform_name": {
+        #     "setup": lambda w: setup routine in terms of target worksheet w. Returns index for applicable user parameter row
+        #     "col_setup": lambda w,c: setup routine in terms of tartget worksheet w and column col.
+        #     "longname": lambda ln: returns transformed column longname in terms of original longname ln
+        #     "comment": lambda c: returns transformed column comment in terms of original comment c
+        #     "formula": lambda orig, new, d_row: returns labtalk formula text in terms of original and new col indices and d_row returned by setup routine.
+        # },
         "scale": {
-            "setup": scale_setup,
+            "setup": wks_scale_setup,
+            "col_setup": col_scale_setup,
             "longname": lambda ln: ln,
             "comment": lambda c: f"{c}\n(Rescaled)" if c else "(Rescaled)",
             "formula": lambda orig, new, d_row: f"{new}[D{d_row}] * {orig}",
         },
         "square": {
             "setup": lambda w: None,
+            "col_setup": lambda w,col: None,
             "longname": lambda ln: f"{ln}^2" if ln else "Int^2",
             "comment": lambda c: f"{c}\n(Squared)" if c else "(Squared)",
             "formula": lambda orig, new, d_row: f"{orig}^2",
         },
         "sqrt": {
             "setup": lambda w: None,
+            "col_setup": lambda w,col: None,
             "longname": lambda ln: f"sqrt[{ln}]" if ln else "sqrt[Int]",
             "comment": lambda c: f"{c}\n(Sqrt)" if c else "(Sqrt)",
             "formula": lambda orig, new, d_row: f"sqrt({orig})",
@@ -90,76 +103,69 @@ def add_columns(col_indices, transform):
 
     T = TRANSFORMS[transform]
 
-    # Run setup hook (only scale uses it)
+    # Run worksheet-scoped setup hook
     d_row = T["setup"](wks)
 
-    # -------------------------------
-    # LABELS
-    # -------------------------------
+    # Get inherited labels
     units = wks.get_labels('U')
     longnames = wks.get_labels('L')
     comments = wks.get_labels('C')
-
     try:
         sourcefiles = wks.get_labels('SourceFile')
     except:
         sourcefiles = [""] * wks.cols
 
-    # -------------------------------
-    # MAIN LOOP
-    # -------------------------------
+    # main loop
     for col in reversed(col_indices):
 
-        # 1) Add new column at end
+        # add new column at end
         old_ncols = wks.cols
         wks.cols = old_ncols + 1
 
+        # Find new column at end, define intended location for that column
         new_col_index = old_ncols
         target_index = col + 1
 
-        # 2) Move new column next to original
+        # Move new column next to source column
         n = target_index - new_col_index
         wks.move_cols(n, new_col_index, 1)
 
+        # New col is now at intended location
         new_col = target_index
 
-        # 3) Long Name
+        # Set long name with transform routine
         orig_ln = longnames[col] or ""
         new_ln = T["longname"](orig_ln)
         wks.set_label(new_col, new_ln, 'L')
 
-        # 4) Units
+        # Inherit units (usually AU)
         if units[col]:
             wks.set_label(new_col, units[col], 'U')
 
-        # 5) SourceFile
+        # Inherit sourcefile
         try:
             sourcefiles = wks.get_labels('SourceFile')
         except:
             sourcefiles = [""] * wks.cols
-
         if len(sourcefiles) < wks.cols:
             sourcefiles += [""] * (wks.cols - len(sourcefiles))
-
         sourcefiles[new_col] = sourcefiles[col]
         wks.set_label(new_col, sourcefiles[new_col], 'SourceFile')
 
-        # 6) Comment
+        # Set comment with transform routine
         base_comment = comments[col] or ""
         new_comment = T["comment"](base_comment)
         wks.set_label(new_col, new_comment, 'C')
 
-        # 7) Column letters
+        # Identify column letters for formula
         orig_letter = col_index_to_letter(col)
         new_letter  = col_index_to_letter(new_col)
 
-        # 8) Formula
+        # Set formula with transform routine
         formula_text = T["formula"](orig_letter, new_letter, d_row)
 
-        # scale requires writing the scale row
-        if transform == "scale":
-            lt_set_scale = f"wcol({new_col+1})[D{d_row}] = 0.5;"
-            op.lt_exec(lt_set_scale)
+        # Perform colum-scoped setup hook
+        T["col_setup"](wks, new_col)
 
         wks.set_formula(new_col, formula_text)
 
