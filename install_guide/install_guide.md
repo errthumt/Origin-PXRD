@@ -53,25 +53,55 @@
 ---
 5. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
     * The cleanup window may ask you to close all copies of Origin from task manager. This is because Origin keeps recent files open in the background and prevents their deletion, including some installation files.
+
         ![cleanup cmd window](/install_guide/images/cleanup_cmd.png)
 ---
-5. Review the [instructions for use](/README.md#instructions-for-use) for further guidance.
+6. Review the [instructions for use](/README.md#instructions-for-use) for further guidance.
 
 ## Manual Install (Origin 2022-2024)
 **Disclaimer:** This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later. 
 1. Locate your Origin User Files Folder.
-   * In Origin 2024 or later, your user files folder can be found from inside Origin: Help > Open Folder > User Files Folder
+    * In Origin 2024 or later, your user files folder can be found from inside Origin: Help > Open Folder > User Files Folder
+
+        ![find user files folder](/install_guide/images/find_uff.png)
+---
 2. Download [the most recent zip release](/manual_install) and extract it to an easy-to-find location
+
+    ![zip release page](/install_guide/images/zip_page.png)
+
+    ![download zip file](/install_guide/images/download_zip.png)
+
+    ![extract zip file](/install_guide/images/extract_zip.png)
+---
 3. For each option that you want to install, copy the entire contents of the corresponding option folder into the user files folder.
     * For example: If you want to install the PXRD Menu, open the PXRD Menu folder and copy cifImp.py, cifPicker.py, PXRD.omc, etc... directly into the user file folder
+
     * Some option folders contain additional folders inside them. The folder itself needs to be put inside the user files folder, then the files inside stay inside that folder. If the folder already exists in the user files folder, make sure the new files are inside that folder after copying.
       - Example: The In-Situ Beamline option has a folder inside called Filters. This matches the Filters folder inside the User Files Folder. The *.oif files in that folder need to end up inside User Files/Filters/.
+
+        
+        | Copy files from option folder | Paste them into the user files folder |
+        | :---: | :---: |
+        | You must do this for every option folder you want to install | If you paste a folder that already exists, it should automatically "merge" the two folders. |
+        | ![copy option files](/install_guide/images/copy_option.png) | ![paste option files](/install_guide/images/paste_option.png) |
+---
 4. In Origin, open the script window with: Window > Script Window
+
+    ![Open script window](/install_guide/images/open_script_window.png)
+---
 5. Copy/Paste the ENTIRE command below as one line into the script window:
     ```
     pip -chk numpy bibtexparser matplotlib monty narwhals orjson palettable pandas plotly pymatgen requests scipy spglib sympy tabulate tqdm uncertainties
     ```
 7. Ensure that your text cursor is at the end of the pasted line (not on a new line) and press \<Enter\>
+
+    ![execute labtalk command](/install_guide/images/execute_lab_talk.png)
+---
 8. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
+
+    ![package install prompt](/install_guide/images/package_prompt.png)
+
+    ![package installation window](/install_guide/images/package_install.png)
+---
 9. After the python packages have been installed (CMD line should end with "Press any key to continue..."), close and restart Origin with a fresh project.
 10. Review the [instructions for use](/README.md#instructions-for-use) for further guidance.
