@@ -3,12 +3,18 @@ A plugin for importing experimental patterns and calculating theoretical pattern
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
 
-[Jump to Release Notes](#release-notes)
+## Jump to:
+* [Automatic Install (Origin 2025 or later)](#automatic-install-origin-2025-or-later)
+* [Manual Install (Origin 2022-2024)](#manual-install-origin-2022-2024)
+* [Instructions for Use](#instructions-for-use)
+* [Release Notes](#release-notes)
 
-**Have a bug to report or feature to request? Use one of the links below (for Github accounts only) or [use this form](https://forms.office.com/r/9bfw1zLiDh)**
-* [Create a bug report](https://github.com/errthumt/Origin-PXRD/issues/new?template=bug_report.md)
-* [Request a feature](https://github.com/errthumt/Origin-PXRD/issues/new?template=feature_request.md)
-* [Other feedback](https://github.com/errthumt/Origin-PXRD/issues/new)
+## Bug reports or Feature Requests
+* <ins>**No GitHub Account?**</ins> [use this form](https://forms.office.com/r/9bfw1zLiDh)
+* <ins>**If you have a GitHub account:**</ins>
+  * [Create a bug report](https://github.com/errthumt/Origin-PXRD/issues/new?template=bug_report.md)
+  * [Request a feature](https://github.com/errthumt/Origin-PXRD/issues/new?template=feature_request.md)
+  * [Other feedback](https://github.com/errthumt/Origin-PXRD/issues/new)
 
 # Installation Instructions
 
