@@ -4,11 +4,10 @@ import originpro as op
 import os
 import sys
 
-# ------------------------------------------------------------
-# 1) Import RAS files from a list of file paths
-# ------------------------------------------------------------
+# Import ras_files contained in labtalk fname$ variable
 def import_ras_files():
-
+    # Imports using User Files\Filters\rasImp.oif
+    # Cleans up names and units
     labtalk_cmd = fr'''
     impFile filtername:="rasImp.oif" location:=user;
     page.longname$ = "RAS Imports";
@@ -29,50 +28,52 @@ def import_ras_files():
     // Hide Formula Row
     wks.labels(-O);
     '''
+
+    # Create new book, target worksheet
     wb = op.new_book('w',lname="RAS Imports")
     wks = wb[0]
 
+    # Import
     op.lt_exec(labtalk_cmd)
 
-    # ------------------------------------------------------------
-    # Extract wavelength from each file and write to user parameter
-    # ------------------------------------------------------------
-
-    # 1) Get the list of imported file paths from fname$
+    # Get the list of imported file paths from fname$
     file_paths = op.get_lt_str('fname$').split("\r\n")
     file_paths = [p for p in file_paths if p.strip()]  # clean empties
 
-    # 2) Get the user parameter row index
-    wl_row = wks._user_param_row("Wavelength (Å)", True)
+    # Init wavelength row if it doesn't exist
+    wks._user_param_row("Wavelength (Å)", True)
 
-    # 3) Iterate through files in order
+    # Iterate through files in same order as fname$
     for i, path in enumerate(file_paths):
         wl_value = None
 
-        # Read header and extract wavelength
+        # Read Rigaku data header and extract wavelength
         try:
             with open(path, "r", encoding="utf-8", errors="ignore") as f:
                 for line in f:
                     if "HW_XG_WAVE_LENGTH_ALPHA1" in line:
+                        # Wavelength is on line: *HW_XG_WAVE_LENGTH_ALPHA1 "1.2345"
                         # Extract the number inside quotes
                         parts = line.split('"')
                         if len(parts) >= 2:
                             wl_value = float(parts[1])
                         break
+        # Skip not-found wavelengths, but warn user in script window.
         except Exception as e:
-            print(f"Failed to read wavelength from {path}: {e}")
+            print(f"WARNING: Failed to read wavelength from {path}: {e}")
 
-        # 4) Write wavelength into the correct 2θ column
+        # Write wavelength into the correct 2θ column
         if wl_value is not None:
+            # 2θ columns are every odd column in order of fname$
             two_theta_col = 2*i  # 0-based column index for 2θ
             wks.set_label(two_theta_col,wl_value,"Wavelength (Å)")
     
-    # Hide Group and Method
+    # Hide unwanted parameter rows
     for uParam in ("Group Info","Method"):
         idx = wks._user_param_row(uParam,True) + 1
         op.lt_exec(f"wks.labels(#D{idx});")
 
-    # Clean SourceFile label row to contain only filenames
+    # Clean SourceFile label row to contain only filenames (instead of full path)
     try:
         sourcefiles = wks.get_labels('SourceFile')
         cleaned = [os.path.basename(s) if s else "" for s in sourcefiles]
@@ -84,13 +85,11 @@ def import_ras_files():
     op.lt_exec('type -b "RAS import complete.";')
 
 
-# ------------------------------------------------------------
-# 2) Folder selection mode
-# ------------------------------------------------------------
+
+# Select folder containing all desired files. Uses Origin's native dlfPath dialog.
 def import_ras_from_folder():
-
+    # dlgPath stores folder path under path$. findFiles finds all matching files in path$ and stores in fname$
     folder_path = op.lt_exec('dlgPath init:=%X title:="Select folder containing RAS files"; findFiles ext:=*.ras;')
-
     if not folder_path:
         op.lt_exec('type -b "No folder selected.";')
         return
@@ -104,11 +103,10 @@ def import_ras_from_folder():
     import_ras_files()
 
 
-# ------------------------------------------------------------
-# 3) Multi-folder, multi-file selection dialog
-# ------------------------------------------------------------
+# Select individual files. Uses Origin's native dlfFile dialo
 def import_ras_from_file_dialog():
     file_select = op.lt_exec('dlgFile init:=%X multi:=1 title:="Select RAS files for import" group:=*.ras')
+    # dlgFile automatically stores filenames under global variable fname$
     file_paths = op.get_lt_str('fname$')
     if not file_select or not file_paths:
         op.lt_exec('type -b "No files selected"')
@@ -117,9 +115,7 @@ def import_ras_from_file_dialog():
 
 
 
-# ------------------------------------------------------------
-# 4) Dispatch based on sys.argv (LabTalk argument)
-# ------------------------------------------------------------
+# Dispatch based on labtalk arguments.
 if __name__ == "__main__":
     mode = sys.argv[1].lower() if len(sys.argv) > 1 else ""
 

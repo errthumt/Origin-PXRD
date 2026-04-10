@@ -186,10 +186,8 @@ def fcj_asymmetry(two_theta, t0, H, S=0.015):
     shift = delta * (two_theta - t0)
     return np.exp(-shift**2 / (2*H**2))
 
-# ----------------------------------------------------------------------
-#  CORE DIFFRACTION ENGINE (from calculate_pattern_vesta_exact)
-# ----------------------------------------------------------------------
-def calculate_pattern_vesta_exact(
+# Core diffraction engine
+def calculate_pattern(
     cif_path,
     fe_wavelengths,
     fe_weights,
@@ -527,7 +525,7 @@ def import_cif_files(file_list, wavelength_mode):
     col_index = 0
 
     for cif_path in sorted(file_list):
-        two_theta, intensity = calculate_pattern_vesta_exact(
+        two_theta, intensity = calculate_pattern(
             cif_path,
             fe_wavelengths=params["fe_wavelengths"],
             fe_weights=params["fe_weights"],

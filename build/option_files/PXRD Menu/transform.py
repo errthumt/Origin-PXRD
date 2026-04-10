@@ -1,9 +1,7 @@
 import originpro as op
-import tkinter as tk
-from tkinter import ttk
 import sys
 
-# --- Helper: Convert 0-based column index to Origin/Excel-style letters ---
+# Column formulas require letters instead of column indices
 def col_index_to_letter(idx):
     letters = ""
     idx += 1  # convert to 1-based
@@ -12,7 +10,7 @@ def col_index_to_letter(idx):
         letters = chr(65 + rem) + letters
     return letters
 
-
+# Decrepit from old use of tkinter UI. May be refactored in future.
 def gui_select_columns(wks):
     """
     Replacement for the old Tkinter GUI.
@@ -31,14 +29,13 @@ def gui_select_columns(wks):
     return selected
 
 
-# ------------------------------------------------------------
-# 1) COLLECT APPLICABLE COLUMNS BASED ON MODE
-# ------------------------------------------------------------
+# Mark all desired columns based on mode
 def collect_applicable_columns(mode="au"):
     """
     mode = "au"  → return all columns with Units == "AU"
-    mode = "gui" → open GUI and let user choose columns
+    mode = "gui" → return all columns selected in Origin
     """
+    # target active sheet
     wks = op.find_sheet()
 
     if mode.lower() == "gui":
@@ -56,15 +53,14 @@ def collect_applicable_columns(mode="au"):
     return applicable
 
 
-# ------------------------------------------------------------
-# 2) ADD NEW RESCALED COLUMNS FOR EACH INDEX
-# ------------------------------------------------------------
+# Adds transformed columns. NEEDS REFACTORED.
 def add_columns(col_indices, transform):
     wks = op.find_sheet()
 
     # Create or get the ScaleFactor user parameter row
-    scaleIndex = wks._user_param_row('ScaleFactor', True)
-    d_row = scaleIndex + 1
+    if transform == "scale":
+        scaleIndex = wks._user_param_row('ScaleFactor', True)
+        d_row = scaleIndex + 1
 
     units = wks.get_labels('U')
     longnames = wks.get_labels('L')
@@ -178,9 +174,7 @@ def add_columns(col_indices, transform):
     op.lt_exec('type -b "Transformed Columns Successfully";')
 
 
-# ------------------------------------------------------------
-# MAIN ENTRY POINT
-# ------------------------------------------------------------
+# Dispatch based on labtalk arguments.
 if __name__ == "__main__":
     mode = "au"
     transform = "scale"
