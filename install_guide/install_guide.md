@@ -1,4 +1,4 @@
-# Full Installation Guide (with screenshots)
+# Origin-PXRD: Full Installation Guide (with screenshots)
 
 # Before Installing:
 * Identify your version of Origin.

@@ -17,6 +17,7 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
   * [Other feedback](https://github.com/errthumt/Origin-PXRD/issues/new)
 
 # Installation Instructions
+A full installation guide with screenshots can be found [here](/install_guide/install_guide.md). A PDF version can be found [here](/install_guide/install_guide.pdf)
 
 ## Automatic Install (Origin 2025 or later):
 1. Download and run [the most recent installer](installer/release). It will open the installation project inside Origin.
