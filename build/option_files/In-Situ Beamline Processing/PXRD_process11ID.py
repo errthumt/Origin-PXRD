@@ -93,11 +93,11 @@ wks = wb[0]
 op.set_lt_str("path$",f"{output_folder}\\")
 
 # Labtalk to import all .xye files. 
-# Data filter 11-ID-2_mar2026.oif automatically extracts temperature from first line into "Temp" row.
+# Data filter PXRD_11-ID-C_mar2026.oif automatically extracts temperature from first line into "Temp" row.
 import_lt = f'''
 cd path$;
 findFiles ext:=*.xye;
-impFile filtername:="11-ID-2_mar2026.oif" location:=user;
+impFile filtername:="PXRD_11-ID-C_mar2026.oif" location:=user;
 wks.labels(-O)
 '''
 op.lt_exec(import_lt)
