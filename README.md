@@ -71,6 +71,7 @@ You may need to switch GUI mode.
   - Step Size
   - ADVANCED PARAMETERS: U, V, W, X, Y, and Axial S
   - Other presets: Additional presets can be added easily. Reach out to Travis if there is an import setting that you anticipate using frequently. It will be added to the next installer version.
+* <ins>**11-ID-C March 2026:**</ins> Calculates powder patterns with preset parameters refined to match 11-ID-C.
 ---
   ### When importing RAS or CIF files:
   - <ins>**Select Files:**</ins> Opens a window to add/remove desired files. After all files have been added to the window, select "Import" or "OK" to proceed
@@ -78,20 +79,22 @@ You may need to switch GUI mode.
   - <ins>**Select Folder:**</ins> Opens a window to select a folder containing all desired files. Origin will import every file in the selected folder that matches the intended filetype.
 ---
 <ins>**Transform Columns:**</ins> These options only appear when a worksheet is open in Origin
-* <ins>**Add Q Columns:**</ins> Detects any column in the current worksheet with "deg" as units. Prompts the user for wavelength, then adds a new column in Q space next to each column.
+* <ins>**Add Q Columns:**</ins> Adds a new column in Q-Space next to each applicable column (see selection methods below). Q-Space is dynamically calculated using the value in the "Wavelength" row of the source column.
 * <ins>**Rescale Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) with a new row titled "ScaleFactor". Data from the original column is multiplied by the scale factor in the new column. Scale factors can be adjusted and columns will auto-update.
 * <ins>**Square Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) that squares the values in the original column.
 * <ins>**Sqrt Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) that takes the square root of values in the original column.
 ---
-  ### Selection Methods for Rescale, Square, and Sqrt Transformations:
-  - <ins>**All "AU":**</ins> Adds the new column for every column in the current worksheet with "AU" in the Units row.
+  ### Selection Methods for Transformations:
+  - <ins>**All "AU" or All "deg":**</ins> Adds the new column for every column in the current worksheet with matching units.
 
-  - <ins>**Select Columns:**</ins> Opens a new window to select desired columns. Multiple rows can be highlighted using \<Ctrl\>-\<Click\> or \<Shift\>-\<Click\>
+  - <ins>**Select Columns:**</ins> Adds the new column for each column selected in Origin.
 ---
 ## Graph Templates
 Installed graph templates can be found in Plot > User Templates
 * <ins>**Stacked PXRD:**</ins> Each plot is offset by one unit. Good for displaying multiple normalized patterns.
 * <ins>**Sample+Refs:**</ins> The first added plots are displayed as full-sized patterns on the top portion. Additional patterns can be added to the "Reference Patterns" layer to be displayed below at 1/2 scale.
+* <ins>**In-Situ Contour:**</ins> Typical in-situ contour plot. Intended for data sets normalized to [0,1]. Can be constructed to use a parameter row (such as the "Temp" row generated during In-Situ import) as the y-axis.
+* <ins>**In-Situ Browser**</ins> Puts all selected columns into a "browser" graph that allows you to scroll through many patterns. Select multiple rows on the left panel to overlay patterns.
 
 
 # Release Notes
@@ -102,6 +105,7 @@ Feature Requests, bugfixes, UI improvements
 * (Feature Request: David) Changed default CuKa step size to 0.02
 * Column selections for transformations are now done using Origin's native column selection instead of a UI.
 * Q-Space columns now allow for column selection.
+* Added CIF import preset for 11-ID-C March 2026
 ## Release 1.2.5
 The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
