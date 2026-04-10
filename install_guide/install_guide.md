@@ -30,10 +30,15 @@
 
 ## Automatic Install (Origin 2025 or later):
 1. Download and run [the most recent installer](/installer/release). It will open the installation project inside Origin.
+
     ![Recent Releases Page](/install_guide/images/release_page.png)
+
     ![Download installer](/install_guide/images/download_installer.png)
+---
 2. In the pop up menus, select which plugin features you want to install.
+
     ![option popup 1](/install_guide/images/popup1.png) ![option popup 2](/install_guide/images/popup2.png)
+---
 3. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
 4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
 5. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
