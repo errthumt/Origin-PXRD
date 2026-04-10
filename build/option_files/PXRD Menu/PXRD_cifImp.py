@@ -28,33 +28,35 @@ _B_EXTRA = 0.4
 
 # Fix column headers, normalize columns, remove function row.
 # Executed as a labtalk command near the end of this script.
-LABTALK_CLEANUP = r'''
-@SWS = 0;
+def lt_cleanup(normalize=True):
+    LABTALK_CLEANUP = fr'''
+    @SWS = 0;
 
-int nCols = wks.ncols;
-if (nCols < 2)
-    break;
+    int nCols = wks.ncols;
+    if (nCols < 2)
+        break;
 
-wks.UserParam1 = 1;
-wks.UserParam1$ = "SourceFile";
+    wks.UserParam1 = 1;
+    wks.UserParam1$ = "SourceFile";
 
-wks.col1.lname$ = "2θ";
-wks.col1.unit$ = "deg";
+    wks.col1.lname$ = "2θ";
+    wks.col1.unit$ = "deg";
 
-for(int ii = 2; ii <= nCols; ii++)
-{
-    string lng$ = wks.col$(ii).lname$;
-    wcol(ii)[SourceFile]$ = lng$;
+    for(int ii = 2; ii <= nCols; ii++)
+    {{
+        string lng$ = wks.col$(ii).lname$;
+        wcol(ii)[SourceFile]$ = lng$;
 
-    wks.col$(ii).lname$ = "Int";
-    rnormalize irng:=$(ii) method:=1 orng:=$(ii);
-    wks.col$(ii).unit$ = "AU";
-    
-    wcolwidth $(ii) -1;
-};
+        wks.col$(ii).lname$ = "Int";
+        {'rnormalize irng:=$(ii) method:=1 orng:=$(ii)' if normalize else ""};
+        wks.col$(ii).unit$ = "AU";
+        
+        wcolwidth $(ii) -1;
+    }};
 
-wks.labels(-O);
-'''
+    wks.labels(-O);
+    '''
+    return LABTALK_CLEANUP
 
 
 
@@ -511,7 +513,7 @@ def get_parameters(mode):
         return get_custom_parameters()
 
 #  Major import function
-def import_cif_files(file_list, wavelength_mode):
+def import_cif_files(file_list, wavelength_mode, normalize=True):
     # Get parameters, unpack wavelength
     params = get_parameters(wavelength_mode)
     wavelength = params["fe_wavelengths"][0]
@@ -553,7 +555,7 @@ def import_cif_files(file_list, wavelength_mode):
     # Labtalk cleanup
     wb.activate()
     wks.activate()
-    op.lt_exec(LABTALK_CLEANUP)
+    op.lt_exec(lt_cleanup(normalize))
     
     # Create wavelength row expected by Q-space menu
     wks._user_param_row("Wavelength (Å)",True)
@@ -581,6 +583,8 @@ if __name__ == "__main__":
         # Read wavelength mode from LabTalk argument
         wavelength_mode = sys.argv[1] if len(sys.argv) > 1 else "CuKa"
 
-        import_cif_files(file_list, wavelength_mode)
+        normalize_mode = (sys.argv[2] if len(sys.argv) > 2 else "true").lower() == "true"
+
+        import_cif_files(file_list, wavelength_mode,normalize_mode)
 
 
