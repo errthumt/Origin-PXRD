@@ -57,11 +57,45 @@ def collect_applicable_columns(mode="au"):
 def add_columns(col_indices, transform):
     wks = op.find_sheet()
 
-    # Create or get the ScaleFactor user parameter row
-    if transform == "scale":
-        scaleIndex = wks._user_param_row('ScaleFactor', True)
-        d_row = scaleIndex + 1
+    # -------------------------------
+    # TRANSFORM DISPATCH TABLE
+    # -------------------------------
+    def scale_setup(wks):
+        idx = wks._user_param_row('ScaleFactor', True)
+        return idx + 1  # D-row index
 
+    TRANSFORMS = {
+        "scale": {
+            "setup": scale_setup,
+            "longname": lambda ln: ln,
+            "comment": lambda c: f"{c}\n(Rescaled)" if c else "(Rescaled)",
+            "formula": lambda orig, new, d_row: f"{new}[D{d_row}] * {orig}",
+        },
+        "square": {
+            "setup": lambda w: None,
+            "longname": lambda ln: f"{ln}^2" if ln else "Int^2",
+            "comment": lambda c: f"{c}\n(Squared)" if c else "(Squared)",
+            "formula": lambda orig, new, d_row: f"{orig}^2",
+        },
+        "sqrt": {
+            "setup": lambda w: None,
+            "longname": lambda ln: f"sqrt[{ln}]" if ln else "sqrt[Int]",
+            "comment": lambda c: f"{c}\n(Sqrt)" if c else "(Sqrt)",
+            "formula": lambda orig, new, d_row: f"sqrt({orig})",
+        }
+    }
+
+    if transform not in TRANSFORMS:
+        raise ValueError(f"Unknown transform mode: {transform}")
+
+    T = TRANSFORMS[transform]
+
+    # Run setup hook (only scale uses it)
+    d_row = T["setup"](wks)
+
+    # -------------------------------
+    # LABELS
+    # -------------------------------
     units = wks.get_labels('U')
     longnames = wks.get_labels('L')
     comments = wks.get_labels('C')
@@ -71,7 +105,9 @@ def add_columns(col_indices, transform):
     except:
         sourcefiles = [""] * wks.cols
 
-    # Iterate in reverse so shifting does not break indices
+    # -------------------------------
+    # MAIN LOOP
+    # -------------------------------
     for col in reversed(col_indices):
 
         # 1) Add new column at end
@@ -87,38 +123,16 @@ def add_columns(col_indices, transform):
 
         new_col = target_index
 
-        # 3) Long Name transformation
+        # 3) Long Name
         orig_ln = longnames[col] or ""
-
-        if transform == "scale":
-            # Keep original Long Name
-            new_ln = orig_ln
-
-        elif transform == "square":
-            # Example: Int -> Int\\+(2)
-            if orig_ln:
-                new_ln = f"{orig_ln}^2"
-            else:
-                new_ln = "Int^2"
-
-        elif transform == "sqrt":
-            # Example: Int -> Int\\+(1/2)
-            if orig_ln:
-                new_ln = f"sqrt[{orig_ln}]"
-            else:
-                new_ln = "sqrt[Int]"
-
-        else:
-            new_ln = orig_ln  # fallback
-
+        new_ln = T["longname"](orig_ln)
         wks.set_label(new_col, new_ln, 'L')
 
-
-        # 4) Copy Units
+        # 4) Units
         if units[col]:
             wks.set_label(new_col, units[col], 'U')
 
-        # 5) Copy SourceFile
+        # 5) SourceFile
         try:
             sourcefiles = wks.get_labels('SourceFile')
         except:
@@ -130,49 +144,26 @@ def add_columns(col_indices, transform):
         sourcefiles[new_col] = sourcefiles[col]
         wks.set_label(new_col, sourcefiles[new_col], 'SourceFile')
 
-        # 6) Copy Comment and append transformation tag
+        # 6) Comment
         base_comment = comments[col] or ""
-
-        if transform == "scale":
-            suffix = "(Rescaled)"
-        elif transform == "square":
-            suffix = "(Squared)"
-        elif transform == "sqrt":
-            suffix = "(Sqrt)"
-        else:
-            suffix = ""
-
-        # LabTalk-compatible line break is "\n"
-        new_comment = f"{base_comment}\n{suffix}" if base_comment else suffix
-
+        new_comment = T["comment"](base_comment)
         wks.set_label(new_col, new_comment, 'C')
 
-
-        # 7) Process column lettering
+        # 7) Column letters
         orig_letter = col_index_to_letter(col)
         new_letter  = col_index_to_letter(new_col)
-            
-        # 8) Apply transformation formula, add scale row if needed
+
+        # 8) Formula
+        formula_text = T["formula"](orig_letter, new_letter, d_row)
+
+        # scale requires writing the scale row
         if transform == "scale":
-            # dynamic ScaleFactor row
             lt_set_scale = f"wcol({new_col+1})[D{d_row}] = 0.5;"
             op.lt_exec(lt_set_scale)
-            formula_text = f"{new_letter}[D{d_row}] * {orig_letter}"
 
-        elif transform == "square":
-            formula_text = f"{orig_letter}^2"
-
-        elif transform == "sqrt":
-            formula_text = f"sqrt({orig_letter})"
-
-        else:
-            raise ValueError(f"Unknown transform mode: {transform}")
-
-        # Store formula in the Formula label row (dynamic!)
         wks.set_formula(new_col, formula_text)
 
     op.lt_exec('type -b "Transformed Columns Successfully";')
-
 
 # Dispatch based on labtalk arguments.
 if __name__ == "__main__":
