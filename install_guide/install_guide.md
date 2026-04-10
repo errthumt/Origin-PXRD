@@ -40,8 +40,21 @@
     ![option popup 1](/install_guide/images/popup1.png) ![option popup 2](/install_guide/images/popup2.png)
 ---
 3. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
+
+    ![package install prompt](/install_guide/images/package_prompt.png)
+
+    ![package installation window](/install_guide/images/package_install.png)
+
+    * While waiting on package install, check on the Labtalk window for confirmation or error messages
+
+        ![labtalk installation messages](/install_guide/images/labtalk_file_install.png)
+---
 4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
+---
 5. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
+    * The cleanup window may ask you to close all copies of Origin from task manager. This is because Origin keeps recent files open in the background and prevents their deletion, including some installation files.
+        ![cleanup cmd window](/install_guide/images/cleanup_cmd.png)
+---
 5. Review the [instructions for use](/README.md#instructions-for-use) for further guidance.
 
 ## Manual Install (Origin 2022-2024)
