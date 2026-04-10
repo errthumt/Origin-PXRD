@@ -42,8 +42,8 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
     ```
 7. Ensure that your text cursor is at the end of the pasted line (not on a new line) and press \<Enter\>
 8. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
-9. After the python packages have been installed (CMD line should end with "Press any key to continue..."), close restart Origin with a fresh project.
-10. Review tthe [instructions for use](#instructions-for-use) for further guidance.
+9. After the python packages have been installed (CMD line should end with "Press any key to continue..."), close and restart Origin with a fresh project.
+10. Review the [instructions for use](#instructions-for-use) for further guidance.
 
 # Instructions for Use
 **Please Note:** If you opted to install Graph Templates without the PXRD Menu, they will work independently (See [Graph Templates](#graph-templates)). Some other options (like In-Situ processing) are available to install independently, but require you to execute commands through the script window if you did not install the menu.
