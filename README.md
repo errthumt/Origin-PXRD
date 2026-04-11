@@ -16,6 +16,8 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
   * [Request a feature](https://github.com/errthumt/Origin-PXRD/issues/new?template=feature_request.md)
   * [Other feedback](https://github.com/errthumt/Origin-PXRD/issues/new)
 
+---
+
 # Installation Instructions
 A full installation guide with screenshots can be found [here](/install_guide/install_guide.md). A PDF version can be found [here](/install_guide/install_guide.pdf)
 
@@ -46,6 +48,8 @@ A full installation guide with screenshots can be found [here](/install_guide/in
 9. After the python packages have been installed (CMD line should end with "Press any key to continue..."), close and restart Origin with a fresh project.
 10. Review the [instructions for use](#instructions-for-use) for further guidance.
 
+---
+
 # Instructions for Use
 **Please Note:** If you opted to install Graph Templates without the PXRD Menu, they will work independently (See [Graph Templates](#graph-templates)). Some other options (like In-Situ processing) are available to install independently, but require you to execute commands through the script window if you did not install the menu.
 
@@ -64,8 +68,20 @@ You may need to switch GUI mode.
 
 <ins>**Origin 2024–2025:**</ins> Preferences > Menu > PXRD
 
+---
+
 ## PXRD MENU OPTIONS:
+
+| | Options when importing RAS or CIF files |
+| ---: | :--- |
+| <ins>**Select Files:**</ins> | Opens a window to add/remove desired files. After all files have been added to the window, select "Import" or "OK" to proceed |
+| <ins>**Select Folder:**</ins> | Opens a window to select a folder containing all desired files. Origin will import every file in the selected folder that matches the intended filetype. |
+
+---
+
 <ins>**Import RAS Files:**</ins> Rigaku powder patterns can be imported directly from .RAS files without converting using PowDLL. Each import command creates a new workbook in Origin. All patterns normalized to [0,1].
+
+---
 
 <ins>**Calculate CIF Patterns:**</ins> Calculated patterns can be brought directly into origin from .CIF files. Each import command creates a new workbook in origin. All patterns normalized to [0,1]
 
@@ -79,23 +95,30 @@ You may need to switch GUI mode.
   - ADVANCED PARAMETERS: U, V, W, X, Y, and Axial S
   - Other presets: Additional presets can be added easily. Reach out to Travis if there is an import setting that you anticipate using frequently. It will be added to the next installer version.
 * <ins>**11-ID-C March 2026:**</ins> Calculates powder patterns with preset parameters refined to match 11-ID-C.
----
-  ### When importing RAS or CIF files:
-  - <ins>**Select Files:**</ins> Opens a window to add/remove desired files. After all files have been added to the window, select "Import" or "OK" to proceed
+* <ins>**With Phase Fractions**</ins> Calculates powder patterns, then adds calculated columns for each pattern to allow comparison by molar phase fraction. Column types are specified by 'Norm Type' row:
+  - **Non-normal**: Original, non-normalized calculated patterns
+  - **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
+    - Convention dictates that phase fractions should add to 1, but this is not required.
+  - **Max=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity across all phases is 1.0.
+  - **Sum=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity is 1.0 when all phases are summed.
+  - **Normalized, All Phases**: Final column calculated as the sum of all phases, preserving relative phase fractions. This should match a normalized experimental pattern.
 
-  - <ins>**Select Folder:**</ins> Opens a window to select a folder containing all desired files. Origin will import every file in the selected folder that matches the intended filetype.
 ---
+
 <ins>**Transform Columns:**</ins> These options only appear when a worksheet is open in Origin
+
+  | | Selection Methods for Transformations |
+  | ---: | :--- |
+  | <ins>**All "AU" or All "deg":**</ins> | Adds the new column for every column in the current worksheet with matching units. |
+  | <ins>**Select Columns:**</ins> | Adds the new column for each column selected in Origin. |
+
 * <ins>**Add Q Columns:**</ins> Adds a new column in Q-Space next to each applicable column (see selection methods below). Q-Space is dynamically calculated using the value in the "Wavelength" row of the source column.
 * <ins>**Rescale Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) with a new row titled "ScaleFactor". Data from the original column is multiplied by the scale factor in the new column. Scale factors can be adjusted and columns will auto-update.
 * <ins>**Square Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) that squares the values in the original column.
 * <ins>**Sqrt Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) that takes the square root of values in the original column.
----
-  ### Selection Methods for Transformations:
-  - <ins>**All "AU" or All "deg":**</ins> Adds the new column for every column in the current worksheet with matching units.
 
-  - <ins>**Select Columns:**</ins> Adds the new column for each column selected in Origin.
 ---
+
 ## Graph Templates
 Installed graph templates can be found in Plot > User Templates
 * <ins>**Stacked PXRD:**</ins> Each plot is offset by one unit. Good for displaying multiple normalized patterns.
@@ -103,6 +126,7 @@ Installed graph templates can be found in Plot > User Templates
 * <ins>**In-Situ Contour:**</ins> Typical in-situ contour plot. Intended for data sets normalized to [0,1]. Can be constructed to use a parameter row (such as the "Temp" row generated during In-Situ import) as the y-axis.
 * <ins>**In-Situ Browser**</ins> Puts all selected columns into a "browser" graph that allows you to scroll through many patterns. Select multiple rows on the left panel to overlay patterns.
 
+---
 
 # Release Notes
 ## Release 1.2.6
@@ -113,6 +137,7 @@ Feature Requests, bugfixes, UI improvements
 * Column selections for transformations are now done using Origin's native column selection instead of a UI.
 * Q-Space columns now allow for column selection.
 * Added CIF import preset for 11-ID-C March 2026
+* (Feature Request: Kirill) Added phase fraction analysis option for CIF imports.
 ## Release 1.2.5
 The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
