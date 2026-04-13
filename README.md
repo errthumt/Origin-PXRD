@@ -150,6 +150,7 @@ Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
 This release contains features that are difficult to test without a fresh install of Origin. If you are able to use the full import dialog after installing, give Travis the good news!
 
 * **All import commands have been moved into an official X-Function dialog.** *This also allows users to create and save their own import settings using Origin's native themes functionality!*
+* New [in-depth installation guide](/install_guide/install_guide.md) with screenshots.
 * Updated file selection dialogs to start in folder containing current saved project.
 * Updated CIF workflow to prevent errors when cancelling out of menus.
 * (Feature Request: David) Changed default CuKa step size to 0.02
