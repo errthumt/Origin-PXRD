@@ -144,7 +144,7 @@ Installed graph templates can be found in Plot > User Templates
 ---
 
 # Release Notes
-## Release 1.2.6
+## Release 1.3.0
 Feature Requests, bugfixes, UI improvements (I finally learned to code in C)
 
 This release contains features that are difficult to test without a fresh install of Origin. If you are able to use the full import dialog, give Travis the good news!
