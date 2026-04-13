@@ -72,38 +72,13 @@ You may need to switch GUI mode.
 
 ## PXRD MENU OPTIONS:
 
-| | Options when importing RAS or CIF files |
-| ---: | :--- |
-| <ins>**Select Files:**</ins> | Opens a window to add/remove desired files. After all files have been added to the window, select "Import" or "OK" to proceed |
-| <ins>**Select Folder:**</ins> | Opens a window to select a folder containing all desired files. Origin will import every file in the selected folder that matches the intended filetype. |
+<ins>**Import Patterns:**</ins> Import experimental patterns or calculate theoretical patterns from CIF files. 
 
----
-
-<ins>**Import RAS Files:**</ins> Rigaku powder patterns can be imported directly from .RAS files without converting using PowDLL. Each import command creates a new workbook in Origin. All patterns normalized to [0,1].
-
----
-
-<ins>**Calculate CIF Patterns:**</ins> Calculated patterns can be brought directly into origin from .CIF files. Each import command creates a new workbook in origin. All patterns normalized to [0,1]
-
-* <ins>**Cu-Ka (3-90deg):**</ins> Calculates powder patterns for 3–90° 2θ using default Cu‑Ka doublet splitting. Step size = 0.02°.
-
-* <ins>**Custom Parameters:**</ins> After selecting CIF files, opens a window to specify (similar to VESTA's options, but with further tunability):
-  - Number of fE wavelengths
-  - Wavelengths and relative intensities
-  - 2θ ranges
-  - Step Size
-  - ADVANCED PARAMETERS: U, V, W, X, Y, and Axial S
-  - Other presets: Additional presets can be added easily. Reach out to Travis if there is an import setting that you anticipate using frequently. It will be added to the next installer version.
-* <ins>**11-ID-C March 2026:**</ins> Calculates powder patterns with preset parameters refined to match 11-ID-C.
-* <ins>**With Phase Fractions**</ins> Calculates powder patterns, then adds calculated columns for each pattern to allow comparison by molar phase fraction. Column types are specified by 'Norm Type' row:
-  - **Non-normal**: Original, non-normalized calculated patterns
-  - **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
-    - Convention dictates that phase fractions should add to 1, but this is not required.
-  - **Max=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity across all phases is 1.0.
-  - **Sum=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity is 1.0 when all phases are summed.
-  - **Normalized, All Phases**: Final column calculated as the sum of all phases, preserving relative phase fractions. This should match a normalized experimental pattern.
-
----
+* <ins>**Full Dialog...:**</ins> Opens the [custom dialog](#import-pattern-dialog-options) to edit parameters, or to save/load your own preset themes
+* <ins>**\<Last Used\>**</ins> Without opening the dialog, executes the last used set of import settings. Re-prompts for file selection.
+* <ins>**CIF Patterns (CuKa Defaults)**</ins> Without opening the dialog, imports with preset settings for Cu-Ka splitting (2θ 3-90°, step size 0.02°). Re-prompts for file selection.
+* <ins>**CIF Patterns (11-ID-C March 2026)**</ins> Without opening the dialog, imports with preset settings to match 11-ID-C. 2θ range and step size are similar to in-situ values, and peak shape parameters were estimated by Rietveld analysis. Re-prompts for file selection.
+* <ins>**Experimental Patterns (*.ras)**</ins> Without opening the dialog, imports with preset settings for experimental patterns from the Rigaku Miniflex. Re-prompts for file selection.
 
 <ins>**Transform Columns:**</ins> These options only appear when a worksheet is open in Origin
 
@@ -116,6 +91,46 @@ You may need to switch GUI mode.
 * <ins>**Rescale Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) with a new row titled "ScaleFactor". Data from the original column is multiplied by the scale factor in the new column. Scale factors can be adjusted and columns will auto-update.
 * <ins>**Square Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) that squares the values in the original column.
 * <ins>**Sqrt Columns:**</ins> Adds a new column next to each applicable column (see selection methods below) that takes the square root of values in the original column.
+
+<ins>**In-Situ Processing:**</ins> Macros for processing metadata and importing patterns from in-situ beamtimes.
+
+* <ins>**11-ID-C (March 2026):**</ins> Normalizes all patterns (normalized by data set, not by individual pattern) and extracts temperature from all metadata files. Adds temperature as a "Temp" row at the top.
+
+---
+## Import Pattern Dialog Options
+
+<p align="center">
+  <img src="/install_guide/images/import_dialog.png" width="40%">
+</p>
+
+If you have your own set of custom parameters that you like to use for your own analysis, you can save them as a theme using the menu on the top right of the dialog.
+
+|Option | | Description |
+| :--- | :--- | :--- |
+| New Workbook Name | | Name your imported workbook. All import commands create a new workbook to simplify import and normalization.
+| Import File Type | | Select whether you are importing experimental patterns (\*.ras) or calculating theoretical patterns (\*.cif) |
+| Selection Type | | Select how you will be selecting your import files after clicking "OK"<br>**Select Files:** Select one or more individual files by selecting and adding them to the dialog.<br>**Select Folder:** Select a folder and import all matching files at once. |
+| <ins>**CIF Calculation Parameters**</ins> | Only used for CIF Imports. |
+| | Doublet Splitting? | Specify if you would like to simulate peak splitting as a result of 2 different incident wavelengths |
+| | Primary Wavelength (Å)<br>Secondary Wavelength (Å) | X-Ray wavelengths. Secondary wavelength only used when Doublet Splitting is enabled. |
+| | Weight | Relative weights of Primary and Secondary Wavelengths. Only used when Doublet Splitting is enabled. |
+| | X-Axis | Specifies which X-Axis you would like to use.<br>**2θ**: Calculates intensity for the range of 2θ values specified.<br>**Q**: Calculates intensity for the Q range specified. 2θ column will still be generated for reference. |
+| | 2θ Start (°) | Beginning of 2θ range. Auto-calculated in Q mode.
+| | 2θ End (°) | End of 2θ range. Auto-calculated in Q mode.
+| | 2θ Step Size (°) | Patterns will be calculated by incrementing 2θ _regardless of Q mode_. Q Mode can specify range in Q values, but the increment will still be in 2θ. |
+| | Q Start (Å⁻¹) | Beginning of Q range. Not available in 2θ mode. |
+| | Q End (Å⁻¹) | End of Q range. Not available in 2θ mode. |
+| | Advanced Parameters | Used to adjust peak broadening and dampening. |
+| Normalization Mode | | Specify whether to normalize imported or calculated patterns.<br>During CIF import, an extra option is available to add scaling for each imported CIF by the relative phase fractions in your analysis. See the Phase Fraction section below. |
+
+### Phase Fraction Analysis
+If you select this option under **Normalization Mode** during CIF import, the files will be imported as usual (without normalization), but additional columns will be added to scale phases by their relative fractions present in your analysis. Column types are specified by 'Norm Type' row:
+- **Non-normal**: Original, non-normalized calculated patterns
+- **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
+  - Convention dictates that phase fractions should add to 1, but this is not required.
+- **Max=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity across all phases is 1.0.
+- **Sum=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity is 1.0 when all phases are summed.
+- **Normalized, All Phases**: Final column calculated as the sum of all phases, preserving relative phase fractions. This should match a normalized experimental pattern.
 
 ---
 
@@ -130,7 +145,8 @@ Installed graph templates can be found in Plot > User Templates
 
 # Release Notes
 ## Release 1.2.6
-Feature Requests, bugfixes, UI improvements
+Feature Requests, bugfixes, UI improvements (I finally learned to code in C)
+* **All import commands have been moved into an official X-Function dialog.** *This also allows users to create and save their own import settings using Origin's native themes functionality!*
 * Updated file selection dialogs to start in folder containing current saved project.
 * Updated CIF workflow to prevent errors when cancelling out of menus.
 * (Feature Request: David) Changed default CuKa step size to 0.02
@@ -142,6 +158,6 @@ Feature Requests, bugfixes, UI improvements
 The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
 * Added install option for processing In-Situ Beamtime data. Currently only compatible with temperature metadata (no flow options yet). Go to PXRD > In-Situ Processing
-  * March 2026 11-ID-C: Normalizes all patterns (normalized by data set, not by individual pattern) and extracts temperature from all metadata files. Adds temperature as a "Temp" row at the top.
+  * 11-ID-C (March 2026): Normalizes all patterns (normalized by data set, not by individual pattern) and extracts temperature from all metadata files. Adds temperature as a "Temp" row at the top.
 * Added In-Situ Contour graph template. Configured to expect [0,1] normalization and temperatures in "Temp" row. Reach out to Travis for help using this template.
 * Added In-Situ Browser graph template. Useful for scrolling through many powder patterns at once.
