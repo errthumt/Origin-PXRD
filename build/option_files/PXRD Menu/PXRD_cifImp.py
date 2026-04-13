@@ -282,240 +282,122 @@ def calculate_pattern(
     # Returns series, not indiviual values
     return two_theta, intensity
 
-def get_default_parameters():
-    return {
-        "fe_wavelengths": [1.5406, 1.54439],
-        "fe_weights": [1.0, 0.5],
-        "two_theta_range": (3.0, 90.0),
-        "step": 0.02,
-        "U": 0.0,
-        "V": 0.0,
-        "W": 0.012,
-        "X": 0.0,
-        "Y": 0.0,
-        "axial_S": 0.015,
-    }
-
-parameter_presets = {
-    "CuKa": {
-        "fe_wavelengths": [1.5406, 1.54439],
-        "fe_weights": [1.0, 0.5],
-        "two_theta_range": (3.0, 90.0),
-        "step": 0.02,
-        "U": 0.0,
-        "V": 0.0,
-        "W": 0.012,
-        "X": 0.0,
-        "Y": 0.0,
-        "axial_S": 0.015,
-    },
-    # Quick-refined in FullProf
-    "11-ID-C March 2026": {
-        "fe_wavelengths": [0.11595],
-        "fe_weights": [1.0],
-        "two_theta_range": (0.15, 7.6275),
-        "step": 0.0025,
-        "U": 0.125,
-        "V": 0,
-        "W": 0.0004,
-        "X": 0,
-        "Y": 0,
-        "axial_S": .015,
-    }
+default_parameters = {
+    "file_mode":"files",
+    "doublet": True,
+    "wavelength1": 1.5406,
+    "weight1":1.0,
+    "wavelength2":1.54439,
+    "weight2":0.5,
+    "start_2th":3.0,
+    "end_2th":90.0,
+    "step_2th":0.2,
+    "U":0.0,
+    "V":0.0,
+    "W":0.012,
+    "X":0.0,
+    "Y":0.0,
+    "axial_S":0.015,
+    "normalize_mode":True
 }
 
-def get_custom_parameters():
-    # Default PXRD parameters
-    DEFAULT_WAVELENGTHS = [1.5406, 1.54439]
-    DEFAULT_WEIGHTS     = [1.0,    0.5]
-    DEFAULT_TMIN        = 3.0
-    DEFAULT_TMAX        = 90.0
-    DEFAULT_STEP        = 0.02
-    DEFAULT_U           = 0.0
-    DEFAULT_V           = 0.0
-    DEFAULT_W           = 0.012
-    DEFAULT_X           = 0.0
-    DEFAULT_Y           = 0.0
-    DEFAULT_S           = 0.015
+def clean_parameters(params):
+    new_params = {}
+    for key in default_parameters:
+        def_val = default_parameters[key]
+        def_type = type(def_val)
 
-    win = tk.Toplevel()
-    win.title("CIF Import Parameters")
-
-
-    # Mode toggle (2θ <-> Q)
-    mode_var = tk.StringVar(value="2theta")  # "2theta" or "q"
-    mode_label = tk.Label(win, text="Mode: 2θ", font=("Segoe UI", 9, "bold"))
-    mode_label.grid(row=2, column=0, sticky="w", padx=(0, 5))
-
-    def safe_asin(x):
-        return math.asin(max(min(x, 1), -1))
-
-    def convert_2theta_to_q():
-        lam = wl_entries[0].get()
-        tmin = math.radians(tmin_var.get() / 2)
-        tmax = math.radians(tmax_var.get() / 2)
-
-        qmin = (4 * math.pi / lam) * math.sin(tmin)
-        qmax = (4 * math.pi / lam) * math.sin(tmax)
-
-        tmin_var.set(round(qmin, 5))
-        tmax_var.set(round(qmax, 5))
-
-    def convert_q_to_2theta():
-        lam = wl_entries[0].get()
-        qmin = tmin_var.get()
-        qmax = tmax_var.get()
-
-        tmin = 2 * math.degrees(safe_asin(qmin * lam / (4 * math.pi)))
-        tmax = 2 * math.degrees(safe_asin(qmax * lam / (4 * math.pi)))
-
-        tmin_var.set(round(tmin, 5))
-        tmax_var.set(round(tmax, 5))
-
-    def toggle_mode():
-        if mode_var.get() == "2theta":
-            mode_var.set("q")
-            convert_2theta_to_q()
-            mode_label.config(text="Mode: Q-space")
-            mode_button.config(text="Switch to 2θ")
+        new_val = params.get(key)
+        if not new_val:
+            new_params[key] = def_val
+        elif def_type == bool:
+            new_params[key] = new_val.lower() == 'true'
+        elif def_type != type(new_val):
+            try:
+                new_params[key] = def_type(new_val)
+            except:
+                print(f"Incompatible type passed for '{key}'. Defaulting to '{def_val}'")
+                new_params[key] = def_val
         else:
-            mode_var.set("2theta")
-            convert_q_to_2theta()
-            mode_label.config(text="Mode: 2θ")
-            mode_button.config(text="Switch to Q-space")
+            new_params[key] = params[key]
 
-    mode_button = tk.Button(win, text="Switch to Q-space", width=14, command=toggle_mode)
-    mode_button.grid(row=3, column=0, sticky="w", padx=(0, 5))
+    return new_params
 
-    # Update wavelengths on toggle
-    def update_wavelength_fields(*args):
-        for widget in wl_frame.winfo_children():
-            widget.destroy()
-        wl_entries.clear()
-        wt_entries.clear()
+def get_cif_parameters(cleaned_params):
+    cif_params = cleaned_params.copy()
+    doublet = cif_params.pop("doublet")
+    wavelength1 = cif_params.pop("wavelength1")
+    weight1 = cif_params.pop("weight1")
+    wavelength2 = cif_params.pop("wavelength2")
+    weight2 = cif_params.pop("weight2")
+    start_2th = cif_params.pop("start_2th")
+    end_2th = cif_params.pop("end_2th")
+    step = cif_params.pop("step_2th")
 
-        count = fe_count_var.get()
-
-        for i in range(count):
-            tk.Label(wl_frame, text=f"fE{i+1} λ (Å):").grid(row=i, column=0, sticky="e")
-
-            default_wl = DEFAULT_WAVELENGTHS[i] if i < len(DEFAULT_WAVELENGTHS) else DEFAULT_WAVELENGTHS[0]
-            wv = tk.DoubleVar(value=default_wl)
-            entry = tk.Entry(wl_frame, textvariable=wv, width=10)
-            entry.grid(row=i, column=1)
-            wl_entries.append(wv)
-
-            # Recalculate if wavelength changes
-            def recalc(*_):
-                if mode_var.get() == "q":
-                    convert_2theta_to_q()
-                else:
-                    convert_q_to_2theta()
-
-            wv.trace_add("write", recalc)
-
-            tk.Label(wl_frame, text=f"Weight:").grid(row=i, column=2, sticky="e")
-
-            default_wt = DEFAULT_WEIGHTS[i] if i < len(DEFAULT_WEIGHTS) else DEFAULT_WEIGHTS[1]
-            wt = tk.DoubleVar(value=default_wt)
-            tk.Entry(wl_frame, textvariable=wt, width=6).grid(row=i, column=3)
-            wt_entries.append(wt)
-
-    def submit():
-        # Always return 2θ values. Toggle if necessary
-        if mode_var.get() == "q":
-            convert_q_to_2theta()
-            mode_var.set("2theta")
-            mode_label.config(text="Mode: 2θ")
-            mode_button.config(text="Switch to Q-space")
-
-        win.destroy()
-
-    tk.Label(win, text="Number of fE wavelengths:").grid(row=0, column=0, sticky="e")
-    fe_count_var = tk.IntVar(value=2)
-    tk.OptionMenu(win, fe_count_var, *range(1, 6)).grid(row=0, column=1, sticky="w")
-
-    wl_frame = tk.Frame(win)
-    wl_frame.grid(row=1, column=0, columnspan=3, pady=5)
-    wl_entries = []
-    wt_entries = []
-
-    fe_count_var.trace_add("write", update_wavelength_fields)
-    update_wavelength_fields()
-
-    # Basic Parameters
-    tk.Label(win, text="Min:").grid(row=2, column=1, sticky="e")
-    tmin_var = tk.DoubleVar(value=DEFAULT_TMIN)
-    tk.Entry(win, textvariable=tmin_var).grid(row=2, column=2)
-
-    tk.Label(win, text="Max:").grid(row=3, column=1, sticky="e")
-    tmax_var = tk.DoubleVar(value=DEFAULT_TMAX)
-    tk.Entry(win, textvariable=tmax_var).grid(row=3, column=2)
-
-    tk.Label(win, text="Step Size (deg):").grid(row=4, column=1, sticky="e")
-    step_var = tk.DoubleVar(value=DEFAULT_STEP)
-    tk.Entry(win, textvariable=step_var).grid(row=4, column=2)
-
-    # Advanced parameters (hidden)
-    advanced_frame = tk.Frame(win)
-    advanced_visible = False
-
-    def toggle_advanced():
-        nonlocal advanced_visible
-        if advanced_visible:
-            advanced_frame.grid_remove()
-            adv_button.config(text="Show Advanced ▼")
-        else:
-            advanced_frame.grid(row=6, column=0, columnspan=3, pady=5)
-            adv_button.config(text="Hide Advanced ▲")
-        advanced_visible = not advanced_visible
-
-    adv_button = tk.Button(win, text="Show Advanced ▼", command=toggle_advanced)
-    adv_button.grid(row=5, column=0, columnspan=3, pady=5)
-
-    labels = ["U:", "V:", "W:", "X:", "Y:", "Axial S:"]
-    defaults = [DEFAULT_U, DEFAULT_V, DEFAULT_W, DEFAULT_X, DEFAULT_Y, DEFAULT_S]
-    vars_list = []
-
-    for i, (lbl, default) in enumerate(zip(labels, defaults)):
-        tk.Label(advanced_frame, text=lbl).grid(row=i, column=0, sticky="e")
-        var = tk.DoubleVar(value=default)
-        tk.Entry(advanced_frame, textvariable=var).grid(row=i, column=1)
-        vars_list.append(var)
-
-    U_var, V_var, W_var, X_var, Y_var, S_var = vars_list
-    advanced_frame.grid_remove()
-
-    # OK Button
-    tk.Button(win, text="OK", command=submit).grid(row=7, column=1, pady=10)
-
-    win.grab_set()
-    win.wait_window()
-
-    return {
-        "fe_wavelengths": [v.get() for v in wl_entries],
-        "fe_weights": [v.get() for v in wt_entries],
-        "two_theta_range": (tmin_var.get(), tmax_var.get()),
-        "step": step_var.get(),
-        "U": U_var.get(),
-        "V": V_var.get(),
-        "W": W_var.get(),
-        "X": X_var.get(),
-        "Y": Y_var.get(),
-        "axial_S": S_var.get(),
-    }
-
-def get_parameters(mode):
-    params = parameter_presets.get(mode)
-    if params:
-        return params
+    if doublet:
+        cif_params["fe_wavelengths"]=[wavelength1,wavelength2]
+        cif_params["fe_weights"]=[weight1,weight2]
     else:
-        return get_custom_parameters()
+        cif_params["fe_wavelengths"]=[wavelength1]
+        cif_params["fe_weights"]=[1.0]
+
+    cif_params["two_theta_range"] = (start_2th,end_2th)
+    cif_params["step"]=step
+
+    return cif_params
+
+def pick_cif_files():
+    file_select = op.lt_exec('dlgFile init:=%X multi:=1 group:=*.cif title:="Select CIF files to calculate patterns for"')
+    # dlgFile automatically stores filenames under global variable fname$
+    file_names = op.get_lt_str('fname$')
+    if not file_select or not file_names:
+        op.lt_exec('type -b "No files selected"')
+        return False
+    return True
+
+# Select folder containing all desired files. Uses Origin's native dlfPath dialog.
+def pick_folder_files():
+    # dlgPath stores folder path under path$. findFiles finds all matching files in path$ and stores in fname$
+    folder_selected = op.lt_exec('dlgPath init:=%X title:="Select folder containing CIF files"; findFiles ext:=*.cif')
+    if not folder_selected:
+        op.lt_exec('type -b "No folder selected"')
+        return False
+    
+    file_names = op.get_lt_str('fname$')
+    if not file_names:
+        op.lt_exec('type -b "No CIF files found in the selected folder"')
+        return False
+    
+    return True
 
 #  Major import function
-def import_cif_files(file_list, wavelength_mode, normalize=True):
+def import_cif_files(cleaned_params):
+    file_mode = cleaned_params["file_mode"]
+    normalize = cleaned_params["normalize_mode"]
+
+    if file_mode=='folder':
+        picked = pick_folder_files()
+    else:
+        picked = pick_cif_files()
+
+    if not picked:
+        return
+
+    # Read the LabTalk variable fname$
+    raw_list = op.get_lt_str('fname$')
+
+    if raw_list:
+        # Normalize Windows newlines and split into lines
+        file_list = [
+            f.strip()
+            for f in raw_list.replace("\r\n", "\n").split("\n")
+            if f.strip()
+        ]
+    else:
+        return
+
     # Get parameters, unpack wavelength
-    params = get_parameters(wavelength_mode)
+    params = get_cif_parameters(cleaned_params)
     wavelength = params["fe_wavelengths"][0]
 
     # Create new book
@@ -565,26 +447,26 @@ def import_cif_files(file_list, wavelength_mode, normalize=True):
     for uParam in ("Group Info","Method"):
         idx = wks._user_param_row(uParam,True) + 1
         op.lt_exec(f"wks.labels(#D{idx});")
-        
 
-# Dispatch with extra labtalk argument for parameter mode.
+def parse_params(s):
+    items = s.split(',')
+    out = {}
+    for item in items:
+        try:
+            key, val = item.split(':')
+            out[key.strip()] = val.strip()
+        except:
+            print(f"Error parsing option '{item}'. Excluding from parsed parameters")
+    return out       
+
+# Dispatch with labtalk string arg for parameters dict
 if __name__ == "__main__":
-    # Read the LabTalk variable fname$
-    raw_list = op.get_lt_str('fname$')
+    paramString = sys.argv[1] if len(sys.argv) > 1 else ""
+    params = parse_params(paramString)
+    cleaned_params = clean_parameters(params)
 
-    if raw_list:
-        # Normalize Windows newlines and split into lines
-        file_list = [
-            f.strip()
-            for f in raw_list.replace("\r\n", "\n").split("\n")
-            if f.strip()
-        ]
 
-        # Read wavelength mode from LabTalk argument
-        wavelength_mode = sys.argv[1] if len(sys.argv) > 1 else "CuKa"
 
-        normalize_mode = (sys.argv[2] if len(sys.argv) > 2 else "true").lower() == "true"
-
-        import_cif_files(file_list, wavelength_mode,normalize_mode)
+    import_cif_files(cleaned_params)
 
 

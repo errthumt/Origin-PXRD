@@ -6,9 +6,10 @@ import sys
 import json
 
 # Import ras_files contained in labtalk fname$ variable
-def import_ras_files():
+def import_ras_files(normalize=True):
     # Imports using User Files\Filters\rasImp.oif
     # Cleans up names and units
+    norm_command = 'rnormalize irng:=$(ic) method:=1 orng:=$(ic);' if normalize else '// Did not normalize'
     labtalk_cmd = fr'''
     impFile filtername:="rasImp.oif" location:=user;
     page.longname$ = "RAS Imports";
@@ -16,7 +17,7 @@ def import_ras_files():
 
     for(int ic=2; ic<=wks.ncols; ic+=2)
     {{
-       rnormalize irng:=$(ic) method:=1 orng:=$(ic);
+       {norm_command}
        wks.col$(ic).lname$ = "Int";
        wks.col$(ic).unit$ = "AU";
        wks.col$(ic-1).lname$ = "2θ";
@@ -88,7 +89,7 @@ def import_ras_files():
 
 
 # Select folder containing all desired files. Uses Origin's native dlfPath dialog.
-def import_ras_from_folder():
+def import_ras_from_folder(normalize=True):
     # dlgPath stores folder path under path$. findFiles finds all matching files in path$ and stores in fname$
     folder_path = op.lt_exec('dlgPath init:=%X title:="Select folder containing RAS files"; findFiles ext:=*.ras;')
     if not folder_path:
@@ -101,18 +102,18 @@ def import_ras_from_folder():
         op.lt_exec('type -b "No RAS files found in folder.";')
         return
 
-    import_ras_files()
+    import_ras_files(normalize)
 
 
 # Select individual files. Uses Origin's native dlfFile dialo
-def import_ras_from_file_dialog():
+def import_ras_from_file_dialog(normalize=True):
     file_select = op.lt_exec('dlgFile init:=%X multi:=1 title:="Select RAS files for import" group:=*.ras')
     # dlgFile automatically stores filenames under global variable fname$
     file_paths = op.get_lt_str('fname$')
     if not file_select or not file_paths:
         op.lt_exec('type -b "No files selected"')
         return
-    import_ras_files()
+    import_ras_files(normalize)
 
 def parse_params(s):
     items = s.split(',')
@@ -122,21 +123,45 @@ def parse_params(s):
         out[key.strip()] = val.strip()
     return out
 
+default_parameters = {
+    "file_mode":"files",
+    "normalize_mode":True
+}
+
+def clean_parameters(params):
+    new_params = {}
+    for key in default_parameters:
+        def_val = default_parameters[key]
+        def_type = type(def_val)
+
+        new_val = params.get(key)
+        if not new_val:
+            new_params[key] = def_val
+        elif def_type == bool:
+            new_params[key] = new_val.lower() == 'true'
+        elif def_type != type(new_val):
+            try:
+                new_params[key] = def_type(new_val)
+            except:
+                print(f"Incompatible type passed for '{key}'. Defaulting to '{def_val}'")
+                new_params[key] = def_val
+        else:
+            new_params[key] = params[key]
+
+    return new_params
 
 # Dispatch based on labtalk arguments.
 if __name__ == "__main__":
     paramString = sys.argv[1].lower() if len(sys.argv) > 1 else ""
 
     params = parse_params(paramString)
-
-    try:
-        mode=params["file_mode"]
-    except:
-        mode="files"
+    cleaned_params = clean_parameters(params)
+    mode = cleaned_params["file_mode"]
+    normalize = cleaned_params["normalize_mode"]
 
     if mode == "folder":
-        import_ras_from_folder()
+        import_ras_from_folder(normalize)
     elif mode == "files":
-        import_ras_from_file_dialog()
+        import_ras_from_file_dialog(normalize)
     else:
         op.lt_exec(f'type -b "Unknown mode: {mode}";')
