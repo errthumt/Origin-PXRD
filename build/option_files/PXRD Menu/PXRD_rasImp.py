@@ -3,6 +3,7 @@
 import originpro as op
 import os
 import sys
+import json
 
 # Import ras_files contained in labtalk fname$ variable
 def import_ras_files():
@@ -113,11 +114,25 @@ def import_ras_from_file_dialog():
         return
     import_ras_files()
 
+def parse_params(s):
+    items = s.split(',')
+    out = {}
+    for item in items:
+        key, val = item.split(':')
+        out[key.strip()] = val.strip()
+    return out
 
 
 # Dispatch based on labtalk arguments.
 if __name__ == "__main__":
-    mode = sys.argv[1].lower() if len(sys.argv) > 1 else ""
+    paramString = sys.argv[1].lower() if len(sys.argv) > 1 else ""
+
+    params = parse_params(paramString)
+
+    try:
+        mode=params["file_mode"]
+    except:
+        mode="files"
 
     if mode == "folder":
         import_ras_from_folder()
