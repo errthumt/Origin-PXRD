@@ -6,14 +6,14 @@ import sys
 import json
 
 # Import ras_files contained in labtalk fname$ variable
-def import_ras_files(normalize=True):
+def import_ras_files(normalize=True, book_name='RAS Imports'):
     # Imports using User Files\Filters\rasImp.oif
     # Cleans up names and units
     norm_command = 'rnormalize irng:=$(ic) method:=1 orng:=$(ic);' if normalize else '// Did not normalize'
     labtalk_cmd = fr'''
     impFile filtername:="rasImp.oif" location:=user;
-    page.longname$ = "RAS Imports";
-    wks.name$ = "RAS Imports";
+    page.longname$ = "{book_name}";
+    wks.name$ = "{book_name}";
 
     for(int ic=2; ic<=wks.ncols; ic+=2)
     {{
@@ -89,7 +89,7 @@ def import_ras_files(normalize=True):
 
 
 # Select folder containing all desired files. Uses Origin's native dlfPath dialog.
-def import_ras_from_folder(normalize=True):
+def import_ras_from_folder(normalize=True,book_name='RAS Imports'):
     # dlgPath stores folder path under path$. findFiles finds all matching files in path$ and stores in fname$
     folder_path = op.lt_exec('dlgPath init:=%X title:="Select folder containing RAS files"; findFiles ext:=*.ras;')
     if not folder_path:
@@ -102,18 +102,18 @@ def import_ras_from_folder(normalize=True):
         op.lt_exec('type -b "No RAS files found in folder.";')
         return
 
-    import_ras_files(normalize)
+    import_ras_files(normalize,book_name)
 
 
 # Select individual files. Uses Origin's native dlfFile dialo
-def import_ras_from_file_dialog(normalize=True):
+def import_ras_from_file_dialog(normalize=True,book_name='RAS Imports'):
     file_select = op.lt_exec('dlgFile init:=%X multi:=1 title:="Select RAS files for import" group:=*.ras')
     # dlgFile automatically stores filenames under global variable fname$
     file_paths = op.get_lt_str('fname$')
     if not file_select or not file_paths:
         op.lt_exec('type -b "No files selected"')
         return
-    import_ras_files(normalize)
+    import_ras_files(normalize,book_name)
 
 def parse_params(s):
     items = s.split(',')
@@ -124,6 +124,7 @@ def parse_params(s):
     return out
 
 default_parameters = {
+    "book_name":"RAS Imports",
     "file_mode":"files",
     "normalize_mode":True
 }
@@ -158,10 +159,11 @@ if __name__ == "__main__":
     cleaned_params = clean_parameters(params)
     mode = cleaned_params["file_mode"]
     normalize = cleaned_params["normalize_mode"]
+    book_name = cleaned_params["book_name"]
 
     if mode == "folder":
-        import_ras_from_folder(normalize)
+        import_ras_from_folder(normalize,book_name)
     elif mode == "files":
-        import_ras_from_file_dialog(normalize)
+        import_ras_from_file_dialog(normalize,book_name)
     else:
         op.lt_exec(f'type -b "Unknown mode: {mode}";')

@@ -224,12 +224,13 @@ def calculate_pattern(
     tmin, tmax = two_theta_range
     two_theta = np.arange(tmin, tmax + step, step)
     intensity = np.zeros_like(two_theta)
-
+    fe_weights = np.array(fe_weights)/np.sum(fe_weights)
+    
     # Generate intensity as the sum of all fe intensities by weights.
     for wl, wt in zip(fe_wavelengths, fe_weights):
         # Basic reflections calculated using pymatgen's XRDCalculator.get_pattern()
         xrd = XRDCalculator(wavelength=wl)
-        pattern = xrd.get_pattern(structure, two_theta_range=two_theta_range)
+        pattern = xrd.get_pattern(structure, two_theta_range=two_theta_range, scaled=False)
 
         # Modify reflections with scattering factors
         for idx, (t0, I0) in enumerate(zip(pattern.x, pattern.y)):
@@ -240,17 +241,6 @@ def calculate_pattern(
 
             # Get atoms
             atoms = structure.sites
-
-            ''' No longer in use: anomalous scattering correction
-            # Get hkl's
-            hkl = pattern.hkls[idx][0]["hkl"]
-
-            # Start with base scattering factors.
-            fscale = 0.0
-            for atom, B in zip(atoms, atom_B):
-                f1, f2 = fprime_fdoubleprime(atom.species_string)
-                fscale += (f1 + f2)
-            '''
                 
             # Useful constants
             s = sin_th / wl
@@ -283,6 +273,7 @@ def calculate_pattern(
     return two_theta, intensity
 
 default_parameters = {
+    "book_name":"CIF Imports",
     "file_mode":"files",
     "doublet": True,
     "wavelength1": 1.5406,
@@ -401,7 +392,7 @@ def import_cif_files(cleaned_params):
     wavelength = params["fe_wavelengths"][0]
 
     # Create new book
-    wb = op.new_book('w', lname='CIF Imports')
+    wb = op.new_book('w', lname=cleaned_params["book_name"])
     wks = wb[0]
 
     # Start with no existing 2theta column, starting with first column.
