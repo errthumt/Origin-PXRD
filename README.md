@@ -146,6 +146,8 @@ Installed graph templates can be found in Plot > User Templates
 # Release Notes
 ## Release 1.2.6
 Feature Requests, bugfixes, UI improvements (I finally learned to code in C)
+
+This release contains features that are difficult to test without a fresh install of Origin. If you are able to use the full import dialog, give Travis the good news!
 * **All import commands have been moved into an official X-Function dialog.** *This also allows users to create and save their own import settings using Origin's native themes functionality!*
 * Updated file selection dialogs to start in folder containing current saved project.
 * Updated CIF workflow to prevent errors when cancelling out of menus.
