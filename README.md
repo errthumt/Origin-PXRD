@@ -157,7 +157,8 @@ This release contains features that are difficult to test without a fresh instal
 * Column selections for transformations are now done using Origin's native column selection instead of a UI.
 * Q-Space columns now allow for column selection.
 * Added CIF import preset for 11-ID-C March 2026
-* (Feature Request: Kirill) Added phase fraction analysis option for CIF imports.
+* (Feature Request: Kirill) \[BETA] Added phase fraction analysis option for CIF imports.
+* <ins>**Hotfix 1:**</ins> Improved phase fractions for more "realistic" relative intensities.
 ## Release 1.2.5
 The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
