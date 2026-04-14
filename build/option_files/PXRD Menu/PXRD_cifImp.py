@@ -19,6 +19,7 @@ import originpro as op #type: ignore
 
 import numpy as np #type: ignore
 from pymatgen.core import Structure #type: ignore
+from pymatgen.core.periodic_table import Element #type: ignore
 from pymatgen.analysis.diffraction.xrd import XRDCalculator #type: ignore
 
 import math
@@ -188,6 +189,33 @@ def fcj_asymmetry(two_theta, t0, H, S=0.015):
     shift = delta * (two_theta - t0)
     return np.exp(-shift**2 / (2*H**2))
 
+def compute_Z(structure):
+    comp = structure.composition
+    full_atoms = comp.num_atoms
+    formula_atoms = comp.reduced_composition.num_atoms
+    return full_atoms / formula_atoms
+
+def absorption_proxy(structure, n=2.5):
+    """
+    Compute a universal absorption proxy:
+        μ = Σ (w_i * Z_i^n)
+    where w_i is the weight fraction of element i.
+    """
+    comp = structure.composition
+    total_mass = comp.weight
+
+    mu = 0.0
+    for species, amount in comp.items():
+        symbol = species.symbol          # strip oxidation state
+        Z = Element(symbol).Z            # atomic number
+        mass = Element(symbol).atomic_mass
+        w_i = (amount * mass) / total_mass  # weight fraction
+        mu += w_i * (Z ** n)
+
+    return mu
+
+
+
 # Core diffraction engine
 def calculate_pattern(
     cif_path,
@@ -231,7 +259,8 @@ def calculate_pattern(
         # Basic reflections calculated using pymatgen's XRDCalculator.get_pattern()
         xrd = XRDCalculator(wavelength=wl)
         pattern = xrd.get_pattern(structure, two_theta_range=two_theta_range, scaled=False)
-
+        Z = compute_Z(structure)
+        mu = absorption_proxy(structure) # This is very fudgy
         # Modify reflections with scattering factors
         for idx, (t0, I0) in enumerate(zip(pattern.x, pattern.y)):
             # Useful constants
@@ -255,7 +284,10 @@ def calculate_pattern(
             DW_extra = np.exp(-2 * pi2 * B_extra * s**2)
 
             # Modify base intensity with damping
-            I0 *= DW_atoms * DW_extra
+            I0 *= DW_atoms #* DW_extra
+            I0 *= 1.0/Z
+            I0 *= 1.0/structure.lattice.volume
+
 
             # Caglioti broadening: Gaussian (H_G) and Lorentzian (HL) hybrid
             H_G = np.sqrt(U*np.tan(theta)**2 + V*np.tan(theta) + W)
