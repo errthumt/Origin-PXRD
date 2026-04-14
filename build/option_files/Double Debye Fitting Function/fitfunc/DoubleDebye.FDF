@@ -125,16 +125,16 @@ def Cp_fitFunc(T, N_const, R_const, gamma, s, debye_1, debye_2, M):
 pip -chk scipy math;
 
 
-[QuickCheck]
-x=1
-gamma=5
-s=1
-debye_1=250
-debye_2=500
-M=1
-
-
 [References]
 
 
 [LabTalk Functions Definition and Initializations]
+
+
+[QuickCheck]
+x=1
+gamma=8
+s=2.71764
+debye_1=250
+debye_2=500
+M=0
