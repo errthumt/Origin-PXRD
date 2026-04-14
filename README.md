@@ -123,7 +123,7 @@ If you have your own set of custom parameters that you like to use for your own 
 | | Advanced Parameters | Used to adjust peak broadening and dampening. |
 | Normalization Mode | | Specify whether to normalize imported or calculated patterns.<br>During CIF import, an extra option is available to add scaling for each imported CIF by the relative phase fractions in your analysis. See the Phase Fraction section below. |
 
-### Phase Fraction Analysis
+### \[BETA] Phase Fraction Analysis
 If you select this option under **Normalization Mode** during CIF import, the files will be imported as usual (without normalization), but additional columns will be added to scale phases by their relative fractions present in your analysis. Column types are specified by 'Norm Type' row:
 - **Non-normal**: Original, non-normalized calculated patterns
 - **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
