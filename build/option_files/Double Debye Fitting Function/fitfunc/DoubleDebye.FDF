@@ -1,0 +1,140 @@
+﻿
+
+[General Information]
+Function Name = DoubleDebye
+Brief Description = 
+Function Source = N/A
+Number Of Parameters = 5
+Function Type = User-Defined
+Function Form = Equations
+Path = 
+Number Of Independent Variables = 1
+Number Of Dependent Variables = 1
+Category = User Defined
+Function Model = Explicit
+FunctionPrev = NewFunction
+
+
+[Fitting Parameters]
+Names = gamma,s,debye_1,debye_2,M
+Initial Values = 8(F),2.71764177044058(F),250(V),500(V),0(F)
+Meanings = ?,?,?,?,?
+Lower Bounds = 0(X, On),0(X, On),0(X, On),0(X, On),0(I, On)
+Upper Bounds = --(I, Off),--(I, Off),--(I, Off),--(I, Off),--(I, Off)
+Naming Method = User-Defined
+Number Of Significant Digits = 0,0,0,0,0
+Unit = mJ mol-1 K-2,AU,K,K,mJ mol -1 K-3
+Format = --,--,--,--,--
+CustomDisplay = --,--,--,--,--
+
+
+[Independent Variables]
+x = 
+
+
+[Dependent Variables]
+y = 
+
+
+[Formula]
+y = py.Cp_fitFunc(x,N_const,R_const,gamma,s,debye_1,debye_2,M)
+
+
+[Constraints]
+
+
+[Initializations]
+
+
+[After Fitting]
+
+
+[Constants]
+R_const=8.314
+N_const=3
+
+
+[Controls]
+General Linear Constraints = 0
+Initialization Scripts = 0
+Scripts After Fitting = 0
+Number Of Duplicates = N/A
+Duplicate Offset = N/A
+Duplicate Unit = N/A
+Generate Curves After Fitting = 1
+Curve Point Spacing = Uniform on X-Axis Scale
+Generate Peaks After Fitting = 1
+Generate Peaks During Fitting = 1
+Generate Peaks with Baseline = 1
+Paste Parameters to Plot After Fitting = 1
+Paste Parameters to Notes Window After Fitting = 1
+Generate Residuals After Fitting = 0
+Keep Parameters = 0
+Compile On Param Change Script = 1
+Enable Parameters Initialization = 1
+Treat All Numbers As Double = 1
+Use Initial Formula = 1
+AllowInitializingFixedParameters = 0
+
+
+[Compile Function]
+Compile = 0
+Compile Parameters Initialization = 1
+OnParamChangeScriptsEnabled = 0
+
+
+[Parameters Initialization]
+
+
+[Origin C Function Header]
+
+
+[Origin C Parameter Initialization Header]
+
+
+[Derived Parameter Settings]
+Unit = 
+Names = 
+Meanings = 
+
+
+[Python]
+from scipy.integrate import quad
+from math import exp
+
+mJtoJ = 0.001
+
+def integrand(x):
+    return (x**4)*exp(x)/((exp(x)-1)**2)
+
+def debye_term(T, R_const, debye_i):
+    integrated, error = quad(integrand, 0, debye_i/T)
+    return 9 * R_const * ((T/debye_i)**3) * integrated
+
+def Cp_fitFunc(T, N_const, R_const, gamma, s, debye_1, debye_2, M):
+    gamma_Joules = gamma*mJtoJ
+    M_Joules = M*mJtoJ
+    result = gamma_Joules*T
+    result += debye_term(T, R_const, debye_1) * (N_const-s)
+    result += debye_term(T, R_const, debye_2) * s
+    result += M_Joules * (T**2)
+    return result
+
+
+[BeforeInstall]
+pip -chk scipy math;
+
+
+[QuickCheck]
+x=1
+gamma=5
+s=1
+debye_1=250
+debye_2=500
+M=1
+
+
+[References]
+
+
+[LabTalk Functions Definition and Initializations]
