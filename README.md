@@ -144,6 +144,11 @@ Installed graph templates can be found in Plot > User Templates
 ---
 
 # Release Notes
+## Release 1.3.1
+UI tweaks
+
+
+
 ## Release 1.3.0
 Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
 
