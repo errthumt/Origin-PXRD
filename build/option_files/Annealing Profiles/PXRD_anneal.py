@@ -12,7 +12,6 @@ import tkinter as tk
 import tkinter.font as tkfont
 import math
 import matplotlib.pyplot as plt
-import math
 import originpro as op #type: ignore
 from itertools import zip_longest
 import sys
@@ -23,7 +22,8 @@ RAMP = "ramp"
 DWELL = "dwell"
 
 
-def crop_axes_to_content(ax, pad=2):
+
+def crop_axes_to_content(ax, l_marg=0, r_marg=0, t_marg=0, b_marg=0, pad=2):
     """
     Remove whitespace by shrinking axis limits to tightly wrap
     all lines, text, and annotations on the Axes.
@@ -67,8 +67,8 @@ def crop_axes_to_content(ax, pad=2):
     x1, y1 = inv.transform((full.x1, full.y1))
 
     # Apply new limits
-    ax.set_xlim(x0, x1)
-    ax.set_ylim(y0, y1)
+    ax.set_xlim(x0-l_marg, x1+r_marg)
+    ax.set_ylim(y0-b_marg, y1+t_marg)
 
 
 class InvertedCanvas(tk.Canvas):
@@ -92,9 +92,10 @@ class InvertedCanvas(tk.Canvas):
 
 
 class profile:
-    def __init__(self, start_temp=25, min_height=6, ramp_width=4, dwell_width=6, font_size=16, font_family="Arial", text_offset=0.6, line_width=2, l_marg=10,r_marg=10,t_marg=10,b_marg=10):
+    def __init__(self, start_temp=25, min_height=6, add_temps="", ramp_width=4, dwell_width=6, font_size=16, font_family="Arial", text_offset=0.6, line_width=2, l_marg=10,r_marg=10,t_marg=10,b_marg=10):
         self.start_temp = start_temp
         self.min_height=min_height
+        self.add_temps=add_temps
         self.ramp_width=ramp_width
         self.dwell_width=dwell_width
         self.font=[font_family, font_size]
@@ -129,7 +130,12 @@ class profile:
         fig = ax.figure
 
         # --- Build unique temperature list ---
-        unique_temps = []
+        try:
+            unique_temps = [int(float(x)) for x in str(self.add_temps).split(",") if str(self.add_temps).strip() != ""]
+        except Exception as e:
+            op.lt_exec('type -b "Your \"Add Temps\" values could not be read correctly.')
+            print(e)
+            unique_temps = []
         for type, temp in self.sections:
             if temp not in unique_temps:
                 unique_temps.append(temp)
@@ -184,14 +190,22 @@ class profile:
         # --- Compute coordinates ---
         coords = []
         current_x = 0
-
+        last_temp = self.start_temp
         for (type, temp), t_width in zip(self.sections, text_widths):
-
+            temp_index = unique_temps.index(temp)
+            last_index = unique_temps.index(last_temp)
+            last_temp = temp
             if type == RAMP:
-                angle = math.atan(self.min_height / self.ramp_width)
-                min_width = t_width * math.cos(angle)
+                
+                height_change = abs((temp_index-last_index)/2)
+                orig_angle = math.atan(self.min_height * height_change / self.ramp_width)
+                try:
+                    text_angle = math.asin(self.min_height * height_change / t_width)
+                except:
+                    text_angle = 4
+                angle = min(orig_angle, text_angle)
                 #print(f'comparing {min_width} with {self.ramp_width}')
-                current_x += max(min_width, self.ramp_width)
+                current_x += self.min_height * height_change / math.tan(angle)
 
             elif type == DWELL:
                 #print(f'comparing {t_width} with {self.dwell_width}')
@@ -209,7 +223,7 @@ class profile:
     def save_canvas_png(self):
         return
 
-    def plot(self,):
+    def plot(self):
         # --- Create figure and axis ---
         fig, ax = plt.subplots(figsize=(6, 4), dpi=100)
 
@@ -225,11 +239,12 @@ class profile:
 
         points = self.get_coords(ax)
         
+        '''
         ax.set_xlim(min(x for x, y in points)-self.l_marg,
                             max(x for x, y in points)+self.r_marg)
         ax.set_ylim(min(y for x, y in points)-self.b_marg,
                 max(y for x, y in points)+self.t_marg)
-        
+        '''
 
         # Turn off axes for a clean canvas-like look
         ax.axis("off")
@@ -356,8 +371,17 @@ class profile:
                 transform=ax.transData,
                 color="red"
             )
-        ax.autoscale(False)
-        #crop_axes_to_content(ax)
+        
+        old_xscale = ax.get_xlim()[1]-ax.get_xlim()[0]
+        crop_axes_to_content(ax,self.l_marg,self.r_marg,self.t_marg,self.b_marg)
+
+        new_xscale = ax.get_xlim()[1]-ax.get_xlim()[0]
+        #print(f'old fontsize: {fontsize}')
+        fontsize *= old_xscale/new_xscale
+        #print(f'new fontsize: {fontsize}')
+        for txt in ax.texts:
+            txt.set_fontsize(fontsize)
+
         plt.show()
 
 
