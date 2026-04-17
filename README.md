@@ -96,6 +96,11 @@ You may need to switch GUI mode.
 
 * <ins>**11-ID-C (March 2026):**</ins> Normalizes all patterns (normalized by data set, not by individual pattern) and extracts temperature from all metadata files. Adds temperature as a "Temp" row at the top.
 
+<ins>**Annealing Profiles:**</ins> A quick tool to generate diagrams for annealing profiles.
+
+* <ins>**Get Template:**</ins> Creates a template worksheet to edit your annealing profile and adjust diagram settings.
+* <ins>**Generate Diagram:**</ins> Generates an annealing profile diagram from the current template worksheet.
+
 ---
 ## Import Pattern Dialog Options
 
@@ -145,9 +150,10 @@ Installed graph templates can be found in Plot > User Templates
 
 # Release Notes
 ## Release 1.3.1
-UI tweaks
+UI tweaks, annealing tools
 
 * Added tooltips back to PXRD menu
+* Added tool to PXRD menu to create annealing profile diagrams.
 
 ## Release 1.3.0
 Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
@@ -164,6 +170,7 @@ This release contains features that are difficult to test without a fresh instal
 * Added CIF import preset for 11-ID-C March 2026
 * (Feature Request: Kirill) \[BETA] Added phase fraction analysis option for CIF imports.
 * <ins>**Hotfix 1:**</ins> Improved phase fractions for more "realistic" relative intensities.
+
 ## Release 1.2.5
 The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
