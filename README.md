@@ -70,7 +70,7 @@ You may need to switch GUI mode.
 
 ---
 
-## PXRD MENU OPTIONS:
+## PXRD Menu Options:
 
 <ins>**Import Patterns:**</ins> Import experimental patterns or calculate theoretical patterns from CIF files. 
 
@@ -102,6 +102,16 @@ You may need to switch GUI mode.
 * <ins>**Generate Diagram:**</ins> Generates an annealing profile diagram from the current template worksheet.
 
 ---
+## \[NEW] Annealing Profiles Dropdown
+
+<ins>**Get Template:**</ins> Generates a worksheet template to generate annealing diagrams.
+
+<ins>**Generate Diagram:**</ins> Generates an annealing profile diagram from the current template worksheet.
+
+* <ins>**Full Dialog...:**</ins> Set parameters or open your own theme to generate an annealing diagram from the current worksheet. Recommended to use with generated template worksheet.
+* <ins>**\<Default\>**</ins> Generate an annealing diagram from the current worksheet using default settings. Recommended to use with generated template worksheet.
+* <ins>**\<Last Used\>**</ins> Generate an annealing diagram from the current worksheet using the last used settings. Recommended to use with generated template worksheet.
+
 ## Import Pattern Dialog Options
 
 <p align="center">

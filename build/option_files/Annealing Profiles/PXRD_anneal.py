@@ -131,7 +131,7 @@ class profile:
 
         # --- Build unique temperature list ---
         try:
-            unique_temps = [int(float(x)) for x in str(self.add_temps).split(",") if str(self.add_temps).strip() != ""]
+            unique_temps = [int(float(x)) for x in str(self.add_temps).split(";") if str(self.add_temps).strip() != ""]
         except Exception as e:
             op.lt_exec('type -b "Your \"Add Temps\" values could not be read correctly.')
             print(e)
@@ -384,24 +384,78 @@ class profile:
 
         plt.show()
 
+def make_anneal_template():
+    wbook = op.load_book('PXRD_anneal_template.ogwu')
+    wks = wbook[0]
+    op.lt_exec("wks.labels(-O)")
 
-def make_anneal_plot():
+default_parameters = {
+    "start_temp":      25,   # int
+    "min_height":      6.0,   # float
+    "add_temps":       "",   # comma‑separated string of numbers, e.g. "500,600,700"
+    "ramp_width":      4.0,   # float
+    "dwell_width":     6.0,   # float
+    "font_size":       30.0,   # float
+    "font_family":     "Arial",   # int (0=Arial, 1=Times New Roman, etc.)
+    "text_offset":     0.6,   # float
+    "line_width":      3.0,   # float
+    "l_marg":          1.0,   # float
+    "r_marg":          1.0,   # float
+    "t_marg":          1.0,   # float
+    "b_marg":          1.0    # float
+}
+
+
+def clean_parameters(params):
+    new_params = {}
+    for key in default_parameters:
+        def_val = default_parameters[key]
+        def_type = type(def_val)
+
+        new_val = params.get(key)
+        if not new_val:
+            new_params[key] = def_val
+        elif def_type == bool:
+            new_params[key] = new_val.lower() == 'true'
+        elif def_type != type(new_val):
+            try:
+                new_params[key] = def_type(new_val)
+            except:
+                print(f"Incompatible type passed for '{key}'. Defaulting to '{def_val}'")
+                new_params[key] = def_val
+        else:
+            new_params[key] = params[key]
+
+    return new_params
+
+def parse_params(s):
+    items = s.split(',')
+    out = {}
+    for item in items:
+        try:
+            key, val = item.split(':')
+            out[key.strip()] = val.strip()
+        except:
+            print(f"Error parsing option '{item}'. Excluding from parsed parameters")
+    return out
+
+def make_anneal_plot(cleaned_params=default_parameters):
     wks = op.find_sheet()
     try:
         types = wks.to_list('Type')
         temps = wks.to_list('Temperature')
         notes = wks.to_list('Time/Comment')
 
-        keys = wks.to_list('Variable')
-        values = wks.to_list('Value')
+        #keys = wks.to_list('Variable')
+        #values = wks.to_list('Value')
     except:
         op.lt_exec('type -b "At least one required column not found. It is recommended to use the provided template worksheet.')
         return
-    args = dict(zip(keys,values))
+
 
 
     commands = list(zip_longest(types,temps,notes))
-    myProf = profile(**args)
+    myProf = profile(**cleaned_params)
     for type, temp, note in commands:
         method = getattr(myProf,type,None)
         if method is not None:
@@ -412,11 +466,6 @@ def make_anneal_plot():
 
     myProf.plot()
 
-def make_anneal_template():
-    wbook = op.load_book('PXRD_anneal_template.ogwu')
-    wks = wbook[0]
-    op.lt_exec("wks.labels(-O)")
-
 if __name__ == "__main__":
     # sys.argv[0] = script name
     # sys.argv[1] = first argument from LabTalk
@@ -425,4 +474,7 @@ if __name__ == "__main__":
     if template_mode:
         make_anneal_template()
     else:
-        make_anneal_plot()
+        param_string = sys.argv[2] if len(sys.argv)>2 else ""
+        params = parse_params(param_string)
+        cleaned_params = clean_parameters(params)
+        make_anneal_plot(cleaned_params)
