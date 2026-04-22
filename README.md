@@ -184,7 +184,7 @@ Installed graph templates can be found in Plot > User Templates
 UI tweaks, annealing tools
 
 * Added tooltips back to PXRD menu
-* Added tool to PXRD menu to create annealing profile diagrams.
+* Added new [Annealing Profiles Dropdown](#new-annealing-profiles-dropdown).
 
 ## Release 1.3.0
 Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
@@ -199,7 +199,7 @@ This release contains features that are difficult to test without a fresh instal
 * Column selections for transformations are now done using Origin's native column selection instead of a UI.
 * Q-Space columns now allow for column selection.
 * Added CIF import preset for 11-ID-C March 2026
-* (Feature Request: Kirill) \[BETA] Added phase fraction analysis option for CIF imports.
+* (Feature Request: Kirill) \[BETA] Added [phase fraction analysis option](#beta-phase-fraction-analysis) for CIF imports.
 * <ins>**Hotfix 1:**</ins> Improved phase fractions for more "realistic" relative intensities.
 
 ## Release 1.2.5
