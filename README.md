@@ -105,7 +105,7 @@ You may need to switch GUI mode.
 ## Import Pattern Dialog Options
 
 <p align="center">
-  <img src="/install_guide/images/import_dialog.png" width="40%">
+  <img src="/assets/import_dialog.png" width="40%">
 </p>
 
 If you have your own set of custom parameters that you like to use for your own analysis, you can save them as a theme using the menu on the top right of the dialog.
@@ -142,7 +142,7 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 
 | Example Annealing Profile | Resulting Diagram |
 | --- | --- |
-| ![profile](install_guide/images/anneal_profile.png) | ![diagram](install_guide/images/anneal_diagram.png) |
+| ![profile](/assets/anneal_profile.png) | ![diagram](/assets/anneal_diagram.png) |
 
 <ins>**Get Template:**</ins> Generates a worksheet template to generate annealing diagrams.
 
@@ -158,8 +158,8 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 | Option | Description |
 | --- | --- |
 | Start Temperature | Initial Temperature in degrees celsius (usually 25). |
-| Minimum Height | All unique temperatures will be evenly spaced by this height (not to scale). For example, in the diagram below, the initial temperature, max temperature (800) and the end temperature (700) are all evenly spaced regardless of scale.<br>![diagram without extra temps](install_guide/images/anneal_diagram_noExtras.png)<br> If desired, you can space temperatures differently using the **Extra Temperatures** option. |
-|Extra Temperatures | In order to increase the height between two specific temperatures, you can add unique temperatures that you want to include in the spacing, but which aren't already in your profile. For example, the diagram below was made more scale-appropriate by adding **100; 200** to the extra temperatures field. This essentially reserves additional y-axis space for 100 and 200 degrees, without actually graphing them.<br>![diagram with extra temps](install_guide/images/anneal_diagram_extras.png)<br>Multiple temperature values must be semicolon separated, as in: **100; 200; 300** | 
+| Minimum Height | All unique temperatures will be evenly spaced by this height (not to scale). For example, in the diagram below, the initial temperature, max temperature (800) and the end temperature (700) are all evenly spaced regardless of scale.<br>![diagram without extra temps](/assets/anneal_diagram_noExtras.png)<br> If desired, you can space temperatures differently using the **Extra Temperatures** option. |
+|Extra Temperatures | In order to increase the height between two specific temperatures, you can add unique temperatures that you want to include in the spacing, but which aren't already in your profile. For example, the diagram below was made more scale-appropriate by adding **100; 200** to the extra temperatures field. This essentially reserves additional y-axis space for 100 and 200 degrees, without actually graphing them.<br>![diagram with extra temps](/assets/anneal_diagram_extras.png)<br>Multiple temperature values must be semicolon separated, as in: **100; 200; 300** | 
 | Ramp Width | All ramp sections will be this width by default. Individual sections will automatically widen for longer labels. |
 | Dwell Width | All dwell section will be this width by default. Individual sections will automatically widen for longer labels. |
 | Font Size | Text label font size |
