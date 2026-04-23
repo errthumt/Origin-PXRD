@@ -181,8 +181,9 @@ Installed graph templates can be found in Plot > User Templates
 
 # Release Notes
 ## Release 1.3.1
-UI tweaks, annealing tools
+UI tweaks, annealing profiles
 
+* Added version checking so that users are notified when a new version is available.
 * Added tooltips back to PXRD menu
 * Added new [Annealing Profiles Dropdown](#new-annealing-profiles-dropdown).
 
