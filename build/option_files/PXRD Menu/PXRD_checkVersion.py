@@ -48,10 +48,13 @@ def get_latest_version():
     url = "https://raw.githubusercontent.com/errthumt/Origin-PXRD/main/build/PXRD_versionTag.txt"
     try:
         with urllib.request.urlopen(url, timeout=5) as response:
-            return response.read().decode("utf-8").strip()
+            text = response.read().decode("utf-8")
+            lines = text.splitlines()
+            return lines[0].strip() if lines else None
     except Exception as e:
         print(e)
         return None
+
 
 def notify_if_outdated(local_version,ignore_version,version_file):
     latest = get_latest_version()
@@ -64,7 +67,9 @@ def notify_if_outdated(local_version,ignore_version,version_file):
         lt_cmd=f'''
             t=4;
             type -y 
-            "A new version of Origin-PXRD is available: {latest} (you have {local_version})\n
+            "NEW UPDATE AVAILABLE\n
+            A new version of Origin-PXRD is available: {latest}\n
+            (you have {local_version})\n
             Would you like to go to the updated GitHub page?\n
             (Press \"Cancel\" to ignore until next release.)"
             '''
