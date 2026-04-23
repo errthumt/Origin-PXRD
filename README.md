@@ -23,7 +23,7 @@ A full installation guide with screenshots can be found [here](/install_guide/in
 
 ## Automatic Install (Origin 2025 or later):
 1. Download and run [the most recent installer](installer/release). It will open the installation project inside Origin.
-2. In the pop up menus, select which plugin features you want to install.
+2. In the dialog, select which plugin features you want to install and select OK.
 3. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
 4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
 5. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
@@ -180,6 +180,9 @@ Installed graph templates can be found in Plot > User Templates
 ---
 
 # Release Notes
+## Release 1.3.2
+Improved workflow for installation.
+
 ## Release 1.3.1
 UI tweaks, annealing profiles
 

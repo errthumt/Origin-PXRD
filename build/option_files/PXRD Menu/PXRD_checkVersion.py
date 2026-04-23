@@ -68,8 +68,9 @@ def notify_if_outdated(local_version,ignore_version,version_file):
             t=4;
             type -y 
             "NEW UPDATE AVAILABLE\n
-            A new version of Origin-PXRD is available: {latest}\n
-            (you have {local_version})\n
+            A new version of Origin-PXRD is available:\n
+            Latest Version: {latest}\n
+            Your Version: {local_version}\n
             Would you like to go to the updated GitHub page?\n
             (Press \"Cancel\" to ignore until next release.)"
             '''

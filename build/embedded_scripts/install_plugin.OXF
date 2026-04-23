@@ -1,0 +1,447 @@
+<?xml version="1.0"?>
+<OriginStorage Display="652">
+	<XFname NodeID="11" DataID="300">install_plugin</XFname>
+	<xFdescription NodeID="11" DataID="310"/>
+	<attachTo NodeID="13" DataID="320" Show="0">1</attachTo>
+	<author NodeID="11" DataID="314"/>
+	<AutoDependent NodeID="10" DataID="451">1</AutoDependent>
+	<UsageCtxt NodeID="268435456" DataID="329">
+		<LabTalk NodeID="10" DataID="357">1</LabTalk>
+		<WksSel NodeID="10" DataID="350">0</WksSel>
+		<OpenDlgFromLT NodeID="10" DataID="565">0</OpenDlgFromLT>
+		<GrObj NodeID="268435456" DataID="330" Use="0">
+			<InitAnchors NodeID="10" DataID="339">1</InitAnchors>
+			<Move NodeID="10" DataID="331">1</Move>
+			<Moving NodeID="10" DataID="332">0</Moving>
+			<Resize NodeID="10" DataID="333">0</Resize>
+			<Resizing NodeID="10" DataID="334">0</Resizing>
+			<Delete NodeID="10" DataID="335">0</Delete>
+			<Select NodeID="10" DataID="336">0</Select>
+			<Unselect NodeID="10" DataID="337">0</Unselect>
+			<BtnClick NodeID="10" DataID="338">0</BtnClick>
+			<Rotate NodeID="10" DataID="340">0</Rotate>
+			<Rotating NodeID="10" DataID="341">0</Rotating>
+			<Skew NodeID="10" DataID="342">0</Skew>
+			<Skewing NodeID="10" DataID="343">0</Skewing>
+			<EditEv NodeID="10" DataID="344">0</EditEv>
+			<Editing NodeID="10" DataID="345">0</Editing>
+			<NewSelection NodeID="10" DataID="346">0</NewSelection>
+			<DeletePart NodeID="10" DataID="347">0</DeletePart>
+			<Keyboard NodeID="10" DataID="348">0</Keyboard>
+			<SelectHandle NodeID="10" DataID="562">0</SelectHandle>
+			<ObjType NodeID="13" DataID="349">0</ObjType>
+		</GrObj>
+		<Theme NodeID="268435456" DataID="386">
+			<UseInDialog NodeID="10" DataID="372">1</UseInDialog>
+			<ShowInMenu NodeID="10" DataID="352">1</ShowInMenu>
+			<SaveInBook NodeID="10" DataID="387">0</SaveInBook>
+			<SaveInSheet NodeID="10" DataID="388">0</SaveInSheet>
+			<HideDefault NodeID="10" DataID="389">0</HideDefault>
+		</Theme>
+		<mainmenu NodeID="268435456" DataID="365" Use="0">
+			<AddAsTool NodeID="10" DataID="366">0</AddAsTool>
+			<ClassOp NodeID="10" DataID="367">0</ClassOp>
+			<GetN NodeID="13" DataID="371">1</GetN>
+			<CustomDialog NodeID="11" DataID="395" Show="0"/>
+			<DlgFromMenu NodeID="10" DataID="374">1</DlgFromMenu>
+			<checkMenu NodeID="10" DataID="470">0</checkMenu>
+			<excludeOGLGraph NodeID="10" DataID="396">0</excludeOGLGraph>
+			<hideOpenDialog NodeID="10" DataID="397">0</hideOpenDialog>
+		</mainmenu>
+		<windows NodeID="268435456" DataID="450" Use="0">
+			<graph NodeID="10" DataID="368">0</graph>
+			<worksheet NodeID="10" DataID="369">0</worksheet>
+			<matrix NodeID="10" DataID="370">0</matrix>
+			<report NodeID="10" DataID="360">0</report>
+			<layout NodeID="10" DataID="359">0</layout>
+			<image NodeID="10" DataID="354">0</image>
+			<none NodeID="10" DataID="361">0</none>
+		</windows>
+	</UsageCtxt>
+	<outTree NodeID="10" DataID="373">1</outTree>
+	<askOutResultsLog NodeID="13" DataID="393">0</askOutResultsLog>
+	<outResultsLog NodeID="13" DataID="394">0</outResultsLog>
+	<customButtons NodeID="11" DataID="391"/>
+	<syntax NodeID="41" DataID="305" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="2-18"/>
+	<vars NodeID="268435456">
+		<v1 _XFUNCTION_VAR="1" RepeatID="1">
+			<name NodeID="11" DataID="10">menu</name>
+			<description NodeID="11" DataID="20" Show="0"/>
+			<io NodeID="13" DataID="30">0</io>
+			<type NodeID="11" DataID="40">int</type>
+			<valdata NodeID="11" DataID="50">1</valdata>
+			<comboString NodeID="11" DataID="70">1|0</comboString>
+			<context NodeID="268435456" DataID="71">
+				<keywords NodeID="13" DataID="415">0</keywords>
+			</context>
+			<optionString NodeID="11" DataID="69">G: -Select Options to Update</optionString>
+			<suggestedValues NodeID="11" DataID="405"/>
+			<themeID NodeID="14" DataID="35">0</themeID>
+			<help NodeID="268435456" DataID="410" RepeatID="256">
+				<description NodeID="11" DataID="408">PXRD Menu</description>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3"/>
+				<comboDescription NodeID="47" DataID="407" Show="0"/>
+			</help>
+			<helpj NodeID="268435456" DataID="410" RepeatID="512">
+				<description NodeID="11" DataID="408" CdPg="932"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="932"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="932"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="932" Show="0"/>
+			</helpj>
+			<helpg NodeID="268435456" DataID="410" RepeatID="768">
+				<description NodeID="11" DataID="408" CdPg="1252"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="1252"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="1252"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="1252" Show="0"/>
+			</helpg>
+			<helpc NodeID="268435456" DataID="410" RepeatID="1024">
+				<description NodeID="11" DataID="408" CdPg="936"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="936"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="936"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="936" Show="0"/>
+			</helpc>
+			<helpk NodeID="268435456" DataID="410" RepeatID="2048">
+				<description NodeID="11" DataID="408" CdPg="949"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="949"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="949"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="949" Show="0"/>
+			</helpk>
+		</v1>
+		<v2 _XFUNCTION_VAR="1" RepeatID="2">
+			<name NodeID="11" DataID="10">inSitu</name>
+			<description NodeID="11" DataID="20" Show="0"/>
+			<io NodeID="13" DataID="30">0</io>
+			<type NodeID="11" DataID="40">int</type>
+			<valdata NodeID="11" DataID="50">1</valdata>
+			<comboString NodeID="11" DataID="70">1|0</comboString>
+			<context NodeID="268435456" DataID="71">
+				<keywords NodeID="13" DataID="415">0</keywords>
+			</context>
+			<optionString NodeID="11" DataID="69"/>
+			<suggestedValues NodeID="11" DataID="405"/>
+			<themeID NodeID="14" DataID="35">0</themeID>
+			<help NodeID="268435456" DataID="410" RepeatID="256">
+				<description NodeID="11" DataID="408">In-Situ Beamline Processing</description>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3"/>
+				<comboDescription NodeID="47" DataID="407" Show="0"/>
+			</help>
+			<helpj NodeID="268435456" DataID="410" RepeatID="512">
+				<description NodeID="11" DataID="408" CdPg="932"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="932"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="932"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="932" Show="0"/>
+			</helpj>
+			<helpg NodeID="268435456" DataID="410" RepeatID="768">
+				<description NodeID="11" DataID="408" CdPg="1252"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="1252"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="1252"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="1252" Show="0"/>
+			</helpg>
+			<helpc NodeID="268435456" DataID="410" RepeatID="1024">
+				<description NodeID="11" DataID="408" CdPg="936"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="936"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="936"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="936" Show="0"/>
+			</helpc>
+			<helpk NodeID="268435456" DataID="410" RepeatID="2048">
+				<description NodeID="11" DataID="408" CdPg="949"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="949"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="949"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="949" Show="0"/>
+			</helpk>
+		</v2>
+		<v3 _XFUNCTION_VAR="1" RepeatID="3">
+			<name NodeID="11" DataID="10">anneal</name>
+			<description NodeID="11" DataID="20" Show="0"/>
+			<io NodeID="13" DataID="30">0</io>
+			<type NodeID="11" DataID="40">int</type>
+			<valdata NodeID="11" DataID="50">1</valdata>
+			<comboString NodeID="11" DataID="70">1|0</comboString>
+			<context NodeID="268435456" DataID="71">
+				<keywords NodeID="13" DataID="415">0</keywords>
+			</context>
+			<optionString NodeID="11" DataID="69"/>
+			<suggestedValues NodeID="11" DataID="405"/>
+			<themeID NodeID="14" DataID="35">0</themeID>
+			<help NodeID="268435456" DataID="410" RepeatID="256">
+				<description NodeID="11" DataID="408">Annealing Profiles</description>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3"/>
+				<comboDescription NodeID="47" DataID="407" Show="0"/>
+			</help>
+			<helpj NodeID="268435456" DataID="410" RepeatID="512">
+				<description NodeID="11" DataID="408" CdPg="932"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="932"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="932"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="932" Show="0"/>
+			</helpj>
+			<helpg NodeID="268435456" DataID="410" RepeatID="768">
+				<description NodeID="11" DataID="408" CdPg="1252"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="1252"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="1252"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="1252" Show="0"/>
+			</helpg>
+			<helpc NodeID="268435456" DataID="410" RepeatID="1024">
+				<description NodeID="11" DataID="408" CdPg="936"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="936"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="936"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="936" Show="0"/>
+			</helpc>
+			<helpk NodeID="268435456" DataID="410" RepeatID="2048">
+				<description NodeID="11" DataID="408" CdPg="949"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="949"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="949"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="949" Show="0"/>
+			</helpk>
+		</v3>
+		<v4 _XFUNCTION_VAR="1" RepeatID="4">
+			<name NodeID="11" DataID="10">graph</name>
+			<description NodeID="11" DataID="20" Show="0"/>
+			<io NodeID="13" DataID="30">0</io>
+			<type NodeID="11" DataID="40">int</type>
+			<valdata NodeID="11" DataID="50">1</valdata>
+			<comboString NodeID="11" DataID="70">1|0</comboString>
+			<context NodeID="268435456" DataID="71">
+				<keywords NodeID="13" DataID="415">0</keywords>
+			</context>
+			<optionString NodeID="11" DataID="69"/>
+			<suggestedValues NodeID="11" DataID="405"/>
+			<themeID NodeID="14" DataID="35">0</themeID>
+			<help NodeID="268435456" DataID="410" RepeatID="256">
+				<description NodeID="11" DataID="408">Graph Templates</description>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3"/>
+				<comboDescription NodeID="47" DataID="407" Show="0"/>
+			</help>
+			<helpj NodeID="268435456" DataID="410" RepeatID="512">
+				<description NodeID="11" DataID="408" CdPg="932"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="932"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="932"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="932" Show="0"/>
+			</helpj>
+			<helpg NodeID="268435456" DataID="410" RepeatID="768">
+				<description NodeID="11" DataID="408" CdPg="1252"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="1252"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="1252"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="1252" Show="0"/>
+			</helpg>
+			<helpc NodeID="268435456" DataID="410" RepeatID="1024">
+				<description NodeID="11" DataID="408" CdPg="936"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="936"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="936"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="936" Show="0"/>
+			</helpc>
+			<helpk NodeID="268435456" DataID="410" RepeatID="2048">
+				<description NodeID="11" DataID="408" CdPg="949"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="949"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="949"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="949" Show="0"/>
+			</helpk>
+		</v4>
+	</vars>
+	<modificationLog NodeID="41" DataID="438" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="2-15"/>
+	<codes NodeID="268435456" DataID="324">
+		<rettype NodeID="11" DataID="41">void</rettype>
+		<header NodeID="45" DataID="323" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="3-15">
+			<![CDATA[//put additional include files here
+
+//put your own support static functions here
+
+]]>
+		</header>
+		<code NodeID="45" DataID="325" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="5-20">
+			<![CDATA[string lt_cmd;
+string boolStr;
+
+lt_cmd = "run -pyp installNew \"";
+
+boolStr = menu ? "true" : "false";
+lt_cmd += "PXRD Menu: " + boolStr;
+
+boolStr = inSitu ? "true" : "false";
+lt_cmd += ", In-Situ Beamline Processing: " + boolStr;
+
+boolStr = anneal ? "true" : "false";
+lt_cmd += ", Annealing Profiles: " + boolStr;
+
+boolStr = graph ? "true" : "false";
+lt_cmd += ", Graph Templates: " + boolStr;
+
+lt_cmd += "\";";
+LT_execute(lt_cmd);]]>
+		</code>
+		<event1 NodeID="45" DataID="327" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="5-20" Show="0">
+			<![CDATA[return false;]]>
+		</event1>
+		<event2 NodeID="45" DataID="376" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="5-20" Show="0">
+			<![CDATA[return false;]]>
+		</event2>
+		<event3 NodeID="45" DataID="378" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="5-20" Show="0">
+			<![CDATA[]]>
+		</event3>
+		<event4 NodeID="45" DataID="377" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="5-20" Show="0">
+			<![CDATA[return false;]]>
+		</event4>
+		<GetNEvent NodeID="47" DataID="379" Show="0" TypeID="65543" BlobArrElementaryType="8" xmlns:dt="urn:schemas-microsoft-com:datatypes" dt:dt="bin.base64">AA==</GetNEvent>
+	</codes>
+	<SaveInOpj NodeID="10" DataID="560">0</SaveInOpj>
+	<optargindex NodeID="14" DataID="72">0</optargindex>
+	<version NodeID="14" DataID="73">1</version>
+	<category NodeID="11" DataID="74" Show="0"/>
+	<subcategory NodeID="11" DataID="77" Show="0"/>
+	<seccategory1 NodeID="11" DataID="75" Show="0"/>
+	<secsubcategory1 NodeID="11" DataID="78" Show="0"/>
+	<seccategory2 NodeID="11" DataID="76" Show="0"/>
+	<secsubcategory2 NodeID="11" DataID="79" Show="0"/>
+	<module NodeID="11" DataID="80"/>
+	<subGroup NodeID="17" DataID="82">9</subGroup>
+	<errmsgCount NodeID="14" DataID="412">0</errmsgCount>
+	<helpe NodeID="268435456" DataID="420" RepeatID="256">
+		<info NodeID="41" DataID="422" RowHeightRange="2-8"/>
+		<summary NodeID="47" DataID="421" Show="0">
+			<![CDATA[]]>
+		</summary>
+		<example NodeID="47" DataID="431" Show="0">
+			<![CDATA[]]>
+		</example>
+		<ref NodeID="47" DataID="432" Show="0">
+			<![CDATA[]]>
+		</ref>
+		<algorithm NodeID="47" DataID="434" Show="0">
+			<![CDATA[]]>
+		</algorithm>
+		<parameters NodeID="47" DataID="444" Show="0">
+			<![CDATA[]]>
+		</parameters>
+		<script NodeID="41" Show="0" DataID="436" RowHeightRange="2-12"/>
+		<errmsgs NodeID="47" DataID="413" Show="0"/>
+		<addDescription NodeID="11" DataID="561"/>
+		<customLockMenu NodeID="11" DataID="414"/>
+		<keywords NodeID="11" DataID="415"/>
+	</helpe>
+	<helpj NodeID="268435456" DataID="420" RepeatID="512">
+		<description NodeID="11" DataID="440" CdPg="932"/>
+		<customButtons NodeID="11" DataID="448" CdPg="932"/>
+		<info NodeID="41" DataID="422" RowHeightRange="2-8" CdPg="932"/>
+		<summary NodeID="47" DataID="421" Show="0" CdPg="932">
+			<![CDATA[]]>
+		</summary>
+		<example NodeID="47" DataID="431" Show="0" CdPg="932">
+			<![CDATA[]]>
+		</example>
+		<ref NodeID="47" DataID="432" Show="0" CdPg="932">
+			<![CDATA[]]>
+		</ref>
+		<algorithm NodeID="47" DataID="434" Show="0" CdPg="932">
+			<![CDATA[]]>
+		</algorithm>
+		<parameters NodeID="47" DataID="444" Show="0" CdPg="932">
+			<![CDATA[]]>
+		</parameters>
+		<script NodeID="41" Show="0" DataID="436" RowHeightRange="2-12" CdPg="932"/>
+		<errmsgs NodeID="47" DataID="413" Show="0" CdPg="932"/>
+		<addDescription NodeID="11" DataID="561" CdPg="932"/>
+		<customLockMenu NodeID="11" DataID="414" CdPg="932"/>
+		<keywords NodeID="11" DataID="415" CdPg="932"/>
+	</helpj>
+	<helpg NodeID="268435456" DataID="420" RepeatID="768">
+		<description NodeID="11" DataID="440" CdPg="1252"/>
+		<customButtons NodeID="11" DataID="448" CdPg="1252"/>
+		<info NodeID="41" DataID="422" RowHeightRange="2-8" CdPg="1252"/>
+		<summary NodeID="47" DataID="421" Show="0" CdPg="1252">
+			<![CDATA[]]>
+		</summary>
+		<example NodeID="47" DataID="431" Show="0" CdPg="1252">
+			<![CDATA[]]>
+		</example>
+		<ref NodeID="47" DataID="432" Show="0" CdPg="1252">
+			<![CDATA[]]>
+		</ref>
+		<algorithm NodeID="47" DataID="434" Show="0" CdPg="1252">
+			<![CDATA[]]>
+		</algorithm>
+		<parameters NodeID="47" DataID="444" Show="0" CdPg="1252">
+			<![CDATA[]]>
+		</parameters>
+		<script NodeID="41" Show="0" DataID="436" RowHeightRange="2-12" CdPg="1252"/>
+		<errmsgs NodeID="47" DataID="413" Show="0" CdPg="1252"/>
+		<addDescription NodeID="11" DataID="561" CdPg="1252"/>
+		<customLockMenu NodeID="11" DataID="414" CdPg="1252"/>
+		<keywords NodeID="11" DataID="415" CdPg="1252"/>
+	</helpg>
+	<helpc NodeID="268435456" DataID="420" RepeatID="1024">
+		<description NodeID="11" DataID="440" CdPg="936"/>
+		<customButtons NodeID="11" DataID="448" CdPg="936"/>
+		<info NodeID="41" DataID="422" RowHeightRange="2-8" CdPg="936"/>
+		<summary NodeID="47" DataID="421" Show="0" CdPg="936">
+			<![CDATA[]]>
+		</summary>
+		<example NodeID="47" DataID="431" Show="0" CdPg="936">
+			<![CDATA[]]>
+		</example>
+		<ref NodeID="47" DataID="432" Show="0" CdPg="936">
+			<![CDATA[]]>
+		</ref>
+		<algorithm NodeID="47" DataID="434" Show="0" CdPg="936">
+			<![CDATA[]]>
+		</algorithm>
+		<parameters NodeID="47" DataID="444" Show="0" CdPg="936">
+			<![CDATA[]]>
+		</parameters>
+		<script NodeID="41" Show="0" DataID="436" RowHeightRange="2-12" CdPg="936"/>
+		<errmsgs NodeID="47" DataID="413" Show="0" CdPg="936"/>
+		<addDescription NodeID="11" DataID="561" CdPg="936"/>
+		<customLockMenu NodeID="11" DataID="414" CdPg="936"/>
+		<keywords NodeID="11" DataID="415" CdPg="936"/>
+	</helpc>
+	<helpk NodeID="268435456" DataID="420" RepeatID="2048">
+		<description NodeID="11" DataID="440" CdPg="949"/>
+		<customButtons NodeID="11" DataID="448" CdPg="949"/>
+		<info NodeID="41" DataID="422" RowHeightRange="2-8" CdPg="949"/>
+		<summary NodeID="47" DataID="421" Show="0" CdPg="949">
+			<![CDATA[]]>
+		</summary>
+		<example NodeID="47" DataID="431" Show="0" CdPg="949">
+			<![CDATA[]]>
+		</example>
+		<ref NodeID="47" DataID="432" Show="0" CdPg="949">
+			<![CDATA[]]>
+		</ref>
+		<algorithm NodeID="47" DataID="434" Show="0" CdPg="949">
+			<![CDATA[]]>
+		</algorithm>
+		<parameters NodeID="47" DataID="444" Show="0" CdPg="949">
+			<![CDATA[]]>
+		</parameters>
+		<script NodeID="41" Show="0" DataID="436" RowHeightRange="2-12" CdPg="949"/>
+		<errmsgs NodeID="47" DataID="413" Show="0" CdPg="949"/>
+		<addDescription NodeID="11" DataID="561" CdPg="949"/>
+		<customLockMenu NodeID="11" DataID="414" CdPg="949"/>
+		<keywords NodeID="11" DataID="415" CdPg="949"/>
+	</helpk>
+	<SkipHiddenInDlg NodeID="10" DataID="295">0</SkipHiddenInDlg>
+	<ClearMsg NodeID="10" DataID="296">1</ClearMsg>
+	<KeepBtnStatus NodeID="10" DataID="298">0</KeepBtnStatus>
+	<SptApplyUndoButtonSts NodeID="10" DataID="294">0</SptApplyUndoButtonSts>
+	<PreviewButton NodeID="10" DataID="299">0</PreviewButton>
+	<AutoApplyChkbox NodeID="10" DataID="290">1</AutoApplyChkbox>
+	<SkipHelpDoc NodeID="10" DataID="297">0</SkipHelpDoc>
+	<SupportFolderLastUsed NodeID="10" DataID="291">0</SupportFolderLastUsed>
+	<NotCloseOnEnterKey NodeID="10" DataID="292">0</NotCloseOnEnterKey>
+	<AllowDataFilter NodeID="10" DataID="200">0</AllowDataFilter>
+	<DocumentName NodeID="11" DataID="293"/>
+	<AllowReorderVarsByCode NodeID="10" DataID="201">0</AllowReorderVarsByCode>
+	<AllowEmptyInputAsValidOperation NodeID="10" DataID="202">0</AllowEmptyInputAsValidOperation>
+	<NewBookAutoRestrictColumnName NodeID="10" DataID="203">1</NewBookAutoRestrictColumnName>
+	<ShouldBeDirtyByLabelRows NodeID="10" DataID="204">0</ShouldBeDirtyByLabelRows>
+	<XFBasedPlottingTemplate NodeID="11" DataID="205"/>
+	<XFBeforeInstallScript NodeID="45" DataID="206" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="4-20">
+		<![CDATA[]]>
+	</XFBeforeInstallScript>
+	<SensitiveToXYMapChanged NodeID="10" DataID="207">0</SensitiveToXYMapChanged>
+	<PlottingXF1ColGraph NodeID="17" DataID="208">0</PlottingXF1ColGraph>
+	<seeAlso NodeID="11" DataID="430"/>
+	<relatedXF NodeID="11" DataID="442"/>
+</OriginStorage>
