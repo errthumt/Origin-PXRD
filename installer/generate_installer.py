@@ -120,6 +120,12 @@ version = get_git_version()
 print(f"Using version: {version}")
 nsis_version = to_nsis_version(version)
 
+# --- Write version tag file before packaging ---
+version_tag_path = REPO_ROOT / "build" / "PXRD_versionTag.txt"
+version_tag_path.parent.mkdir(exist_ok=True)  # ensure build/ exists
+version_tag_path.write_text(version + "\n")
+print(f"Wrote version tag to: {version_tag_path}")
+
 template = nsi_template.read_text()
 template = template.replace("${VERSION}", version)
 template = template.replace("${NSIS_VERSION}", nsis_version)
