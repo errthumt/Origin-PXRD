@@ -35,11 +35,11 @@
 
     ![Download installer](/assets/download_installer.png)
 ---
-2. In the pop up menus, select which plugin features you want to install.
+2. In the dialog, select which plugin features you want to install, then select OK.
 
-    ![option popup 1](/assets/popup1.png) ![option popup 2](/assets/popup2.png)
+    ![option popup 1](/assets/popup1.png)
 ---
-3. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
+1. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
 
     ![package install prompt](/assets/package_prompt.png)
 
@@ -49,14 +49,14 @@
 
         ![labtalk installation messages](/assets/labtalk_file_install.png)
 ---
-4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
+1. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
 ---
-5. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
+1. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
     * The cleanup window may ask you to close all copies of Origin from task manager. This is because Origin keeps recent files open in the background and prevents their deletion, including some installation files.
 
         ![cleanup cmd window](/assets/cleanup_cmd.png)
 ---
-6. Review the [instructions for use](/README.md#instructions-for-use) for further guidance.
+1. Review the [instructions for use](/README.md#instructions-for-use) for further guidance.
 
 ## Manual Install (Origin 2022-2024)
 **Disclaimer:** This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later. 
