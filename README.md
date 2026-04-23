@@ -70,7 +70,7 @@ You may need to switch GUI mode.
 
 ---
 
-## PXRD MENU OPTIONS:
+## PXRD Menu Options:
 
 <ins>**Import Patterns:**</ins> Import experimental patterns or calculate theoretical patterns from CIF files. 
 
@@ -96,11 +96,16 @@ You may need to switch GUI mode.
 
 * <ins>**11-ID-C (March 2026):**</ins> Normalizes all patterns (normalized by data set, not by individual pattern) and extracts temperature from all metadata files. Adds temperature as a "Temp" row at the top.
 
+<ins>**Annealing Profiles:**</ins> A quick tool to generate diagrams for annealing profiles.
+
+* <ins>**Get Template:**</ins> Creates a template worksheet to edit your annealing profile and adjust diagram settings.
+* <ins>**Generate Diagram:**</ins> Generates an annealing profile diagram from the current template worksheet.
+
 ---
 ## Import Pattern Dialog Options
 
 <p align="center">
-  <img src="/install_guide/images/import_dialog.png" width="40%">
+  <img src="/assets/import_dialog.png" width="40%">
 </p>
 
 If you have your own set of custom parameters that you like to use for your own analysis, you can save them as a theme using the menu on the top right of the dialog.
@@ -133,6 +138,37 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 - **Normalized, All Phases**: Final column calculated as the sum of all phases, preserving relative phase fractions. This should match a normalized experimental pattern.
 
 ---
+## \[NEW] Annealing Profiles Dropdown
+
+| Example Annealing Profile | Resulting Diagram |
+| --- | --- |
+| ![profile](/assets/anneal_profile.png) | ![diagram](/assets/anneal_diagram.png) |
+
+<ins>**Get Template:**</ins> Generates a worksheet template to generate annealing diagrams.
+
+<ins>**Generate Diagram:**</ins> Generates an annealing profile diagram from the current template worksheet.
+
+* <ins>**Full Dialog...:**</ins> Set parameters or open your own theme to generate an annealing diagram from the current worksheet. Recommended to use with generated template worksheet.
+* <ins>**\<Default\>**</ins> Generate an annealing diagram from the current worksheet using default settings. Recommended to use with generated template worksheet.
+* <ins>**\<Last Used\>**</ins> Generate an annealing diagram from the current worksheet using the last used settings. Recommended to use with generated template worksheet.
+
+---
+## Annealing Profile Dialog Options
+
+| Option | Description |
+| --- | --- |
+| Start Temperature | Initial Temperature in degrees celsius (usually 25). |
+| Minimum Height | All unique temperatures will be evenly spaced by this height (not to scale). For example, in the diagram below, the initial temperature, max temperature (800) and the end temperature (700) are all evenly spaced regardless of scale.<br>![diagram without extra temps](/assets/anneal_diagram_noExtras.png)<br> If desired, you can space temperatures differently using the **Extra Temperatures** option. |
+|Extra Temperatures | In order to increase the height between two specific temperatures, you can add unique temperatures that you want to include in the spacing, but which aren't already in your profile. For example, the diagram below was made more scale-appropriate by adding **100; 200** to the extra temperatures field. This essentially reserves additional y-axis space for 100 and 200 degrees, without actually graphing them.<br>![diagram with extra temps](/assets/anneal_diagram_extras.png)<br>Multiple temperature values must be semicolon separated, as in: **100; 200; 300** | 
+| Ramp Width | All ramp sections will be this width by default. Individual sections will automatically widen for longer labels. |
+| Dwell Width | All dwell section will be this width by default. Individual sections will automatically widen for longer labels. |
+| Font Size | Text label font size |
+| Font | Text label font family. Can't use your preferred font? [Submit a feature request.](#bug-reports-or-feature-requests) |
+| Text Offset | The amount of space added between the line graph and text labels. |
+| Line Width | Thickness of the line graph |
+| Margins | Adjust the margins around the diagram when saving. Text labels may occasionally be cut off by margins, increase the offending margin accordingly. |
+
+
 
 ## Graph Templates
 Installed graph templates can be found in Plot > User Templates
@@ -144,6 +180,13 @@ Installed graph templates can be found in Plot > User Templates
 ---
 
 # Release Notes
+## Release 1.3.1
+UI tweaks, annealing profiles
+
+* Added version checking so that users are notified when a new version is available.
+* Added tooltips back to PXRD menu
+* Added new [Annealing Profiles Dropdown](#new-annealing-profiles-dropdown).
+
 ## Release 1.3.0
 Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
 
@@ -157,8 +200,9 @@ This release contains features that are difficult to test without a fresh instal
 * Column selections for transformations are now done using Origin's native column selection instead of a UI.
 * Q-Space columns now allow for column selection.
 * Added CIF import preset for 11-ID-C March 2026
-* (Feature Request: Kirill) \[BETA] Added phase fraction analysis option for CIF imports.
+* (Feature Request: Kirill) \[BETA] Added [phase fraction analysis option](#beta-phase-fraction-analysis) for CIF imports.
 * <ins>**Hotfix 1:**</ins> Improved phase fractions for more "realistic" relative intensities.
+
 ## Release 1.2.5
 The first public GitHub release.
 * Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
