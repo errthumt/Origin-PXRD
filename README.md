@@ -180,6 +180,9 @@ Installed graph templates can be found in Plot > User Templates
 ---
 
 # Release Notes
+## Release 1.3.2
+Improved workflow for installation.
+
 ## Release 1.3.1
 UI tweaks, annealing profiles
 
