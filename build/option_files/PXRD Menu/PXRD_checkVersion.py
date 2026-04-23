@@ -1,6 +1,6 @@
 import urllib.request
 
-import originpro as op
+import originpro as op #type: ignore
 import os
 
 def get_installed_version():
@@ -9,7 +9,7 @@ def get_installed_version():
         <UFF>/PXRD_versionTag.txt
 
     Returns:
-        version string (e.g. "1.4.7") or None if missing/unreadable.
+        (installed_version, ignore_version, version_file)
     """
 
     # Determine UFF using LabTalk
@@ -19,17 +19,33 @@ def get_installed_version():
     version_file = os.path.join(uff_path, "PXRD_versionTag.txt")
 
     if not os.path.exists(version_file):
-        return None
+        return (None, None, None)
 
     try:
         with open(version_file, "r", encoding="utf-8") as f:
-            return f.read().strip()
+            lines = f.read().splitlines()
+
+        # No lines? Treat as missing
+        if not lines:
+            return (None, None, version_file)
+
+        installed_version = lines[0].strip() if lines[0].strip() else None
+
+        ignore_version = None
+        if len(lines) >= 2:
+            second = lines[1].strip()
+            if second.startswith("ignore "):
+                ignore_version = second.split(" ", 1)[1].strip()
+
+        return (installed_version, ignore_version, version_file)
+
     except Exception:
-        return None
+        return (None, None, None)
+
 
 
 def get_latest_version():
-    url = "https://raw.githubusercontent.com/errthumt/Origin-PXRD/1.3-dev/build/option_files/PXRD%20Menu/PXRD_versionTag.txt"
+    url = "https://raw.githubusercontent.com/errthumt/Origin-PXRD/main/build/PXRD_versionTag.txt"
     try:
         with urllib.request.urlopen(url, timeout=5) as response:
             return response.read().decode("utf-8").strip()
@@ -37,17 +53,61 @@ def get_latest_version():
         print(e)
         return None
 
-def notify_if_outdated(local_version):
+def notify_if_outdated(local_version,ignore_version,version_file):
     latest = get_latest_version()
     if latest is None:
-        print("Could not check for updates.")
         return
+    #print(f'latest: {latest}')
+    #print(f'ignore: {ignore_version}')
 
-    if latest != local_version:
-        print(f"A new version is available: {latest} (you have {local_version})")
-    else:
-        print(f"You are up to date (version {local_version}).")
+    if latest != local_version and latest != ignore_version:
+        lt_cmd=f'''
+            t=4;
+            type -y 
+            "A new version of Origin-PXRD is available: {latest} (you have {local_version})\n
+            Would you like to go to the updated GitHub page?\n
+            (Press \"Cancel\" to ignore until next release.)"
+            '''
+        op.lt_exec(lt_cmd)
+        t = op.lt_int('t')
+        if t==1:
+            import webbrowser
+            webbrowser.open("https://www.github.com/errthumt/Origin-PXRD")
+            return
+        elif t == 4:
+            # User clicked Cancel → ignore this specific version until next release
+            try:
+                # Read existing file (if any)
+                lines = []
+                if os.path.isfile(version_file):
+                    with open(version_file, "r", encoding="utf-8") as f:
+                        lines = f.read().splitlines()
+
+                # Ensure at least one line exists (local version)
+                if not lines:
+                    lines = [local_version]
+
+                # Overwrite or append ignore line
+                ignore_line = f"ignore {latest}"
+                if len(lines) >= 2:
+                    lines[1] = ignore_line
+                else:
+                    lines.append(ignore_line)
+
+                # Write back
+                with open(version_file, "w", encoding="utf-8") as f:
+                    f.write("\n".join(lines) + "\n")
+
+                print(f"Updated version file to ignore version {latest}")
+
+            except Exception as e:
+                print(f"Error updating version file: {e}")
+
+            return
+
+
+    return
 
 # Example usage:
-LOCAL_VERSION = get_installed_version()
-notify_if_outdated(LOCAL_VERSION)
+LOCAL_VERSION, ignore_version, version_file = get_installed_version()
+notify_if_outdated(LOCAL_VERSION,ignore_version, version_file)
