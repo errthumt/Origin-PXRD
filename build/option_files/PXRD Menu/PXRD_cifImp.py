@@ -155,6 +155,7 @@ def calculate_pattern(
         xrd = XRDCalculator(wavelength=wl)
         pattern = xrd.get_pattern(structure, two_theta_range=two_theta_range, scaled=False)
         Z = compute_Z(structure)
+        cell_volume = structure.lattice.volume
         mu = absorption_proxy(structure) # This is very fudgy
         # Modify reflections with scattering factors
         for idx, (t0, I0) in enumerate(zip(pattern.x, pattern.y)):
@@ -177,10 +178,10 @@ def calculate_pattern(
 
             # Modify base intensity with damping
             I0 *= DW_atoms #* DW_extra
-            I0 *= 1.0/Z
+            I0 /= Z
+            I0 /= cell_volume
+            #I0 /= Z
             
-            #A_abs = get_mu_phase(structure, wl, t0)
-            #I0 *= A_abs
 
 
             # Caglioti broadening: Gaussian (H_G) and Lorentzian (HL) hybrid
