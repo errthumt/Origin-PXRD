@@ -165,7 +165,7 @@ DW_atoms = np.mean([np.exp(-2 * pi2 * B * s**2) for B in atom_B])
 I0 *= DW_atoms
 ```
 
-Next, it generates (2$\theta$, Intensity) peak shape data sets for each individual peak:
+Next, it generates ($2\theta$, Intensity) peak shape data sets for each individual peak:
 ```python
 H_G = np.sqrt(U*np.tan(theta)**2 + V*np.tan(theta) + W)
 H_L = X*np.tan(theta) + Y/np.cos(theta)
@@ -180,7 +180,7 @@ intensity += wt * I0 * pv * asym
 #wt refers to the relative weight of the current wavelength (for doublet splitting)
 ```
 
-This generates a full diffraction pattern that approximates a single phase *per unit cell* without relative scaling (`two_theta, intensity = `$I_{k}\left(\theta\right)$).
+This generates a full diffraction pattern that approximates a single phase *per unit cell* without relative scaling (`two_theta, intensity = ` $I_{k}\left(\theta\right)$).
 
 $$
 I_{k}\left(\theta\right) = \sum_{j}^{peaks}\left(I_{peak}S_j\left(2\theta-2\theta_{k,j}\right)\right)
