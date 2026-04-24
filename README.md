@@ -137,6 +137,8 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 - **Sum=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity is 1.0 when all phases are summed.
 - **Normalized, All Phases**: Final column calculated as the sum of all phases, preserving relative phase fractions. This should match a normalized experimental pattern.
 
+**I'm not enirely sure I am correctly scaling patterns so that they can be scaled by molar phase fractions and match experimental data. [My current from-principles method is outlined here](/phase_frac.md)**
+
 ---
 ## \[NEW] Annealing Profiles Dropdown
 
