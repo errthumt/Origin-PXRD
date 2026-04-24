@@ -22,6 +22,116 @@ from pymatgen.core import Structure #type: ignore
 from pymatgen.core.periodic_table import Element #type: ignore
 from pymatgen.analysis.diffraction.xrd import XRDCalculator #type: ignore
 
+import numpy as np
+from pymatgen.core import Element #type: ignore
+
+try:
+    import xraydb  #type: ignore
+except ImportError:
+    xraydb = None
+
+
+NA = 6.02214076e23  # mol^-1
+ANG3_TO_CM3 = 1e-24
+HC_KEV_ANG = 12.398419843320026  # keV·Å
+
+
+def _mu_over_rho_element(z, energy_kev):
+    """
+    Mass attenuation coefficient μ/ρ for a single element (cm^2/g).
+
+    Replace this with your own tabulated lookup if you don't want xraydb.
+    """
+    if xraydb is None:
+        raise RuntimeError("xraydb is required for μ/ρ lookup or replace _mu_over_rho_element.")
+    # Elam data, energy in keV
+    return xraydb.mu_elam(z, energy_kev)
+
+
+def _density_from_structure(structure):
+    """
+    Compute bulk density from the crystallographic structure (g/cm^3).
+
+    Uses the composition per unit cell and the cell volume.
+    """
+    comp = structure.composition
+    # mass per mole of "one unit cell composition"
+    molar_mass = comp.weight  # g/mol
+    # mass per cell
+    mass_cell_g = molar_mass / NA
+    # volume in cm^3
+    vol_cm3 = structure.lattice.volume * ANG3_TO_CM3
+    return mass_cell_g / vol_cm3
+
+
+def _mu_linear_mixture(structure, wavelength):
+    """
+    Linear attenuation coefficient μ for the phase (cm^-1) at given wavelength (Å).
+
+    Uses mass-fraction mixing of μ/ρ for each element.
+    """
+    energy_kev = HC_KEV_ANG / wavelength
+
+    comp = structure.composition
+    elements = list(comp.elements)
+
+    # atomic masses and counts per cell
+    masses = {el: float(el.atomic_mass) for el in elements}
+    counts = {el: comp[el] for el in elements}
+
+    total_mass = sum(counts[el] * masses[el] for el in elements)
+    # mass fractions
+    mass_fracs = {el: counts[el] * masses[el] / total_mass for el in elements}
+
+    # mixture μ/ρ (cm^2/g)
+    mu_over_rho_mix = 0.0
+    for el in elements:
+        w_i = mass_fracs[el]
+        mu_rho_i = _mu_over_rho_element(el.Z, energy_kev)  # cm^2/g
+        mu_over_rho_mix += w_i * mu_rho_i
+
+    # density (g/cm^3)
+    rho = _density_from_structure(structure)
+
+    # linear attenuation μ (cm^-1)
+    return mu_over_rho_mix * rho
+
+
+def get_mu_phase(structure, wavelength, two_theta, thickness_cm=0.001):
+    """
+    Return an absorption correction factor A(θ, λ) for the phase.
+
+    Parameters
+    ----------
+    structure : pymatgen Structure
+    wavelength : float
+        Wavelength in Å.
+    two_theta : float
+        2θ in degrees for the reflection.
+    thickness_cm : float, optional
+        Effective sample thickness in cm (flat plate, reflection geometry).
+
+    Returns
+    -------
+    A : float
+        Dimensionless absorption factor to multiply I0.
+    """
+    mu = _mu_linear_mixture(structure, wavelength)  # cm^-1
+
+    theta = np.radians(two_theta / 2.0)
+    # effective path length factor for symmetric reflection: in + out
+    x = 2.0 * mu * thickness_cm / np.sin(theta)
+
+    # Flat-plate absorption factor:
+    # A = (1 - exp(-x)) / x
+    # well-behaved for small x
+    with np.errstate(over="ignore", under="ignore", invalid="ignore"):
+        A = (1.0 - np.exp(-x)) / np.where(x == 0.0, 1.0, x)
+
+    return float(A)
+
+
+
 import math
 
 # Extra dampening to match VESTA's peak heights
@@ -286,7 +396,9 @@ def calculate_pattern(
             # Modify base intensity with damping
             I0 *= DW_atoms #* DW_extra
             I0 *= 1.0/Z
-            I0 *= 1.0/structure.lattice.volume
+            
+            #A_abs = get_mu_phase(structure, wl, t0)
+            #I0 *= A_abs
 
 
             # Caglioti broadening: Gaussian (H_G) and Lorentzian (HL) hybrid
