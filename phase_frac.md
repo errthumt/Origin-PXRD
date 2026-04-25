@@ -103,7 +103,7 @@ def calculate_pattern(
 The classical Rietveld method of calculating diffraction intensity for a given sample is:
 
 $$
-I_{calc}(\theta) = S_F \sum_{k}^{phases}\left[\frac{\phi_k}{V_k^2}\sum_{j}^{peaks}\left(L_k\left|F_{k,j}\right|^2S_j\left(2\theta-2\theta_{k,j}\right)P_{k,j}A_{j}\right)\right] + bkg
+I_{calc}(2\theta) = S_F \sum_{k}^{phases}\left[\frac{\phi_k}{V_k^2}\sum_{j}^{peaks}\left(L_k\left|F_{k,j}\right|^2S_j\left(2\theta-2\theta_{k,j}\right)P_{k,j}A_{j}\right)\right] + bkg
 $$
 
 ### Reflection Intensities
@@ -180,10 +180,10 @@ intensity += wt * I0 * pv * asym
 #wt refers to the relative weight of the current wavelength (for doublet splitting)
 ```
 
-This generates a full diffraction pattern that approximates a single phase *per unit cell* without relative scaling (`two_theta, intensity = ` $I_{k}\left(\theta\right)$ ).
+This generates a full diffraction pattern that approximates a single phase *per unit cell* without relative scaling (`two_theta, intensity = ` $I_{k}\left(2\theta\right)$ ).
 
 $$
-I_{k}\left(\theta\right) = \sum_{j}^{peaks}\left(I_{peak}S_j\left(2\theta-2\theta_{k,j}\right)\right)
+I_{k}\left(2\theta\right) = \sum_{j}^{peaks}\left(I_{peak}S_j\left(2\theta-2\theta_{k,j}\right)\right)
 $$
 
 ### Scaling by Molar Phase Fraction
@@ -191,13 +191,13 @@ $$
 Now, we only have to figure out what factor to multiply each phase pattern by in order for it to be imported on a molar basis. Substituting our calculations and approximations so far back into our Rietveld model, we get:
 
 $$
-I_{calc}(\theta) = S_F \sum_{k}^{phases}\left[\frac{\phi_k}{V_k^2}I_{k}\left(\theta\right)\right] + bkg
+I_{calc}(2\theta) = S_F \sum_{k}^{phases}\left[\frac{\phi_k}{V_k^2}I_{k}\left(2\theta\right)\right] + bkg
 $$
 
 For theoretical patterns, we can neglect background. Also, since we will be normalizing our phases after relative scaling, we can also set $S_F = 1$:
 
 $$
-I_{calc}(\theta) =\sum_{k}^{phases}\left[\frac{\phi_k}{V_k^2}I_{k}\left(\theta\right)\right]
+I_{calc}(2\theta) =\sum_{k}^{phases}\left[\frac{\phi_k}{V_k^2}I_{k}\left(2\theta\right)\right]
 $$
 
 Now, the scale factor $\frac{\phi_k}{V_k^2}$ is what we must account for, where:
@@ -213,13 +213,13 @@ $$
 Substituting back in, we get:
 
 $$
-I_{calc}(\theta)\propto\sum_{k}^{phases}\left[\frac{x_k}{Z_k V_k}I_{k}\left(\theta\right)\right]
+I_{calc}(2\theta)\propto\sum_{k}^{phases}\left[\frac{x_k}{Z_k V_k}I_{k}\left(2\theta\right)\right]
 $$
 
 Since we will be normalizing, maintaining proportionality is sufficient. We will also be multiplying by $x_k$ *after* import to allow for dynamically changing phase fractions, so we should isolate that from our imported pattern:
 
-$$I_{calc}(\theta)\propto\sum_{k}^{phases}\left[x_k I_{k,imported}(\theta)\right]$$
-$$I_{k,imported}(\theta) = \frac{I_{k}\left(\theta\right)}{Z_k V_k}$$
+$$I_{calc}(2\theta)\propto\sum_{k}^{phases}\left[x_k I_{k,imported}(2\theta)\right]$$
+$$I_{k,imported}(2\theta) = \frac{I_{k}\left(2\theta\right)}{Z_k V_k}$$
 
 To modify our calculated $I_k$ patterns into $I_{k,imported}$, we only need to divide our peak intensities by $Z_k$ and $V_k$ before adding them to our data set.
 ```python
