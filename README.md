@@ -1,15 +1,35 @@
-# Origin-PXRD
+# Origin-PXRD {ignore=true}
 A plugin for importing experimental patterns and calculating theoretical patterns for PXRD in OriginLab's OriginPro software.
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
 
-## Jump to:
-* [Automatic Install (Origin 2025 or later)](#automatic-install-origin-2025-or-later)
-* [Manual Install (Origin 2022-2024)](#manual-install-origin-2022-2024)
-* [Instructions for Use](#instructions-for-use)
-* [Release Notes](#release-notes)
+## Table of Contents: {ignore=true}
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
-## Bug reports or Feature Requests
+<!-- code_chunk_output -->
+
+- [Installation Instructions](#installation-instructions)
+  - [Automatic Install (Origin 2025 or later):](#automatic-install-origin-2025-or-later)
+  - [Manual Install (Origin 2022-2024)](#manual-install-origin-2022-2024)
+- [Instructions for Use](#instructions-for-use)
+  - [If "PXRD" dropdown does not appear:](#if-pxrd-dropdown-does-not-appear)
+    - [If "PXRD" dropdown STILL does not appear:](#if-pxrd-dropdown-still-does-not-appear)
+  - [PXRD Menu Options:](#pxrd-menu-options)
+  - [Import Pattern Dialog Options](#import-pattern-dialog-options)
+    - [\[BETA\] Phase Fraction Analysis](#beta-phase-fraction-analysis)
+  - [\[NEW\] Annealing Profiles Dropdown](#new-annealing-profiles-dropdown)
+  - [Annealing Profile Dialog Options](#annealing-profile-dialog-options)
+  - [Graph Templates](#graph-templates)
+- [Release Notes](#release-notes)
+  - [Release 1.3.3](#release-133)
+  - [Release 1.3.2](#release-132)
+  - [Release 1.3.1](#release-131)
+  - [Release 1.3.0](#release-130)
+  - [Release 1.2.5](#release-125)
+
+<!-- /code_chunk_output -->
+
+## Bug reports or Feature Requests {ignore=true}
 * <ins>**No GitHub Account?**</ins> [use this form](https://forms.office.com/r/9bfw1zLiDh)
 * <ins>**If you have a GitHub account:**</ins>
   * [Create a bug report](https://github.com/errthumt/Origin-PXRD/issues/new?template=bug_report.md)
@@ -128,7 +148,7 @@ If you have your own set of custom parameters that you like to use for your own 
 | | Advanced Parameters | Used to adjust peak broadening and dampening. |
 | Normalization Mode | | Specify whether to normalize imported or calculated patterns.<br>During CIF import, an extra option is available to add scaling for each imported CIF by the relative phase fractions in your analysis. See the Phase Fraction section below. |
 
-### \[BETA] Phase Fraction Analysis
+### \[BETA\] Phase Fraction Analysis
 If you select this option under **Normalization Mode** during CIF import, the files will be imported as usual (without normalization), but additional columns will be added to scale phases by their relative fractions present in your analysis. Column types are specified by 'Norm Type' row:
 - **Non-normal**: Original, non-normalized calculated patterns
 - **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
@@ -140,7 +160,7 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 **I'm not enirely sure I am correctly scaling patterns so that they can be scaled by molar phase fractions and match experimental data. [My current from-principles method is outlined here](/phase_frac.md)**
 
 ---
-## \[NEW] Annealing Profiles Dropdown
+## \[NEW\] Annealing Profiles Dropdown
 
 | Example Annealing Profile | Resulting Diagram |
 | --- | --- |
