@@ -182,6 +182,12 @@ Installed graph templates can be found in Plot > User Templates
 ---
 
 # Release Notes
+## Release 1.3.3
+Furnace Calibrations
+* Added calibration calculations to the annealing template. Input a saved furnace ID, and the template will automatically calculate furnace set temperatures to match your annealing profile
+* Added a workflow to edit or add new furnace calibrations. User-saved calibrations will always take precedent over calibrations installed with the plugin.
+* Within the furnace editing workflow, a 2nd sheet has also been added which generates a printable report of the trendline, calibration data, and calibration date.
+
 ## Release 1.3.2
 Improved workflow for installation.
 
