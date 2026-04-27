@@ -173,16 +173,13 @@ def calculate_pattern(
 
             # Debye-Waller damping by B-factors
             DW_atoms = np.mean([np.exp(-2 * pi2 * B * s**2) for B in atom_B])
-            # Fudge factor to match experimental/VESTA heights.
+            # Fudge factor to match experimental/VESTA heights. (not currently in use)
             DW_extra = np.exp(-2 * pi2 * B_extra * s**2)
 
             # Modify base intensity with damping
             I0 *= DW_atoms #* DW_extra
             I0 /= Z
             I0 /= cell_volume
-            #I0 /= Z
-            
-
 
             # Caglioti broadening: Gaussian (H_G) and Lorentzian (HL) hybrid
             H_G = np.sqrt(U*np.tan(theta)**2 + V*np.tan(theta) + W)
