@@ -1,19 +1,14 @@
-# Origin-PXRD {ignore=true}
+# Origin-PXRD <!-- omit from toc -->
 A plugin for importing experimental patterns and calculating theoretical patterns for PXRD in OriginLab's OriginPro software.
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
 
-## Table of Contents: {ignore=true}
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
+## Table of Contents:
 - [Installation Instructions](#installation-instructions)
   - [Automatic Install (Origin 2025 or later):](#automatic-install-origin-2025-or-later)
   - [Manual Install (Origin 2022-2024)](#manual-install-origin-2022-2024)
 - [Instructions for Use](#instructions-for-use)
   - [If "PXRD" dropdown does not appear:](#if-pxrd-dropdown-does-not-appear)
-    - [If "PXRD" dropdown STILL does not appear:](#if-pxrd-dropdown-still-does-not-appear)
   - [PXRD Menu Options:](#pxrd-menu-options)
   - [Import Pattern Dialog Options](#import-pattern-dialog-options)
     - [\[BETA\] Phase Fraction Analysis](#beta-phase-fraction-analysis)
@@ -27,9 +22,9 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
   - [Release 1.3.0](#release-130)
   - [Release 1.2.5](#release-125)
 
-<!-- /code_chunk_output -->
 
-## Bug reports or Feature Requests {ignore=true}
+
+## Bug reports or Feature Requests
 * <ins>**No GitHub Account?**</ins> [use this form](https://forms.office.com/r/9bfw1zLiDh)
 * <ins>**If you have a GitHub account:**</ins>
   * [Create a bug report](https://github.com/errthumt/Origin-PXRD/issues/new?template=bug_report.md)
@@ -81,7 +76,7 @@ A full installation guide with screenshots can be found [here](/install_guide/in
 3. If the entry is not there, inside the menu organizer, select File > Open... and search for PXRD.omc in the User Files Folder
 4. Close the menu organizer and look for the dropdown
 
-### If "PXRD" dropdown STILL does not appear:
+### If "PXRD" dropdown STILL does not appear: <!-- omit from toc -->
 You may need to switch GUI mode.
 
 <ins>**Origin 2025b:**</ins> Preferences > GUI Mode > PXRD
