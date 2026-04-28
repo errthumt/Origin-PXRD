@@ -1132,6 +1132,7 @@ else {
 file_mode = (selection_type==0 ? "files" : "folder");
 lt_cmd += "file_mode:" + file_mode;
 lt_cmd += ", normalize_mode:" + norm_mode;
+lt_cmd += ", book_name:" + book_name;
 lt_cmd += "\";";
 
 if(phase_frac) lt_cmd += "run -pyf PXRD_phaseFrac.py;";

@@ -1,13 +1,32 @@
-# Origin-PXRD
+# Origin-PXRD <!-- omit from toc -->
 A plugin for importing experimental patterns and calculating theoretical patterns for PXRD in OriginLab's OriginPro software.
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
 
-## Jump to:
-* [Automatic Install (Origin 2025 or later)](#automatic-install-origin-2025-or-later)
-* [Manual Install (Origin 2022-2024)](#manual-install-origin-2022-2024)
-* [Instructions for Use](#instructions-for-use)
-* [Release Notes](#release-notes)
+## Table of Contents:
+- [Installation Instructions](#installation-instructions)
+  - [Automatic Install (Origin 2025 or later):](#automatic-install-origin-2025-or-later)
+  - [Manual Install (Origin 2022-2024)](#manual-install-origin-2022-2024)
+- [Instructions for Use](#instructions-for-use)
+  - [If "PXRD" dropdown does not appear:](#if-pxrd-dropdown-does-not-appear)
+  - [PXRD Menu Options:](#pxrd-menu-options)
+  - [Import Pattern Dialog Options](#import-pattern-dialog-options)
+    - [\[BETA\] Phase Fraction Analysis](#beta-phase-fraction-analysis)
+  - [\[NEW\] Annealing Profiles Dropdown](#new-annealing-profiles-dropdown)
+  - [Using and Editing Furnace Calibration Data](#using-and-editing-furnace-calibration-data)
+    - [Selecting your furnace](#selecting-your-furnace)
+    - [Calibrated Temperatures](#calibrated-temperatures)
+    - [Editing furnace data](#editing-furnace-data)
+    - [Printing Calibration Reports](#printing-calibration-reports)
+  - [Annealing Profile Dialog Options](#annealing-profile-dialog-options)
+  - [Graph Templates](#graph-templates)
+- [Release Notes](#release-notes)
+  - [Release 1.3.3](#release-133)
+  - [Release 1.3.2](#release-132)
+  - [Release 1.3.1](#release-131)
+  - [Release 1.3.0](#release-130)
+  - [Release 1.2.5](#release-125)
+
 
 ## Bug reports or Feature Requests
 * <ins>**No GitHub Account?**</ins> [use this form](https://forms.office.com/r/9bfw1zLiDh)
@@ -22,7 +41,7 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
 A full installation guide with screenshots can be found [here](/install_guide/install_guide.md). A PDF version can be found [here](/install_guide/install_guide.pdf)
 
 ## Automatic Install (Origin 2025 or later):
-1. Download and run [the most recent installer](installer/release). It will open the installation project inside Origin.
+1. Download and run [the most recent installer](/installer/release). It will open the installation project inside Origin.
 2. In the dialog, select which plugin features you want to install and select OK.
 3. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
 4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
@@ -33,7 +52,7 @@ A full installation guide with screenshots can be found [here](/install_guide/in
 **Disclaimer:** This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later. 
 1. Locate your Origin User Files Folder.
    * In Origin 2024 or later, your user files folder can be found from inside Origin: Help > Open Folder > User Files Folder
-2. Download [the most recent zip release](manual_install) and extract it to an easy-to-find location
+2. Download [the most recent zip release](/manual_install) and extract it to an easy-to-find location
 3. For each option that you want to install, copy the entire contents of the corresponding option folder into the user files folder.
     * For example: If you want to install the PXRD Menu, open the PXRD Menu folder and copy cifImp.py, cifPicker.py, PXRD.omc, etc... directly into the user file folder
     * Some option folders contain additional folders inside them. The folder itself needs to be put inside the user files folder, then the files inside stay inside that folder. If the folder already exists in the user files folder, make sure the new files are inside that folder after copying.
@@ -61,7 +80,7 @@ A full installation guide with screenshots can be found [here](/install_guide/in
 3. If the entry is not there, inside the menu organizer, select File > Open... and search for PXRD.omc in the User Files Folder
 4. Close the menu organizer and look for the dropdown
 
-### If "PXRD" dropdown STILL does not appear:
+### If "PXRD" dropdown STILL does not appear: <!-- omit from toc -->
 You may need to switch GUI mode.
 
 <ins>**Origin 2025b:**</ins> Preferences > GUI Mode > PXRD
@@ -128,7 +147,7 @@ If you have your own set of custom parameters that you like to use for your own 
 | | Advanced Parameters | Used to adjust peak broadening and dampening. |
 | Normalization Mode | | Specify whether to normalize imported or calculated patterns.<br>During CIF import, an extra option is available to add scaling for each imported CIF by the relative phase fractions in your analysis. See the Phase Fraction section below. |
 
-### \[BETA] Phase Fraction Analysis
+### <span>[BETA]</span> Phase Fraction Analysis
 If you select this option under **Normalization Mode** during CIF import, the files will be imported as usual (without normalization), but additional columns will be added to scale phases by their relative fractions present in your analysis. Column types are specified by 'Norm Type' row:
 - **Non-normal**: Original, non-normalized calculated patterns
 - **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
@@ -137,22 +156,52 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 - **Sum=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity is 1.0 when all phases are summed.
 - **Normalized, All Phases**: Final column calculated as the sum of all phases, preserving relative phase fractions. This should match a normalized experimental pattern.
 
-**I'm not enirely sure I am correctly scaling patterns so that they can be scaled by molar phase fractions and match experimental data. [My current from-principles method is outlined here](/phase_frac.md)**
+#### WARNING: <!-- omit from toc -->
+**Accuracy of molar scaling is still being verified. [My current from-principles method is outlined here](/phase_frac.md)**
+**Molar Scaling relies on a calculation of Z by reducing the cell contents to the minimum formula. This may lead to occasional differences in expected vs. calculated Z values.**
+- If you suspect that Z is not being correctly calculated for your structure, reach out to Travis or [fill out a bug report.](#bug-reports-or-feature-requests)
 
 ---
-## \[NEW] Annealing Profiles Dropdown
+## <span>[NEW\]</span> Annealing Profiles Dropdown
 
 | Example Annealing Profile | Resulting Diagram |
 | --- | --- |
 | ![profile](/assets/anneal_profile.png) | ![diagram](/assets/anneal_diagram.png) |
 
-<ins>**Get Template:**</ins> Generates a worksheet template to generate annealing diagrams.
+<ins>**Get Annealing Template:**</ins> Generates a worksheet template to generate annealing diagrams. *This worksheet can also be used to calculate program temperatures using furnace calibration data.*
 
 <ins>**Generate Diagram:**</ins> Generates an annealing profile diagram from the current template worksheet.
 
-* <ins>**Full Dialog...:**</ins> Set parameters or open your own theme to generate an annealing diagram from the current worksheet. Recommended to use with generated template worksheet.
+* <ins>**Full Dialog...:**</ins> [Set parameters](#annealing-profile-dialog-options) or open your own theme to generate an annealing diagram from the current worksheet. Recommended to use with generated template worksheet.
 * <ins>**\<Default\>**</ins> Generate an annealing diagram from the current worksheet using default settings. Recommended to use with generated template worksheet.
 * <ins>**\<Last Used\>**</ins> Generate an annealing diagram from the current worksheet using the last used settings. Recommended to use with generated template worksheet.
+
+<ins>**New/Edit Furnace:**</ins>Opens a new worksheet to edit calibration data or add a new furnace to your saved data.
+
+---
+## Using and Editing Furnace Calibration Data
+
+![full anneal profile page](/assets/full_anneal_profile.png)
+
+When editing your annealing profile (using *Annealing Profiles > Get Annealing Template*), there are additional columns for calculating calibrated temperatures based on data stored in your copy of Origin.
+
+### Selecting your furnace
+Changing the furnace ID stored in the highlighted cell in **column I** will check for calibration data stored under that ID. If calibration data is found, it will automatically load the information and use it to calculate temperatures for you.
+
+### Calibrated Temperatures
+After successfully loading your calibration data, **columns E:F** will give you the calibrated settings to input into your furnace. For example, in the image above, the desired temperature (column B) is 800 degrees, but column E calculates that the furnace must be set to 810 degrees to account for the calibration data stored for FRN33. It also calculated the corresponding ramp rate, assuming that your furnace starts at 25 degrees celsius.
+
+### Editing furnace data
+Furnace data cannot be edited in the annealing worksheet, only loaded. Instead, navigate to *Annealing Profiles > New/Edit Furnace* to open a furnace worksheet.
+
+![edit furnace page](/assets/edit_furnace.png)
+
+* To create a new furnace, enter a furnace ID that has not been used before, enter all the necessary data, and click "Save Furnace".
+* Existing furnaces can be edited by entering their ID and clicking "Reload Furnace". Make any necessary edits before clicking "Save Furnace".
+* For a list of already existing furnaces, navigate to the "Furnace List" worksheet tab in the furnace workbook.
+
+### Printing Calibration Reports
+Once you have entered all the calibration data for your furnace, you can print a report to attach to the fume hood. Navigate to the "Print" tab of the furnace workbook, then go to *File > Print Preview* to make sure everything is displayed before printing.
 
 ---
 ## Annealing Profile Dialog Options
@@ -182,8 +231,19 @@ Installed graph templates can be found in Plot > User Templates
 ---
 
 # Release Notes
+## Release 1.3.3
+Furnace Calibrations, Copy/Pasting Annealing Diagrams
+
+* Added calibration calculations to the annealing template. Input a saved furnace ID, and the template will automatically calculate furnace set temperatures to match your annealing profile
+* Added a workflow to edit or add new furnace calibrations. User-saved calibrations will always take precedent over calibrations installed with the plugin.
+* Within the furnace editing workflow, a 2nd sheet has also been added which generates a printable report of the trendline, calibration data, and calibration date.
+* Annealing Diagrams are now inserted into a new cell in the template workbook so that they can be copy/pasted. They can also be saved as a PNG in the dialog. If no save location is selected, they are saved to a temporary location in the user files folder.
+
 ## Release 1.3.2
-Improved workflow for installation.
+Improved workflow for installation
+
+* Installation now uses a single menu with checkboxes for options, instead of individual popups.
+* Steamlined backend development.
 
 ## Release 1.3.1
 UI tweaks, annealing profiles

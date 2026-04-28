@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import originpro as op #type: ignore
 from itertools import zip_longest
 import sys
+import os
 from matplotlib.transforms import ScaledTranslation
 
 START = "start"
@@ -92,7 +93,7 @@ class InvertedCanvas(tk.Canvas):
 
 
 class profile:
-    def __init__(self, start_temp=25, min_height=6, add_temps="", ramp_width=4, dwell_width=6, font_size=16, font_family="Arial", text_offset=0.6, line_width=2, l_marg=10,r_marg=10,t_marg=10,b_marg=10):
+    def __init__(self,start_temp=25, min_height=6, add_temps="", ramp_width=4, dwell_width=6, font_size=16, font_family="Arial", text_offset=0.6, line_width=2, l_marg=10,r_marg=10,t_marg=10,b_marg=10):
         self.start_temp = start_temp
         self.min_height=min_height
         self.add_temps=add_temps
@@ -381,15 +382,17 @@ class profile:
         #print(f'new fontsize: {fontsize}')
         for txt in ax.texts:
             txt.set_fontsize(fontsize)
+        save_file = op.get_lt_str('fname$')
+        plt.savefig(save_file, bbox_inches='tight', pad_inches=0)
 
-        plt.show()
+        plt.close(fig)
 
 def make_anneal_template():
     wbook = op.load_book('PXRD_anneal_template.ogwu')
     wks = wbook[0]
     op.lt_exec("wks.labels(-O)")
 
-default_parameters = {
+default_parameters = { # string (file path to save PNG, e.g. "C:/Users/Me/Desktop/anneal_profile.png")
     "start_temp":      25,   # int
     "min_height":      6.0,   # float
     "add_temps":       "",   # comma‑separated string of numbers, e.g. "500,600,700"
@@ -440,7 +443,9 @@ def parse_params(s):
     return out
 
 def make_anneal_plot(cleaned_params=default_parameters):
-    wks = op.find_sheet()
+    wb = op.find_book()
+    wks = wb[0]
+
     try:
         types = wks.to_list('Type')
         temps = wks.to_list('Temperature')
@@ -463,8 +468,16 @@ def make_anneal_plot(cleaned_params=default_parameters):
                 method(temp,note)
             else:
                 method(note)
-
+    
     myProf.plot()
+    wks = wb[1]
+    wks.activate()
+    comment = f'Image Saved to:\n{op.get_lt_str("fname$")}'
+    lt_cmd = f'''
+        insertimg resize:=1 orng:=col(1)[1];
+        col(1)[C]$ = "{comment}";
+    '''
+    op.lt_exec(lt_cmd)
 
 if __name__ == "__main__":
     # sys.argv[0] = script name
