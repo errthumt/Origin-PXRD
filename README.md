@@ -13,6 +13,11 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
   - [Import Pattern Dialog Options](#import-pattern-dialog-options)
     - [\[BETA\] Phase Fraction Analysis](#beta-phase-fraction-analysis)
   - [\[NEW\] Annealing Profiles Dropdown](#new-annealing-profiles-dropdown)
+  - [Using and Editing Furnace Calibration Data](#using-and-editing-furnace-calibration-data)
+    - [Selecting your furnace](#selecting-your-furnace)
+    - [Calibrated Temperatures](#calibrated-temperatures)
+    - [Editing furnace data](#editing-furnace-data)
+    - [Printing Calibration Reports](#printing-calibration-reports)
   - [Annealing Profile Dialog Options](#annealing-profile-dialog-options)
   - [Graph Templates](#graph-templates)
 - [Release Notes](#release-notes)
@@ -21,7 +26,6 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
   - [Release 1.3.1](#release-131)
   - [Release 1.3.0](#release-130)
   - [Release 1.2.5](#release-125)
-
 
 
 ## Bug reports or Feature Requests
@@ -143,7 +147,7 @@ If you have your own set of custom parameters that you like to use for your own 
 | | Advanced Parameters | Used to adjust peak broadening and dampening. |
 | Normalization Mode | | Specify whether to normalize imported or calculated patterns.<br>During CIF import, an extra option is available to add scaling for each imported CIF by the relative phase fractions in your analysis. See the Phase Fraction section below. |
 
-### \[BETA\] Phase Fraction Analysis
+### <span>[BETA]</span> Phase Fraction Analysis
 If you select this option under **Normalization Mode** during CIF import, the files will be imported as usual (without normalization), but additional columns will be added to scale phases by their relative fractions present in your analysis. Column types are specified by 'Norm Type' row:
 - **Non-normal**: Original, non-normalized calculated patterns
 - **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
@@ -156,22 +160,45 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 
 ---
 ## <span>[NEW\]</span> Annealing Profiles Dropdown
-This set of features is centered around managing annealing profiles in programmable furnaces.
-* You can input any number of program steps into the template worksheet and generate a diagram that depicts your profile.
-* You can save furnace calibration data into your copy of origin, to be used to quickly calculate program temperatures to match your annealing profile.
-  * Furnace data can be set for regular trendline interpolation (using linear fit equation), OR, if you have distinctly different calibration at different temperatures, you can change a furnace to use local interpolation instead.
 
 | Example Annealing Profile | Resulting Diagram |
 | --- | --- |
 | ![profile](/assets/anneal_profile.png) | ![diagram](/assets/anneal_diagram.png) |
 
-<ins>**Get Template:**</ins> Generates a worksheet template to generate annealing diagrams.
+<ins>**Get Annealing Template:**</ins> Generates a worksheet template to generate annealing diagrams. *This worksheet can also be used to calculate program temperatures using furnace calibration data.*
 
 <ins>**Generate Diagram:**</ins> Generates an annealing profile diagram from the current template worksheet.
 
-* <ins>**Full Dialog...:**</ins> Set parameters or open your own theme to generate an annealing diagram from the current worksheet. Recommended to use with generated template worksheet.
+* <ins>**Full Dialog...:**</ins> [Set parameters](#annealing-profile-dialog-options) or open your own theme to generate an annealing diagram from the current worksheet. Recommended to use with generated template worksheet.
 * <ins>**\<Default\>**</ins> Generate an annealing diagram from the current worksheet using default settings. Recommended to use with generated template worksheet.
 * <ins>**\<Last Used\>**</ins> Generate an annealing diagram from the current worksheet using the last used settings. Recommended to use with generated template worksheet.
+
+<ins>**New/Edit Furnace:**</ins>Opens a new worksheet to edit calibration data or add a new furnace to your saved data.
+
+---
+## Using and Editing Furnace Calibration Data
+
+![full anneal profile page](/assets/anneal_profile.png)
+
+When editing your annealing profile (using *Annealing Profiles > Get Annealing Template*), there are additional columns for calculating calibrated temperatures based on data stored in your copy of Origin.
+
+### Selecting your furnace
+Changing the furnace ID stored in the highlighted cell in **column I** will check for calibration data stored under that ID. If calibration data is found, it will automatically load the information and use it to calculate temperatures for you.
+
+### Calibrated Temperatures
+After successfully loading your calibration data, **columns E:F** will give you the calibrated settings to input into your furnace. For example, in the image above, the desired temperature (column B) is 800 degrees, but column E calculates that the furnace must be set to 810 degrees to account for the calibration data stored for FRN33. It also calculated the corresponding ramp rate, assuming that your furnace starts at 25 degrees celsius.
+
+### Editing furnace data
+Furnace data cannot be edited in the annealing worksheet, only loaded. Instead, navigate to *Annealing Profiles > New/Edit Furnace* to open a furnace worksheet.
+
+![edit furnace page](/assets/edit_furnace.png)
+
+* To create a new furnace, enter a furnace ID that has not been used before, enter all the necessary data, and click "Save Furnace".
+* Existing furnaces can be edited by entering their ID and clicking "Reload Furnace". Make any necessary edits before clicking "Save Furnace".
+* For a list of already existing furnaces, navigate to the "Furnace List" worksheet tab in the furnace workbook.
+
+### Printing Calibration Reports
+Once you have entered all the calibration data for your furnace, you can print a report to attach to the fume hood. Navigate to the "Print" tab of the furnace workbook, then go to *File > Print Preview* to make sure everything is displayed before printing.
 
 ---
 ## Annealing Profile Dialog Options
