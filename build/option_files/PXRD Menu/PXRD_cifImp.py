@@ -18,6 +18,7 @@ import sys
 import originpro as op #type: ignore
 
 import numpy as np #type: ignore
+from pymatgen.io.cif import CifParser #type: ignore
 from pymatgen.core import Structure #type: ignore
 from pymatgen.core.periodic_table import Element #type: ignore
 from pymatgen.analysis.diffraction.xrd import XRDCalculator #type: ignore
@@ -84,10 +85,47 @@ def fcj_asymmetry(two_theta, t0, H, S=0.015):
     shift = delta * (two_theta - t0)
     return np.exp(-shift**2 / (2*H**2))
 
-def compute_Z(structure):
+def compute_Z(structure=None, cif_path=None):
+    """
+    Compute Z (formula units per unit cell) using the most reliable source:
+    1. If cif_path is provided and CIF contains _cell_formula_units_Z, use it.
+    2. Otherwise fall back to computing Z from the Structure object.
+    """
+
+    # --- Case 1: Try reading Z directly from CIF ---
+    if cif_path is not None:
+        parser = CifParser(cif_path)
+        cif_data = parser._cif.data  # dict of CIF blocks
+
+        # Usually only one block, but loop safely
+        for block in cif_data.values():
+            # Try the canonical key
+            if "_cell_formula_units_Z" in block:
+                try:
+                    return float(block["_cell_formula_units_Z"])
+                except Exception:
+                    pass
+
+            # Try common variants (CIFs are messy)
+            for key in block.keys():
+                if key.lower().endswith("formula_units_z"):
+                    try:
+                        return float(block[key])
+                    except Exception:
+                        pass
+
+        # If we reach here, CIF did not contain Z → fall back
+
+        structure = parser.get_structures()[0]
+
+    # --- Case 2: Compute Z from Structure ---
+    if structure is None:
+        raise ValueError("Either structure or cif_path must be provided.")
+
     comp = structure.composition
     full_atoms = comp.num_atoms
     formula_atoms = comp.reduced_composition.num_atoms
+
     return full_atoms / formula_atoms
 
 def absorption_proxy(structure, n=2.5):
@@ -127,6 +165,7 @@ def calculate_pattern(
 ):
     # Read CIF file using pymatgen's Structure module
     structure = Structure.from_file(cif_path)
+    Z = compute_Z(structure,cif_path)
 
     # Build list of B values for each atom site
     atom_B = []
@@ -154,7 +193,6 @@ def calculate_pattern(
         # Basic reflections calculated using pymatgen's XRDCalculator.get_pattern()
         xrd = XRDCalculator(wavelength=wl)
         pattern = xrd.get_pattern(structure, two_theta_range=two_theta_range, scaled=False)
-        Z = compute_Z(structure)
         cell_volume = structure.lattice.volume
         mu = absorption_proxy(structure) # This is very fudgy
         # Modify reflections with scattering factors
