@@ -178,7 +178,7 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 ---
 ## Using and Editing Furnace Calibration Data
 
-![full anneal profile page](/assets/anneal_profile.png)
+![full anneal profile page](/assets/full_anneal_profile.png)
 
 When editing your annealing profile (using *Annealing Profiles > Get Annealing Template*), there are additional columns for calculating calibrated temperatures based on data stored in your copy of Origin.
 
