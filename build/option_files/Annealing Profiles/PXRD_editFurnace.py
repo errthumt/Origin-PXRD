@@ -1,6 +1,6 @@
 import json
 import os
-import originpro as op
+import originpro as op #type: ignore
 import sys
 
 op.lt_exec('string __uff$ = %Y;')
@@ -50,7 +50,7 @@ def load_all_calibrations():
 
     return data
 
-def load_furnace():
+def load_furnace(silent=False):
     data = load_all_calibrations()
     wks = op.find_sheet()
     furnace_ID = wks.get_label("Actual Temp",'note1')
@@ -70,8 +70,9 @@ def load_furnace():
     wks.from_list("Actual Temp",actual_temps)
     wks.set_label("Actual Temp",cal_date,"note2")
     wks.set_label("Actual Temp",two_point,"note3")
-
-    op.lt_exec(f'type -b "Loaded {furnace_ID} from {source} calibration data";')
+    
+    if not silent:
+        op.lt_exec(f'type -b "Loaded {furnace_ID} from {source} calibration data";')
 
 def save_furnace():
     user_data = load_user_json()
@@ -96,6 +97,7 @@ def save_furnace():
     with open(json_path, "w") as f:
         json.dump(user_data, f, indent=4)
     op.lt_exec(f'type -b "Saved {furnace_ID} to user calibration data";')
+    load_furnace(silent=True)
 
 def empty_sheet():
     wbook = op.load_book('PXRD_furnace_template.ogwu')
