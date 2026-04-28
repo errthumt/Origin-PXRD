@@ -745,13 +745,11 @@ if(font_family==1) font_selected = "Times New Roman";
 else font_selected = "Arial";
 
 string lt_cmd;
+lt_cmd = "fname$=\"%YAnnealing Diagrams\\temp.png\";";
 if(save_file) {
-	lt_cmd = "dlgSave ext:=*.png title:=\"Save Annealing Profile As...\" init:=%X;";
+	lt_cmd += "dlgSave ext:=*.png title:=\"Save Annealing Profile As...\" init:=%X;";
 }
 
-else {
-	lt_cmd = "fname$=\"%YAnnealing Diagrams\\temp.png\";";
-}
 LT_execute(lt_cmd);
 
 lt_cmd = "run -pyf PXRD_anneal.py \"from template\" \"";
