@@ -3,6 +3,8 @@ A plugin for importing experimental patterns and calculating theoretical pattern
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
 
+*Are you NOT from Kovnir or Zaikina group and found this plugin useful?* [Let me know!](#bug-reports-or-feature-requests) 
+
 ## Table of Contents:
 - [Installation Instructions](#installation-instructions)
   - [Automatic Install (Origin 2025 or later):](#automatic-install-origin-2025-or-later)
