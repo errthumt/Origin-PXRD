@@ -95,10 +95,10 @@ def compute_Z(structure=None, cif_path=None):
     # --- Case 1: Try reading Z directly from CIF ---
     if cif_path is not None:
         parser = CifParser(cif_path)
-        cif_data = parser._cif.data  # dict of CIF blocks
+        cif_blocks = parser.as_dict()  # dict of CIF blocks
 
         # Usually only one block, but loop safely
-        for block in cif_data.values():
+        for block in cif_blocks.values():
             # Try the canonical key
             if "_cell_formula_units_Z" in block:
                 try:
