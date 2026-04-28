@@ -17,6 +17,7 @@ from itertools import zip_longest
 import sys
 import os
 from matplotlib.transforms import ScaledTranslation
+from pathlib import Path
 
 START = "start"
 RAMP = "ramp"
@@ -383,6 +384,10 @@ class profile:
         for txt in ax.texts:
             txt.set_fontsize(fontsize)
         save_file = op.get_lt_str('fname$')
+
+        save_path = Path(save_file)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+
         plt.savefig(save_file, bbox_inches='tight', pad_inches=0)
 
         plt.close(fig)
