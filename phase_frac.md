@@ -4,7 +4,7 @@ The end goal of this part of the plugin is to give presenters an easy way to gen
 
 Unfortunately, the previously established method (in our research group) for generating theoretical patterns through VESTA results in an arbitrarily normalized pattern with intensities that cannot be compared with other calculated patterns.
 
-There is, however, an already-established algorithm for scaling intensities by phase fractions which is used by Reitveld refinement technique to simulate multi-phase patterns. Since the calculation method for importing CIFs using the plugin already approximates the Rietveld method, then it is simply a matter of "pre-baking" any other phase-dependent factors into the calculated patterns, such that all there is left to do is multiply by phase fraction.
+There is, however, an already-established algorithm for scaling intensities by phase fractions which is used in Reitveld refinement. Since the calculation method for this plugin already approximates the Rietveld method, then it is simply a matter of "pre-baking" any other phase-dependent factors into the calculated patterns, such that all there is left to do is multiply by phase fraction.
 
 ## Source Code
 For reference, the main calculation module is in the `calculate_pattern()` module in [PXRD_cifImp.py](/build/option_files/PXRD%20Menu/PXRD_cifImp.py):
@@ -103,7 +103,7 @@ def calculate_pattern(
 The classical Rietveld method of calculating diffraction intensity for a given sample is:
 
 $$
-I_{calc}(2\theta) = S_F \sum_{k}^{phases}\left[\frac{\phi_k}{V_k^2}\sum_{j}^{peaks}\left(L_k\left|F_{k,j}\right|^2S_j\left(2\theta-2\theta_{k,j}\right)P_{k,j}A_{j}\right)\right] + bkg
+I_{calc}(2\theta) = S_F \sum_{k}^{phases}\left[\frac{\phi_k}{V_k^2}\sum_{j}^{peaks}\left(m_{k,j}L_k\left|F_{k,j}\right|^2S_j\left(2\theta-2\theta_{k,j}\right)P_{k,j}A_{j}\right)\right] + bkg
 $$
 
 ### Reflection Intensities
@@ -111,10 +111,11 @@ $$
 First, we focus on the peak-scaled intensities outlined in the expression:
 
 $$
-\sum_{j}^{peaks}\left(L_k\left|F_{k,j}\right|^2 S_j\left(2\theta-2\theta_{k,j}\right)P_{k,j}A_{j}\right)
+\sum_{j}^{peaks}\left(m_{k,j}L_k\left|F_{k,j}\right|^2 S_j\left(2\theta-2\theta_{k,j}\right)P_{k,j}A_{j}\right)
 $$
 
 Where:
+* $m_{k,j}$ is the peak multiplicity
 * $L_k$ is the Lorentz-Polarization factor
 * $\left|F_{k,j}\right|^2$ is the structure factor
 * $S_j\left(2\theta-2\theta_{k,j}\right)$ is the shape function for a peak centered at $2\theta_{k,j}$.
@@ -127,22 +128,22 @@ xrd = XRDCalculator(wavelength=wl)
 pattern = xrd.get_pattern(structure, two_theta_range=two_theta_range, scaled=False)
 # In the get_pattern() method, setting scaled=False prevents normalization to [0,100]
 ```
-This generates a set of sharp peak intensities (`pattern = ` $I_{peak}$) that account for Lorentz-Polarization and structure factor *only*:
+This generates a set of sharp peak intensities (`pattern = ` $I_{peak}$) that account for multiplicity, Lorentz-Polarization and structure factor *only*:
 
 $$
-I_{peak} = L_k\left|F_{k,j}\right|^2
+I_{peak} = m_{k,j}L_k\left|F_{k,j}\right|^2
 $$
 
 Since the patterns we import are intended for visualization, not refinement, we also choose to neglect preferred orientation and absorption effects:
 
 $$
-\sum_{j}^{peaks}\left(L_k\left|F_{k,j}\right|^2 S_j\left(2\theta-2\theta_{k,j}\right)P_{k,j}A_{j}\right) \approx \sum_{j}^{peaks}\left(L_k\left|F_{k,j}\right|^2 S_j\left(2\theta-2\theta_{k,j}\right)\right) = \sum_{j}^{peaks}\left(I_{peak}S_j\left(2\theta-2\theta_{k,j}\right)\right)
+\sum_{j}^{peaks}\left(m_{k,j}L_k\left|F_{k,j}\right|^2 S_j\left(2\theta-2\theta_{k,j}\right)P_{k,j}A_{j}\right) \approx \sum_{j}^{peaks}\left(m_{k,j}L_k\left|F_{k,j}\right|^2 S_j\left(2\theta-2\theta_{k,j}\right)\right) = \sum_{j}^{peaks}\left(I_{peak}S_j\left(2\theta-2\theta_{k,j}\right)\right)
 $$
 
 ### Peak Shapes and Broadening
 
 Now we must apply the shape function, $S_j\left(2\theta-2\theta_{k,j}\right)$, which converts theoretical peak intensities into realistically-broadened peak shapes. In this plugin, I opted to construct the peak function as a combination of:
-* Debye-Waller Peak Dampening
+* Phase-averaged Debye-Waller Peak Dampening (sometimes included in $\left|F_{k,j}\right|^2$, but not in the case of pymatgen's `get_pattern()`)
 * Caglioti/Pseudo-Voight Peak Broadening (Hybrid of Gaussian and Lorentzian peak shape)
 * Finger-Cox-Jephcoat axial divergence asymmetry for peak tailing
 
@@ -157,7 +158,7 @@ Then, it loops through every peak intensity in `pattern`:
 for idx, (t0, I0) in enumerate(zip(pattern.x, pattern.y)):
 ```
 
-For each peak intensity, it first multiplies intensity by a Debye-Waller dampening factor averaged from all atoms in the structure:
+For each peak intensity, it first multiplies intensity by an approximated Debye-Waller dampening factor averaged from all atoms in the structure (strictly speaking, dampening is unique to each atom, but for visualizing patterns, the average approximation is sufficient):
 ```python
 sin_th = np.sin(theta)
 s = sin_th / wl # wl = wavelength
