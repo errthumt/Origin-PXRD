@@ -155,7 +155,11 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 **I'm not enirely sure I am correctly scaling patterns so that they can be scaled by molar phase fractions and match experimental data. [My current from-principles method is outlined here](/phase_frac.md)**
 
 ---
-## \[NEW\] Annealing Profiles Dropdown
+## <span>[NEW\]</span> Annealing Profiles Dropdown
+This set of features is centered around managing annealing profiles in programmable furnaces.
+* You can input any number of program steps into the template worksheet and generate a diagram that depicts your profile.
+* You can save furnace calibration data into your copy of origin, to be used to quickly calculate program temperatures to match your annealing profile.
+  * Furnace data can be set for regular trendline interpolation (using linear fit equation), OR, if you have distinctly different calibration at different temperatures, you can change a furnace to use local interpolation instead.
 
 | Example Annealing Profile | Resulting Diagram |
 | --- | --- |
