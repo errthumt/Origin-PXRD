@@ -106,6 +106,8 @@ def dispatch_qspace(mode="all_deg"):
     
     # Creates wavelength row if it doesn't already exist
     wl_row = wks._user_param_row("Wavelength (Å)",True)
+    op.lt_exec(f"wks.labels(*D{wl_row+1});") # Show wavelength row
+
 
     # Convert in reverse order to avoid index shifting
     for col in reversed(col_indices):
@@ -121,6 +123,9 @@ def dispatch_qspace(mode="all_deg"):
         {
             wcolwidth $(ii) -1
         }
+        // Long name and units to bottom
+        wks.labels(>LU);
+
     ''')
     op.lt_exec('type -b "Q-space columns created successfully.";')
 
