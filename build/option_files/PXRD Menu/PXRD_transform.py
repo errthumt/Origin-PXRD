@@ -169,7 +169,7 @@ def add_columns(col_indices, transform):
 
         wks.set_formula(new_col, formula_text)
 
-    op.lt_exec('type -b "Transformed Columns Successfully";')
+    op.lt_exec('wks.labels(>LU); type -b "Transformed Columns Successfully";')
 
 # Dispatch based on labtalk arguments.
 if __name__ == "__main__":
