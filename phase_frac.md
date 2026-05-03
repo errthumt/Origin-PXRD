@@ -8,10 +8,9 @@ There is, however, an already-established algorithm for scaling intensities by p
 
 ## Source Code
 For reference, the main calculation module is in the `calculate_pattern()` module in [PXRD_cifImp.py](../build/option_files/PXRD%20Menu/PXRD_cifImp.py):
-<details>
+<details markdown="block">
   <summary>Click to expand code</summary>
 
-{::options parse_block_html="true"}
 
 ~~~python
 def calculate_pattern(
