@@ -6,9 +6,6 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
 *Are you NOT from Kovnir or Zaikina group and found this plugin useful?* [Let me know!](#bug-reports-or-feature-requests) 
 
 ## Table of Contents:
-- [Installation Instructions](#installation-instructions)
-  - [Automatic Install (Origin 2025 or later):](#automatic-install-origin-2025-or-later)
-  - [Manual Install (Origin 2022-2024)](#manual-install-origin-2022-2024)
 - [Instructions for Use](#instructions-for-use)
   - [If "PXRD" dropdown does not appear:](#if-pxrd-dropdown-does-not-appear)
   - [PXRD Menu Options:](#pxrd-menu-options)
@@ -37,48 +34,6 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
   * [Create a bug report](https://github.com/errthumt/Origin-PXRD/issues/new?template=bug_report.md)
   * [Request a feature](https://github.com/errthumt/Origin-PXRD/issues/new?template=feature_request.md)
   * [Other feedback](https://github.com/errthumt/Origin-PXRD/issues/new)
-
----
-
-# Installation Instructions
-A full installation guide with screenshots can be found [here](./install_guide/). A PDF version can be downloaded [here](./install_guide/install_guide.pdf)
-
-## Automatic Install (Origin 2025 or later):
-
-<!--start recent installer link-->
-[Click Here to Download the most recent installer](./installer/release/OriginPXRD_Installer_v1.3.4-16-g5aea05f.exe)
-<!--end recent installer link-->
-
-1. Run the installer found at the link above. You may need to tell your browser to trust the file. It will open the installation project inside Origin.
-2. In the dialog, select which plugin features you want to install and select OK.
-3. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
-4. After the python packages have been installed (CMD line should end with "Press any key to continue..."), save the Origin project (It will be deleted shortly, but Origin will not release it for deletion until it's saved.) and close all copies of Origin.
-5. If using the automatic installer, a CMD window should appear that will clean up the installation files from their temporary directory. **Do not close this window, it will close itself after cleaning up**
-5. Review the [instructions for use](#instructions-for-use) for further guidance.
-
-## Manual Install (Origin 2022-2024)
-**Disclaimer:** This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later. 
-
-<!--start recent zip link-->
-[Click Here to Download the most recent zip package](https://github.com/errthumt/Origin-PXRD/raw/refs/heads/main/manual_install/OriginPXRD_v1.3.4-16-g5aea05f.zip)
-<!--end recent zip link-->
-
-1. Locate your Origin User Files Folder.
-   * In Origin 2024 or later, your user files folder can be found from inside Origin: Help > Open Folder > User Files Folder
-2. Download most recent release above and extract it to an easy-to-find location
-3. For each option that you want to install, copy the entire contents of the corresponding option folder into the user files folder.
-    * For example: If you want to install the PXRD Menu, open the PXRD Menu folder and copy cifImp.py, cifPicker.py, PXRD.omc, etc... directly into the user file folder
-    * Some option folders contain additional folders inside them. The folder itself needs to be put inside the user files folder, then the files inside stay inside that folder. If the folder already exists in the user files folder, make sure the new files are inside that folder after copying.
-      - Example: The In-Situ Beamline option has a folder inside called Filters. This matches the Filters folder inside the User Files Folder. The *.oif files in that folder need to end up inside User Files/Filters/.
-4. In Origin, open the script window with: Window > Script Window
-5. Copy/Paste the ENTIRE command below as one line into the script window:
-    ```
-    pip -chk numpy bibtexparser matplotlib monty narwhals orjson palettable pandas plotly pymatgen requests scipy spglib sympy tabulate tqdm uncertainties
-    ```
-6. Ensure that your text cursor is at the end of the pasted line (not on a new line) and press \<Enter\>
-7. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
-8. After the python packages have been installed (CMD line should end with "Press any key to continue..."), close and restart Origin with a fresh project.
-9.  Review the [instructions for use](#instructions-for-use) for further guidance.
 
 ---
 
