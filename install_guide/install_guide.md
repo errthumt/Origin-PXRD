@@ -10,40 +10,40 @@
 
         | Opening the python console | View from the python console |
         | :---------------------------: | :-----------------------------: |
-        | ![opening the python console](/assets/open_python_console.png) | ![view from the python console](/assets/python_console.png) |
+        | ![opening the python console](./assets/open_python_console.png) | ![view from the python console](./assets/python_console.png) |
 
     * If necessary, add the embedded python to your installation by right-clicking in the start menu > Open File Location, and running the install repair tool to modify the installation
 
         | Find the install repair tool | Modify the installation |
         | :---------------------------: | :-----------------------------: |
-        | ![Start Menu > Open File Location](/assets/open_file_location.png) | ![Modify Installation](/assets/modify_installation.png) |
-        | ![Open repair tool](/assets/repair_tool.png) | ![Select Embedded Python](/assets/embedded_python.png) |
+        | ![Start Menu > Open File Location](./assets/open_file_location.png) | ![Modify Installation](./assets/modify_installation.png) |
+        | ![Open repair tool](./assets/repair_tool.png) | ![Select Embedded Python](./assets/embedded_python.png) |
 
 * Other Windows to Recognize:
 
     | Labtalk Script Window | CMD Window |
     | :---------------------------: | :-----------------------------: |
     | This window is used to run Origin Labtalk commands.<br>It is also used during manual installation to manually request python packages. | This window will be opened by Origin to install any requested python packages |
-    | ![labtalk window](/assets/labtalk.png) | ![cmd window](/assets/cmd.png) |
+    | ![labtalk window](./assets/labtalk.png) | ![cmd window](./assets/cmd.png) |
 
 # Installation Instructions
 
 ## Automatic Install (Origin 2025 or later):
-1. Download and run [the most recent installer](/installer/release). It will open the installation project inside Origin.
+1. Download and run [the most recent installer](./installer/release). It will open the installation project inside Origin.
 
-    ![Recent Releases Page](/assets/release_page.png)
+    ![Recent Releases Page](./assets/release_page.png)
 
-    ![Download installer](/assets/download_installer.png)
+    ![Download installer](./assets/download_installer.png)
 ---
 2. In the dialog, select which plugin features you want to install, then select OK.
 
-    ![option popup 1](/assets/popup1.png)
+    ![option popup 1](./assets/popup1.png)
 ---
 1. If prompted, install any requested python packages. Origin will open an embedded command prompt window to install necessary python packages. This may take longer than 10 minutes, depending on processing speed and internet connection.
 
-    ![package install prompt](/assets/package_prompt.png)
+    ![package install prompt](./assets/package_prompt.png)
 
-    ![package installation window](/assets/package_install.png)
+    ![package installation window](./assets/package_install.png)
 
     * While waiting on package install, check on the Labtalk window for confirmation or error messages
 
