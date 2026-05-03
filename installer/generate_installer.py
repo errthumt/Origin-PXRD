@@ -129,20 +129,16 @@ def update_recent_links(version: str):
 
     # Files to update
     files = [
-        REPO_ROOT / "README.md",
-        INSTALLER_ROOT / "release" / "readme.md",
-        REPO_ROOT / "manual_install" / "readme.md",
+        #REPO_ROOT / "index.md",
+        REPO_ROOT / "install_guide" / "index.md",
+        #INSTALLER_ROOT / "release" / "readme.md",
+        #REPO_ROOT / "manual_install" / "readme.md",
     ]
 
     # New URLs
-    new_installer_url = (
-        f"https://github.com/errthumt/Origin-PXRD/raw/refs/heads/main/"
-        f"installer/release/OriginPXRD_Installer_v{version}.exe"
-    )
-    new_zip_url = (
-        f"https://github.com/errthumt/Origin-PXRD/raw/refs/heads/main/"
-        f"manual_install/OriginPXRD_v{version}.zip"
-    )
+    new_installer_url = f"../installer/release/OriginPXRD_Installer_v{version}.exe"
+    
+    new_zip_url = f"../manual_install/OriginPXRD_v{version}.zip"
 
     # Markdown lines
     installer_line = (
