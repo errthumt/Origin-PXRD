@@ -115,9 +115,9 @@ $$
 $$
 
 Where:
-* \(m_{k,j}\) is the peak multiplicity
+* $m_{k,j}$ is the peak multiplicity
 * $L_k$ is the Lorentz-Polarization factor
-* $\left|F_{k,j}\right|^2$ is the structure factor
+* $\left\vert F_{k,j}\right\vert^2$ is the structure factor
 * $S_j\left(2\theta-2\theta_{k,j}\right)$ is the shape function for a peak centered at $2\theta_{k,j}$.
 * $P_{k,j}$ is the March-Dollase factor for preferred orientation
 * $A_{j}$ is an absorption factor.
