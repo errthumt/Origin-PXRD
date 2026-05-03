@@ -1,0 +1,10 @@
+theme: just-the-docs
+title: Origin-PXRD
+
+just_the_docs:
+  navigation:
+    - title: Home
+      url: /
+      children:
+        - title: Installation Instructions
+          url: /#installation-instructions
