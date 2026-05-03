@@ -7,11 +7,12 @@ Unfortunately, the previously established method (in our research group) for gen
 There is, however, an already-established algorithm for scaling intensities by phase fractions which is used in Reitveld refinement. Since the calculation method for this plugin already approximates the Rietveld method, then it is simply a matter of "pre-baking" any other phase-dependent factors into the calculated patterns, such that all there is left to do is multiply by phase fraction.
 
 ## Source Code
-For reference, the main calculation module is in the `calculate_pattern()` module in [PXRD_cifImp.py](/build/option_files/PXRD%20Menu/PXRD_cifImp.py):
+For reference, the main calculation module is in the `calculate_pattern()` module in [PXRD_cifImp.py](../build/option_files/PXRD%20Menu/PXRD_cifImp.py):
 <details>
   <summary>Click to expand code</summary>
 
-```python
+
+~~~python
 def calculate_pattern(
     cif_path,
     fe_wavelengths,
@@ -95,7 +96,7 @@ def calculate_pattern(
 
     # Returns series, not indiviual values
     return two_theta, intensity
-```
+~~~
 </details>
 
 ## Approximation of peak shapes and intensities with the Rietveld model
@@ -143,7 +144,7 @@ $$
 ### Peak Shapes and Broadening
 
 Now we must apply the shape function, $S_j\left(2\theta-2\theta_{k,j}\right)$, which converts theoretical peak intensities into realistically-broadened peak shapes. In this plugin, I opted to construct the peak function as a combination of:
-* Phase-averaged Debye-Waller Peak Dampening (sometimes included in $\left|F_{k,j}\right|^2$, but not in the case of pymatgen's `get_pattern()`)
+* Phase-averaged Debye-Waller Peak Dampening (sometimes included in $\left\vert F_{k,j}\right\vert^2$, but not in the case of pymatgen's `get_pattern()`)
 * Caglioti/Pseudo-Voight Peak Broadening (Hybrid of Gaussian and Lorentzian peak shape)
 * Finger-Cox-Jephcoat axial divergence asymmetry for peak tailing
 
