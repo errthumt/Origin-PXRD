@@ -189,7 +189,7 @@ $$
 I_{k}\left(2\theta\right) = \sum_{j}^{peaks}\left(I_{peak}S_j\left(2\theta-2\theta_{k,j}\right)\right)
 $$
 
-### Scaling by Molar Phase Fraction
+## Scaling by Molar Phase Fraction
 
 Now, we only have to figure out what factor to multiply each phase pattern by in order for it to be imported on a molar basis. Substituting our calculations and approximations so far back into our Rietveld model, we get:
 
@@ -237,3 +237,35 @@ intensity += wt * I0 * pv * asym
 ```
 
 Finally, this results in a simulated pattern *per formula unit* for each imported phase. When importing CIF patterns using the "Phase Fraction Analysis" normalization mode, there is an additional parameter row for each phase where the user can specify molar fractions. This automatically scales the resulting patterns before normalizing the whole data set.
+
+## Choosing Your Phase Fraction
+
+To simplify writing the dynamic formulas to Origin, CIF patterns will always be imported for molar scaling. However, the user can now specify which type of phase fraction they want to *adjust* during the import menu. Whichever option is selected will be the row that is visible in Origin. The molar row is then auto-calculated before being used for pattern scaling. Since patterns are normalized after phase-scaling, the conversions to molar basis only need to be proportional, not normalized to 100%.
+
+### Mole Fraction
+
+This mode is useful if you already know the relative molar fractions of each phase. The patterns are already imported on a molar basis, so scaling is as simple as multiplying by the user's input mole fraction (done automatically by column formula)
+
+### Weight Fraction
+
+Some Reitveld applications (like Match! software's embedded FullProf) output phase fractions directly as weight fractions ($w_k$). A user input row for weight fraction is added, and then the hidden mole fraction row is calculated using molecular weight:
+
+$$
+x_k\propto\frac{w_k}{MW_k}
+$$
+
+### Cell Fraction (GSAS "Phase Fraction" Parameter)
+
+In GSAS-II, the refined parameter for phase fraction is actually cell fraction, $c_k$; that is, the fraction of unit cells contributed by each phase in a given space:
+
+$$
+c_k = \frac{\phi_k}{V_k}
+$$
+
+This is done because the cell fraction is useful in other calculations during refinement (whereas volume fraction is not), so it simplifies the number of calculated variables when refining.
+
+When using this option, the hidden molar fraction row is calculated using Z:
+
+$$
+x_k\propto Z c_k
+$$
