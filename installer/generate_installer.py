@@ -115,6 +115,85 @@ def to_nsis_version(version: str) -> str:
 
     return f"{parts[0]}.{parts[1]}.{parts[2]}.{count}"
 
+def update_recent_links(version: str):
+    """
+    Update the 'recent installer' and 'recent zip' links in:
+      - root/README.md
+      - root/installer/release/readme.md
+      - root/manual_install/readme.md
+
+    Replaces the blocks:
+      <!--start recent installer link--> ... <!--end recent installer link-->
+      <!--start recent zip link--> ... <!--end recent zip link-->
+    """
+
+    # Files to update
+    files = [
+        REPO_ROOT / "README.md",
+        INSTALLER_ROOT / "release" / "readme.md",
+        REPO_ROOT / "manual_install" / "readme.md",
+    ]
+
+    # New URLs
+    new_installer_url = (
+        f"https://github.com/errthumt/Origin-PXRD/raw/refs/heads/main/"
+        f"installer/release/OriginPXRD_Installer_v{version}.exe"
+    )
+    new_zip_url = (
+        f"https://github.com/errthumt/Origin-PXRD/raw/refs/heads/main/"
+        f"manual_install/OriginPXRD_v{version}.zip"
+    )
+
+    # Markdown lines
+    installer_line = (
+        f"[Click Here to Download the most recent installer]({new_installer_url})"
+    )
+    zip_line = (
+        f"[Click Here to Download the most recent zip package]({new_zip_url})"
+    )
+
+    import re
+
+    # Regex patterns
+    installer_pattern = re.compile(
+        r"<!--start recent installer link-->.*?<!--end recent installer link-->",
+        flags=re.DOTALL,
+    )
+    zip_pattern = re.compile(
+        r"<!--start recent zip link-->.*?<!--end recent zip link-->",
+        flags=re.DOTALL,
+    )
+
+    # Replacement blocks
+    installer_block = (
+        f"<!--start recent installer link-->\n{installer_line}\n<!--end recent installer link-->"
+    )
+    zip_block = (
+        f"<!--start recent zip link-->\n{zip_line}\n<!--end recent zip link-->"
+    )
+
+    # Apply replacements to each file
+    for md_file in files:
+        if not md_file.exists():
+            print(f"Skipping missing file: {md_file}")
+            continue
+
+        # Read using UTF‑8 to avoid CP1252 decode errors
+        text = md_file.read_text(encoding="utf-8")
+
+        # Replace installer block if present
+        text = installer_pattern.sub(installer_block, text)
+
+        # Replace zip block if present
+        text = zip_pattern.sub(zip_block, text)
+
+        # Write back using UTF‑8
+        md_file.write_text(text, encoding="utf-8")
+        print(f"Updated links in: {md_file}")
+
+
+
+
 # 1. Get version from Git
 version = get_git_version()
 print(f"Using version: {version}")
@@ -137,3 +216,4 @@ subprocess.check_call([str(MAKENSIS), str(nsi_output)])
 
 print(f"Installer generated: OriginPXRD_Installer_v{version}.exe")
 
+update_recent_links(version)
