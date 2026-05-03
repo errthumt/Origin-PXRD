@@ -127,7 +127,7 @@ You may need to switch GUI mode.
 ## Import Pattern Dialog Options
 
 <p align="center">
-  <img src="/assets/import_dialog.png" width="40%">
+  <img src="assets/import_dialog.png" width="40%">
 </p>
 
 If you have your own set of custom parameters that you like to use for your own analysis, you can save them as a theme using the menu on the top right of the dialog.
