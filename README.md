@@ -23,6 +23,7 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
   - [Annealing Profile Dialog Options](#annealing-profile-dialog-options)
   - [Graph Templates](#graph-templates)
 - [Release Notes](#release-notes)
+  - [Release 1.3.4](#release-134)
   - [Release 1.3.3](#release-133)
   - [Release 1.3.2](#release-132)
   - [Release 1.3.1](#release-131)
@@ -148,19 +149,28 @@ If you have your own set of custom parameters that you like to use for your own 
 | | Q End (Å⁻¹) | End of Q range. Not available in 2θ mode. |
 | | Advanced Parameters | Used to adjust peak broadening and dampening. |
 | Normalization Mode | | Specify whether to normalize imported or calculated patterns.<br>During CIF import, an extra option is available to add scaling for each imported CIF by the relative phase fractions in your analysis. See the Phase Fraction section below. |
+| Specify Fraction Type | | Choose which phase fraction you want to specify when scaling your patterns. More information on each type can be found on the [phase fraction derivation page.](/phase_frac.md#choosing-your-phase-fraction) |
 
 ### <span>[BETA]</span> Phase Fraction Analysis
 If you select this option under **Normalization Mode** during CIF import, the files will be imported as usual (without normalization), but additional columns will be added to scale phases by their relative fractions present in your analysis. Column types are specified by 'Norm Type' row:
-- **Non-normal**: Original, non-normalized calculated patterns
+- **Raw Data**: Original, non-normalized calculated patterns
 - **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
   - Convention dictates that phase fractions should add to 1, but this is not required.
-- **Max=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity across all phases is 1.0.
-- **Sum=1**: Preserving relative phase fractions, normalizes all patterns so that the max intensity is 1.0 when all phases are summed.
+- **Max Phase**: Preserving relative phase fractions, normalizes all patterns so that the max intensity across all phases is 1.0.
+- **Sum**: Preserving relative phase fractions, normalizes all patterns so that the max intensity is 1.0 when all phases are summed.
 - **Normalized, All Phases**: Final column calculated as the sum of all phases, preserving relative phase fractions. This should match a normalized experimental pattern.
 
+The type of phase fraction you want to specify is chosen during the [import dialog.](#import-pattern-dialog-options) More information about each type of phase fraction can be found on the [phase fraction derivation page.](/phase_frac.md#choosing-your-phase-fraction)
+
+Phase Fractions are specified under the **Phase-Scaled** columns only. All the other columns will update from these columns. **Typing a phase fraction under any other column will not change any scaling.**
+
+
 #### WARNING: <!-- omit from toc -->
-**Accuracy of molar scaling is still being verified. [My current from-principles method is outlined here](/phase_frac.md)**
-**Molar Scaling relies on a calculation of Z by reducing the cell contents to the minimum formula. This may lead to occasional differences in expected vs. calculated Z values.**
+**Accuracy of fraction scaling is still being verified. [My current from-principles method is outlined here](/phase_frac.md)**
+**Fraction Scaling relies on a calculation of Z by reducing the cell contents to the minimum formula. This may lead to occasional differences in expected vs. calculated Z values.**
+- You can check the value of Z calculated for your structure in the hidden user parameter row.
+  - Select the entire fraction row and right-click > edit column label rows...
+  - Find the Z label and select "Show" before clicking OK.
 - If you suspect that Z is not being correctly calculated for your structure, reach out to Travis or [fill out a bug report.](#bug-reports-or-feature-requests)
 
 ---
@@ -233,6 +243,14 @@ Installed graph templates can be found in Plot > User Templates
 ---
 
 # Release Notes
+## Release 1.3.4
+Minor Bugfixes, improvements to phase fraction analysis
+
+* Phase Fraction analysis now allows you to [choose your fraction type.](/phase_frac.md#choosing-your-phase-fraction)
+* Fixed the 11-ID-C theme to use a much smaller step size for 2$\theta$
+* Fixed RAS imports so that the workbook name is not all lowercase.
+* Rearranged some label rows for a more legible worksheet after imports.
+
 ## Release 1.3.3
 Furnace Calibrations, Copy/Pasting Annealing Diagrams
 
