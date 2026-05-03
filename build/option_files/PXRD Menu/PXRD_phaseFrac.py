@@ -2,7 +2,7 @@ import originpro as op
 import sys
 
 _MOL_FRACTION_LABEL = 'Mol Fraction'
-_VOL_FRACTION_LABEL = 'Vol Fraction'
+_CELL_FRACTION_LABEL = 'Cell Fraction'
 _WT_FRACTION_LABEL = 'Wt Fraction'
 
 # These need to be manually kept in sync with PXRD_cifImp.py
@@ -44,7 +44,7 @@ def main(frac_type='moles'):
     vol_idx = None
     wt_idx = None
 
-    if frac_type == 'volume':
+    if frac_type == 'cell':
         vol_idx = wks._user_param_row('Vol Fraction',True)+1
     elif frac_type == 'weight':
         wt_idx = wks._user_param_row('Wt Fraction',True)+1
@@ -74,9 +74,9 @@ def main(frac_type='moles'):
 
         if frac_type == 'moles':
             wks.set_label(phase_col,1.0,_MOL_FRACTION_LABEL)
-        elif frac_type == 'volume':
-            wks.set_label(phase_col,1.0,_VOL_FRACTION_LABEL)
-            lt_cmd = f'''wcol({col+1})[{_MOL_FRACTION_LABEL}]$ = "=This[{_VOL_FRACTION_LABEL}] * This[{_Z_LABEL}] / This[{_VOL_LABEL}]";
+        elif frac_type == 'cell':
+            wks.set_label(phase_col,1.0,_CELL_FRACTION_LABEL)
+            lt_cmd = f'''wcol({col+1})[{_MOL_FRACTION_LABEL}]$ = "=This[{_CELL_FRACTION_LABEL}] * This[{_Z_LABEL}]";
                             wks.labels(-D{mol_idx});'''
             op.lt_exec(lt_cmd)
             copy_labels.append(_MOL_FRACTION_LABEL)

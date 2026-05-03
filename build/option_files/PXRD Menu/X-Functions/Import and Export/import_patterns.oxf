@@ -1082,7 +1082,7 @@
 			<io NodeID="13" DataID="30">0</io>
 			<type NodeID="11" DataID="40">int</type>
 			<valdata NodeID="11" DataID="50">0</valdata>
-			<comboString NodeID="11" DataID="70">Mole Fraction|Weight Fraction|Volume Fraction</comboString>
+			<comboString NodeID="11" DataID="70">Mole Fraction|Weight Fraction|Cell Fraction (GSAS)</comboString>
 			<context NodeID="268435456" DataID="71">
 				<keywords NodeID="13" DataID="415">0</keywords>
 			</context>
@@ -1183,7 +1183,7 @@ lt_cmd += "\";";
 if(phase_frac) {
 	lt_cmd += "run -pyf PXRD_phaseFrac.py \"";
 
-	if(frac_mode==1) {lt_cmd += "weight";} else if(frac_mode==2) {lt_cmd += "volume";} else {lt_cmd += "moles";}
+	if(frac_mode==1) {lt_cmd += "weight";} else if(frac_mode==2) {lt_cmd += "cell";} else {lt_cmd += "moles";}
 		
 	lt_cmd += "\";";
 }
