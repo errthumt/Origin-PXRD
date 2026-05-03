@@ -10,7 +10,7 @@
 
         | Opening the python console | View from the python console |
         | :---------------------------: | :-----------------------------: |
-        | ![opening the python console](./assets/open_python_console.png) | ![view from the python console](./assets/python_console.png) |
+        | ![opening the python console](../assets/open_python_console.png) | ![view from the python console](./assets/python_console.png) |
 
     * If necessary, add the embedded python to your installation by right-clicking in the start menu > Open File Location, and running the install repair tool to modify the installation
 
