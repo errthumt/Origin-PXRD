@@ -1,3 +1,9 @@
+
+# These need to be manually kept in sync with PXRD_phaseFrac.py
+_MW_LABEL = 'MW (g/mol)'
+_Z_LABEL = 'Z'
+_VOL_LABEL = 'Cell Volume (Å³)'
+
 import warnings
 
 # Axes3D is not included with Origin's native matplotlib, but it is not necessary for this package
@@ -23,22 +29,20 @@ from pymatgen.core import Structure #type: ignore
 from pymatgen.core.periodic_table import Element #type: ignore
 from pymatgen.analysis.diffraction.xrd import XRDCalculator #type: ignore
 
-
 # Extra dampening to match VESTA's peak heights
 _B_EXTRA = 0.4
 
 # Fix column headers, normalize columns, remove function row.
 # Executed as a labtalk command near the end of this script.
 def lt_cleanup(normalize=True):
+    wks = op.find_sheet()
+    src_idx = wks._user_param_row('SourceFile',True) + 1
     LABTALK_CLEANUP = fr'''
     @SWS = 0;
 
     int nCols = wks.ncols;
     if (nCols < 2)
         break;
-
-    wks.UserParam1 = 1;
-    wks.UserParam1$ = "SourceFile";
 
     wks.col1.lname$ = "2θ";
     wks.col1.unit$ = "deg";
@@ -56,6 +60,8 @@ def lt_cleanup(normalize=True):
     }};
 
     wks.labels(-O);
+    wks.labels(>LU);
+    wks.labels(<D{src_idx});
     '''
     return LABTALK_CLEANUP
 
@@ -166,6 +172,9 @@ def calculate_pattern(
     # Read CIF file using pymatgen's Structure module
     structure = Structure.from_file(cif_path)
     Z = compute_Z(structure,cif_path)
+    molWeight = float(structure.composition.weight / Z)
+    cell_volume = structure.lattice.volume
+    # print(f'Processing {os.path.basename(cif_path)}: Z={Z}, Molecular Weight={molWeight:.2f} g/mol')
 
     # Build list of B values for each atom site
     atom_B = []
@@ -193,7 +202,6 @@ def calculate_pattern(
         # Basic reflections calculated using pymatgen's XRDCalculator.get_pattern()
         xrd = XRDCalculator(wavelength=wl)
         pattern = xrd.get_pattern(structure, two_theta_range=two_theta_range, scaled=False)
-        cell_volume = structure.lattice.volume
         mu = absorption_proxy(structure) # This is very fudgy
         # Modify reflections with scattering factors
         for idx, (t0, I0) in enumerate(zip(pattern.x, pattern.y)):
@@ -232,7 +240,7 @@ def calculate_pattern(
             intensity += wt * I0 * pv * asym
 
     # Returns series, not indiviual values
-    return two_theta, intensity
+    return two_theta, intensity, molWeight, Z, cell_volume
 
 default_parameters = {
     "book_name":"CIF Imports",
@@ -357,12 +365,19 @@ def import_cif_files(cleaned_params):
     wb = op.new_book('w', lname=cleaned_params["book_name"])
     wks = wb[0]
 
+    wks._user_param_row('SourceFile',True) # Create user parameter for source file names
+    
+    wks._user_param_row(_Z_LABEL,True)
+    wks._user_param_row(_VOL_LABEL,True)
+    wks._user_param_row(_MW_LABEL,True)
+
+
     # Start with no existing 2theta column, starting with first column.
     first_two_theta = None
     col_index = 0
 
     for cif_path in sorted(file_list):
-        two_theta, intensity = calculate_pattern(
+        two_theta, intensity, molWeight, Z, cell_volume = calculate_pattern(
             cif_path,
             fe_wavelengths=params["fe_wavelengths"],
             fe_weights=params["fe_weights"],
@@ -385,6 +400,12 @@ def import_cif_files(cleaned_params):
         # Write intensity for each CIF
         sample_name = os.path.splitext(os.path.basename(cif_path))[0]
         wks.from_list(col_index, intensity, lname=sample_name)
+        
+        #print(f'{molWeight:.6f}')
+        wks.set_label(col_index, f'{molWeight:.6f}', _MW_LABEL)
+        wks.set_label(col_index, f'{Z:.0f}', _Z_LABEL)
+        wks.set_label(col_index, f'{cell_volume:.6f}', _VOL_LABEL)
+
         col_index += 1
 
     # Labtalk cleanup
@@ -397,9 +418,9 @@ def import_cif_files(cleaned_params):
     wks.set_label(0,wavelength, "Wavelength (Å)")
 
     # Hide unwanted parameters.
-    for uParam in ("Group Info","Method"):
+    for uParam in ("Group Info","Method", "Wavelength (Å)",_MW_LABEL,_Z_LABEL,_VOL_LABEL):
         idx = wks._user_param_row(uParam,True) + 1
-        op.lt_exec(f"wks.labels(#D{idx});")
+        op.lt_exec(f"wks.labels(-D{idx});")
 
 def parse_params(s):
     items = s.split(',')

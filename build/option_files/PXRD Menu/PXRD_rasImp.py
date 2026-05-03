@@ -1,5 +1,3 @@
-# TEST SUCCEEDED
-
 import originpro as op
 import os
 import sys
@@ -10,6 +8,13 @@ def import_ras_files(normalize=True, book_name='RAS Imports'):
     # Imports using User Files\Filters\rasImp.oif
     # Cleans up names and units
     norm_command = 'rnormalize irng:=$(ic) method:=1 orng:=$(ic);' if normalize else '// Did not normalize'
+    
+    # Create new book, target worksheet
+    wb = op.new_book('w',lname="RAS Imports")
+    wks = wb[0]
+
+    src_idx = wks._user_param_row('SourceFile',True) + 1
+
     labtalk_cmd = fr'''
     impFile filtername:="rasImp.oif" location:=user;
     page.longname$ = "{book_name}";
@@ -29,11 +34,13 @@ def import_ras_files(normalize=True, book_name='RAS Imports'):
     
     // Hide Formula Row
     wks.labels(-O);
+
+    // Longname and units to the bottom, source file names to the top
+    wks.labels(>LU);
+    wks.labels(<D{src_idx});
     '''
 
-    # Create new book, target worksheet
-    wb = op.new_book('w',lname="RAS Imports")
-    wks = wb[0]
+
 
     # Import
     op.lt_exec(labtalk_cmd)
@@ -43,7 +50,9 @@ def import_ras_files(normalize=True, book_name='RAS Imports'):
     file_paths = [p for p in file_paths if p.strip()]  # clean empties
 
     # Init wavelength row if it doesn't exist
-    wks._user_param_row("Wavelength (Å)", True)
+    wl_row=wks._user_param_row("Wavelength (Å)", True)
+    # hide wavelength row (only revealed for q space)
+    op.lt_exec(f"wks.labels(-D{wl_row+1});")
 
     # Iterate through files in same order as fname$
     for i, path in enumerate(file_paths):
@@ -153,7 +162,7 @@ def clean_parameters(params):
 
 # Dispatch based on labtalk arguments.
 if __name__ == "__main__":
-    paramString = sys.argv[1].lower() if len(sys.argv) > 1 else ""
+    paramString = sys.argv[1] if len(sys.argv) > 1 else ""
 
     params = parse_params(paramString)
     cleaned_params = clean_parameters(params)

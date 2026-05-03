@@ -1076,6 +1076,50 @@
 				<comboDescription NodeID="47" DataID="407" CdPg="949" Show="0"/>
 			</helpk>
 		</v23>
+		<v24 _XFUNCTION_VAR="1" RepeatID="24">
+			<name NodeID="11" DataID="10">frac_mode</name>
+			<description NodeID="11" DataID="20" Show="0"/>
+			<io NodeID="13" DataID="30">0</io>
+			<type NodeID="11" DataID="40">int</type>
+			<valdata NodeID="11" DataID="50">0</valdata>
+			<comboString NodeID="11" DataID="70">Mole Fraction|Weight Fraction|Cell Fraction (GSAS)</comboString>
+			<context NodeID="268435456" DataID="71">
+				<keywords NodeID="13" DataID="415">0</keywords>
+			</context>
+			<optionString NodeID="11" DataID="69"/>
+			<suggestedValues NodeID="11" DataID="405"/>
+			<themeID NodeID="14" DataID="35">24</themeID>
+			<help NodeID="268435456" DataID="410" RepeatID="256">
+				<description NodeID="11" DataID="408">Specify Fraction Type:</description>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3"/>
+				<comboDescription NodeID="47" DataID="407" Show="0"/>
+			</help>
+			<helpj NodeID="268435456" DataID="410" RepeatID="512">
+				<description NodeID="11" DataID="408" CdPg="932"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="932"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="932"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="932" Show="0"/>
+			</helpj>
+			<helpg NodeID="268435456" DataID="410" RepeatID="768">
+				<description NodeID="11" DataID="408" CdPg="1252"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="1252"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="1252"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="1252" Show="0"/>
+			</helpg>
+			<helpc NodeID="268435456" DataID="410" RepeatID="1024">
+				<description NodeID="11" DataID="408" CdPg="936"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="936"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="936"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="936" Show="0"/>
+			</helpc>
+			<helpk NodeID="268435456" DataID="410" RepeatID="2048">
+				<description NodeID="11" DataID="408" CdPg="949"/>
+				<remark NodeID="41" DataID="409" RowHeightRange="3-8" CdPg="949"/>
+				<hint NodeID="41" DataID="406" RowHeightRange="1-3" CdPg="949"/>
+				<comboDescription NodeID="47" DataID="407" CdPg="949" Show="0"/>
+			</helpk>
+		</v24>
 	</vars>
 	<modificationLog NodeID="41" DataID="438" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="2-15"/>
 	<codes NodeID="268435456" DataID="324">
@@ -1089,6 +1133,7 @@ int IMPORT_TYPE_NROW=1;
 int DOUBLET_NROW=3;
 int X_AXIS_START=8;
 int X_AXIS_END=13;
+int CIF_NORM_NROW=22;
 ]]>
 		</header>
 		<code NodeID="45" DataID="325" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="5-20">
@@ -1135,7 +1180,13 @@ lt_cmd += ", normalize_mode:" + norm_mode;
 lt_cmd += ", book_name:" + book_name;
 lt_cmd += "\";";
 
-if(phase_frac) lt_cmd += "run -pyf PXRD_phaseFrac.py;";
+if(phase_frac) {
+	lt_cmd += "run -pyf PXRD_phaseFrac.py \"";
+
+	if(frac_mode==1) {lt_cmd += "weight";} else if(frac_mode==2) {lt_cmd += "cell";} else {lt_cmd += "moles";}
+		
+	lt_cmd += "\";";
+}
 if(do_q) lt_cmd += "run -pyf PXRD_qSpace.py \"all_deg\";";
 
 LT_execute(lt_cmd);
@@ -1169,12 +1220,20 @@ if(nRow == IMPORT_TYPE_NROW || nEventID < 0) {
 	trGetN.axial_S.Show      = show;
 	trGetN.norm_mode_cif.Show	 = show;
 	trGetN.norm_mode_ras.Show 	 = !show;
+	trGetN.frac_mode.Show = ((trGetN.norm_mode_cif.nVal == 2) && show);
 	
 	if(trGetN.book_name.strVal == "RAS Imports" || trGetN.book_name.strVal =="CIF Imports") {
 		trGetN.book_name.strVal = (show ? "CIF Imports" : "RAS Imports");
 	}
 
 	return_value = true;
+}
+
+// On cif normalization type change
+if(nRow == CIF_NORM_NROW || nEventID < 0) {
+	trGetN.frac_mode.Show = (trGetN.norm_mode_cif.nVal == 2);
+
+return_value = true;
 }
 
 // On doublet change
