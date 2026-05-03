@@ -82,10 +82,10 @@
       - Example: The In-Situ Beamline option has a folder inside called Filters. This matches the Filters folder inside the User Files Folder. The *.oif files in that folder need to end up inside User Files/Filters/.
 
         
-        | Copy files from option folder | Paste them into the user files folder |
-        | :---: | :---: |
-        | You must do this for every option folder you want to install | If you paste a folder that already exists, it should automatically "merge" the two folders. |
-        | ![copy option files](../assets/copy_option.png) | ![paste option files](../assets/paste_option.png) |
+    | Copy files from option folder | Paste them into the user files folder |
+    | :---: | :---: |
+    | You must do this for every option folder you want to install | If you paste a folder that already exists, it should automatically "merge" the two folders. |
+    | ![copy option files](../assets/copy_option.png) | ![paste option files](../assets/paste_option.png) |
 ---
 1. In Origin, open the script window with: Window > Script Window
 
