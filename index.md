@@ -113,7 +113,7 @@ If you have your own set of custom parameters that you like to use for your own 
 | | Q End (Å⁻¹) | End of Q range. Not available in 2θ mode. |
 | | Advanced Parameters | Used to adjust peak broadening and dampening. |
 | Normalization Mode | | Specify whether to normalize imported or calculated patterns.<br>During CIF import, an extra option is available to add scaling for each imported CIF by the relative phase fractions in your analysis. See the Phase Fraction section below. |
-| Specify Fraction Type | | Choose which phase fraction you want to specify when scaling your patterns. More information on each type can be found on the [phase fraction derivation page.](/phase_frac.md#choosing-your-phase-fraction) |
+| Specify Fraction Type | | Choose which phase fraction you want to specify when scaling your patterns. More information on each type can be found on the [CIF Calculation Method Page](./phase_frac.md#choosing-your-phase-fraction) |
 
 ### <span>[BETA]</span> Phase Fraction Analysis
 If you select this option under **Normalization Mode** during CIF import, the files will be imported as usual (without normalization), but additional columns will be added to scale phases by their relative fractions present in your analysis. Column types are specified by 'Norm Type' row:
@@ -124,7 +124,7 @@ If you select this option under **Normalization Mode** during CIF import, the fi
 - **Sum**: Preserving relative phase fractions, normalizes all patterns so that the max intensity is 1.0 when all phases are summed.
 - **Normalized, All Phases**: Final column calculated as the sum of all phases, preserving relative phase fractions. This should match a normalized experimental pattern.
 
-The type of phase fraction you want to specify is chosen during the [import dialog.](#import-pattern-dialog-options) More information about each type of phase fraction can be found on the [phase fraction derivation page.](/phase_frac.md#choosing-your-phase-fraction)
+The type of phase fraction you want to specify is chosen during the [import dialog.](#import-pattern-dialog-options) More information about each type of phase fraction can be found on the [phase fraction derivation page.](./phase_frac.md#choosing-your-phase-fraction)
 
 Phase Fractions are specified under the **Phase-Scaled** columns only. All the other columns will update from these columns. **Typing a phase fraction under any other column will not change any scaling.**
 
