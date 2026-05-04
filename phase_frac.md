@@ -1,10 +1,16 @@
-# Phase Fraction Analysis: Scaling calculated patterns by molar ratio to match experimental intensities
+---
+title: CIF Calculation Method
+nav_order: 4
+---
 
-The end goal of this part of the plugin is to give presenters an easy way to generate theoretical data that can be visually compared to experimental data. When comparing experimental peaks to theoretical peaks for identified phases, it is useful to be able to compare relative intensities with identified phase fractions to verify that the experimental peaks are fully accounted for by the identified phases.
+
+# Calculating Theoretical Powder Patterns from CIF Files
+
+The end goal of this part of the plugin is to give presenters an easy way to generate theoretical data that can be visually compared to experimental data. In addition to simulating experimental peak broading, it is also useful to be able to compare relative intensities with identified phase fractions to verify that the experimental peaks are fully accounted for by the identified phases.
 
 Unfortunately, the previously established method (in our research group) for generating theoretical patterns through VESTA results in an arbitrarily normalized pattern with intensities that cannot be compared with other calculated patterns.
 
-There is, however, an already-established algorithm for scaling intensities by phase fractions which is used in Reitveld refinement. Since the calculation method for this plugin already approximates the Rietveld method, then it is simply a matter of "pre-baking" any other phase-dependent factors into the calculated patterns, such that all there is left to do is multiply by phase fraction.
+There is, however, an already-established algorithm for scaling intensities by phase fractions which is used in Rietveld refinement. With this in mind, the CIF import module in the plugin is constructed to approximate a Rietveld-simulated powder pattern. It is not meant to be a simulation with enough accuracy to refine structures, but it is enough of an approximation  to visually compare with experimental data, including relative phase fractions.
 
 ## Source Code
 For reference, the main calculation module is in the `calculate_pattern()` module in [PXRD_cifImp.py](../build/option_files/PXRD%20Menu/PXRD_cifImp.py):

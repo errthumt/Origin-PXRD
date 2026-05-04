@@ -1,3 +1,8 @@
+---
+title: Release Notes
+nav_order: 3
+---
+
 # Release Notes
 ## Release 1.3.4
 Minor Bugfixes, improvements to phase fraction analysis

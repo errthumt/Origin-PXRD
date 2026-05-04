@@ -1,4 +1,10 @@
-# Origin-PXRD | Home <!-- omit from toc -->
+---
+title: Home
+nav_order: 1
+---
+
+
+# Origin-PXRD <!-- omit from toc -->
 A plugin for importing experimental patterns and calculating theoretical patterns for PXRD in OriginLab's OriginPro software.
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry

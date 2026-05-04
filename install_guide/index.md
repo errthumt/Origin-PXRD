@@ -1,3 +1,8 @@
+---
+title: Installation Instructions
+nav_order: 2
+---
+
 # Installation Instructions
 
 # Before Installing:
