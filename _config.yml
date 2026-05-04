@@ -6,3 +6,6 @@ kramdown:
   input: GFM
 
 math: katex
+
+css:
+  - /assets/css/custom.scss
