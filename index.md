@@ -1,4 +1,4 @@
-# Origin-PXRD <!-- omit from toc -->
+# Origin-PXRD | Home <!-- omit from toc -->
 A plugin for importing experimental patterns and calculating theoretical patterns for PXRD in OriginLab's OriginPro software.
 
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
@@ -19,13 +19,6 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
     - [Printing Calibration Reports](#printing-calibration-reports)
   - [Annealing Profile Dialog Options](#annealing-profile-dialog-options)
   - [Graph Templates](#graph-templates)
-- [Release Notes](#release-notes)
-  - [Release 1.3.4](#release-134)
-  - [Release 1.3.3](#release-133)
-  - [Release 1.3.2](#release-132)
-  - [Release 1.3.1](#release-131)
-  - [Release 1.3.0](#release-130)
-  - [Release 1.2.5](#release-125)
 
 
 ## Bug reports or Feature Requests
@@ -131,7 +124,7 @@ Phase Fractions are specified under the **Phase-Scaled** columns only. All the o
 
 
 #### WARNING: <!-- omit from toc -->
-**Accuracy of fraction scaling is still being verified. [My current from-principles method is outlined here](/phase_frac.md)**
+**Accuracy of fraction scaling is still being verified. [My current from-principles method is outlined here](./phase_frac.md)**
 **Fraction Scaling relies on a calculation of Z by reducing the cell contents to the minimum formula. This may lead to occasional differences in expected vs. calculated Z values.**
 - You can check the value of Z calculated for your structure in the hidden user parameter row.
   - Select the entire fraction row and right-click > edit column label rows...
@@ -143,7 +136,7 @@ Phase Fractions are specified under the **Phase-Scaled** columns only. All the o
 
 | Example Annealing Profile | Resulting Diagram |
 | --- | --- |
-| ![profile](/assets/anneal_profile.png) | ![diagram](/assets/anneal_diagram.png) |
+| ![profile](./assets/anneal_profile.png) | ![diagram](./assets/anneal_diagram.png) |
 
 <ins>**Get Annealing Template:**</ins> Generates a worksheet template to generate annealing diagrams. *This worksheet can also be used to calculate program temperatures using furnace calibration data.*
 
@@ -158,7 +151,7 @@ Phase Fractions are specified under the **Phase-Scaled** columns only. All the o
 ---
 ## Using and Editing Furnace Calibration Data
 
-![full anneal profile page](/assets/full_anneal_profile.png)
+![full anneal profile page](./assets/full_anneal_profile.png)
 
 When editing your annealing profile (using *Annealing Profiles > Get Annealing Template*), there are additional columns for calculating calibrated temperatures based on data stored in your copy of Origin.
 
@@ -171,7 +164,7 @@ After successfully loading your calibration data, **columns E:F** will give you 
 ### Editing furnace data
 Furnace data cannot be edited in the annealing worksheet, only loaded. Instead, navigate to *Annealing Profiles > New/Edit Furnace* to open a furnace worksheet.
 
-![edit furnace page](/assets/edit_furnace.png)
+![edit furnace page](./assets/edit_furnace.png)
 
 * To create a new furnace, enter a furnace ID that has not been used before, enter all the necessary data, and click "Save Furnace".
 * Existing furnaces can be edited by entering their ID and clicking "Reload Furnace". Make any necessary edits before clicking "Save Furnace".
@@ -186,8 +179,8 @@ Once you have entered all the calibration data for your furnace, you can print a
 | Option | Description |
 | --- | --- |
 | Start Temperature | Initial Temperature in degrees celsius (usually 25). |
-| Minimum Height | All unique temperatures will be evenly spaced by this height (not to scale). For example, in the diagram below, the initial temperature, max temperature (800) and the end temperature (700) are all evenly spaced regardless of scale.<br>![diagram without extra temps](/assets/anneal_diagram_noExtras.png)<br> If desired, you can space temperatures differently using the **Extra Temperatures** option. |
-|Extra Temperatures | In order to increase the height between two specific temperatures, you can add unique temperatures that you want to include in the spacing, but which aren't already in your profile. For example, the diagram below was made more scale-appropriate by adding **100; 200** to the extra temperatures field. This essentially reserves additional y-axis space for 100 and 200 degrees, without actually graphing them.<br>![diagram with extra temps](/assets/anneal_diagram_extras.png)<br>Multiple temperature values must be semicolon separated, as in: **100; 200; 300** | 
+| Minimum Height | All unique temperatures will be evenly spaced by this height (not to scale). For example, in the diagram below, the initial temperature, max temperature (800) and the end temperature (700) are all evenly spaced regardless of scale.<br>![diagram without extra temps](./assets/anneal_diagram_noExtras.png)<br> If desired, you can space temperatures differently using the **Extra Temperatures** option. |
+|Extra Temperatures | In order to increase the height between two specific temperatures, you can add unique temperatures that you want to include in the spacing, but which aren't already in your profile. For example, the diagram below was made more scale-appropriate by adding **100; 200** to the extra temperatures field. This essentially reserves additional y-axis space for 100 and 200 degrees, without actually graphing them.<br>![diagram with extra temps](./assets/anneal_diagram_extras.png)<br>Multiple temperature values must be semicolon separated, as in: **100; 200; 300** | 
 | Ramp Width | All ramp sections will be this width by default. Individual sections will automatically widen for longer labels. |
 | Dwell Width | All dwell section will be this width by default. Individual sections will automatically widen for longer labels. |
 | Font Size | Text label font size |
@@ -207,56 +200,3 @@ Installed graph templates can be found in Plot > User Templates
 
 ---
 
-# Release Notes
-## Release 1.3.4
-Minor Bugfixes, improvements to phase fraction analysis
-
-* Phase Fraction analysis now allows you to [choose your fraction type.](/phase_frac.md#choosing-your-phase-fraction)
-* Fixed the 11-ID-C theme to use a much smaller step size for 2$\theta$
-* Fixed RAS imports so that the workbook name is not all lowercase.
-* Rearranged some label rows for a more legible worksheet after imports.
-
-## Release 1.3.3
-Furnace Calibrations, Copy/Pasting Annealing Diagrams
-
-* Added calibration calculations to the annealing template. Input a saved furnace ID, and the template will automatically calculate furnace set temperatures to match your annealing profile
-* Added a workflow to edit or add new furnace calibrations. User-saved calibrations will always take precedent over calibrations installed with the plugin.
-* Within the furnace editing workflow, a 2nd sheet has also been added which generates a printable report of the trendline, calibration data, and calibration date.
-* Annealing Diagrams are now inserted into a new cell in the template workbook so that they can be copy/pasted. They can also be saved as a PNG in the dialog. If no save location is selected, they are saved to a temporary location in the user files folder.
-
-## Release 1.3.2
-Improved workflow for installation
-
-* Installation now uses a single menu with checkboxes for options, instead of individual popups.
-* Steamlined backend development.
-
-## Release 1.3.1
-UI tweaks, annealing profiles
-
-* Added version checking so that users are notified when a new version is available.
-* Added tooltips back to PXRD menu
-* Added new [Annealing Profiles Dropdown](#new-annealing-profiles-dropdown).
-
-## Release 1.3.0
-Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
-
-This release contains features that are difficult to test without a fresh install of Origin. If you are able to use the full import dialog after installing, give Travis the good news!
-
-* **All import commands have been moved into an official X-Function dialog.** *This also allows users to create and save their own import settings using Origin's native themes functionality!*
-* New [in-depth installation guide](/install_guide/install_guide.md) with screenshots.
-* Updated file selection dialogs to start in folder containing current saved project.
-* Updated CIF workflow to prevent errors when cancelling out of menus.
-* (Feature Request: David) Changed default CuKa step size to 0.02
-* Column selections for transformations are now done using Origin's native column selection instead of a UI.
-* Q-Space columns now allow for column selection.
-* Added CIF import preset for 11-ID-C March 2026
-* (Feature Request: Kirill) \[BETA] Added [phase fraction analysis option](#beta-phase-fraction-analysis) for CIF imports.
-* <ins>**Hotfix 1:**</ins> Improved phase fractions for more "realistic" relative intensities.
-
-## Release 1.2.5
-The first public GitHub release.
-* Improved file selection workflow to use Origin's native selection tools instead of custom tkinter window
-* Added install option for processing In-Situ Beamtime data. Currently only compatible with temperature metadata (no flow options yet). Go to PXRD > In-Situ Processing
-  * 11-ID-C (March 2026): Normalizes all patterns (normalized by data set, not by individual pattern) and extracts temperature from all metadata files. Adds temperature as a "Temp" row at the top.
-* Added In-Situ Contour graph template. Configured to expect [0,1] normalization and temperatures in "Temp" row. Reach out to Travis for help using this template.
-* Added In-Situ Browser graph template. Useful for scrolling through many powder patterns at once.
