@@ -8,4 +8,4 @@ kramdown:
 math: katex
 
 css:
-  - /assets/css/custom.scss
+  - assets/css/custom.scss
