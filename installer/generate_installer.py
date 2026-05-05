@@ -426,7 +426,9 @@ subprocess.check_call([str(MAKENSIS), str(nsi_output)])
 print(f"Installer generated: OriginPXRD_Installer_v{version}.exe")
 
 installer_path = REPO_ROOT / "installer" / "release" / f"OriginPXRD_Installer_v{version}.exe"
+zip_path = REPO_ROOT / "manual_install" / f"OriginPXRD_v{version}.zip"
 git_cache_installer(installer_path)
+git_cache_installer(zip_path)
 
 relocate_old_versions(version)
 
