@@ -172,7 +172,7 @@ def update_recent_links(version: str):
             f"## Release {get_base_version(version)}\n\n"
             f"- Installer: [OriginPXRD_Installer_v{version}.exe]({inst})\n"
             f"- Zip Package: [OriginPXRD_v{version}.zip]({zipf})\n"
-            f"<!--end release link-->\n"
+            f"<!--end release link-->"
         )
 
 
