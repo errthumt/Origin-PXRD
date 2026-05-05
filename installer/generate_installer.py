@@ -253,6 +253,43 @@ def update_recent_links(version: str):
         print(f"Updated links in: {md_file} (nest level {nest_level})")
 
 
+def relocate_old_versions(version: str):
+    """
+    Move older installer/zip files with the same base version into
+    release/unstable or manual_install/unstable so only the newest
+    hotfix remains in the published folders.
+    """
+    base = get_base_version(version)
+
+    # Directories
+    installer_dir = REPO_ROOT / "installer" / "release"
+    manual_dir = REPO_ROOT / "manual_install"
+
+    unstable_installer = installer_dir / "unstable"
+    unstable_manual = manual_dir / "unstable"
+
+    unstable_installer.mkdir(exist_ok=True)
+    unstable_manual.mkdir(exist_ok=True)
+
+    # Patterns to match
+    installer_pattern = re.compile(rf"OriginPXRD_Installer_v{base}(-\d+-g[0-9a-f]+)?\.exe$")
+    zip_pattern = re.compile(rf"OriginPXRD_v{base}(-\d+-g[0-9a-f]+)?\.zip$")
+
+    # --- Process installer files ---
+    for file in installer_dir.glob("OriginPXRD_Installer_v*.exe"):
+        name = file.name
+        if installer_pattern.match(name) and version not in name:
+            dest = unstable_installer / name
+            print(f"Moving old installer: {file} → {dest}")
+            file.replace(dest)
+
+    # --- Process zip files ---
+    for file in manual_dir.glob("OriginPXRD_v*.zip"):
+        name = file.name
+        if zip_pattern.match(name) and version not in name:
+            dest = unstable_manual / name
+            print(f"Moving old zip: {file} → {dest}")
+            file.replace(dest)
 
 # 1. Get version from Git
 version = get_git_version()
@@ -273,7 +310,8 @@ create_manual_install_zip(version)
 
 # 3. Run NSIS compiler
 subprocess.check_call([str(MAKENSIS), str(nsi_output)])
-
 print(f"Installer generated: OriginPXRD_Installer_v{version}.exe")
+
+relocate_old_versions(version)
 
 update_recent_links(version)
