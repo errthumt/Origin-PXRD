@@ -4,6 +4,16 @@ nav_order: 3
 ---
 
 # Release Notes
+## Release 1.3.5
+
+Mostly backend fixes. Full website release
+
+* Github pages website has been fully deployed
+* When new version is detected, formal website is opened instead of github repository.
+* Installation instructions, options, etc. have all been moved to their own webpage
+* Better one-click download links.
+* Added FAQ page and examples page (more content to be added)
+
 ## Release 1.3.4
 
 - Installer: [OriginPXRD_Installer_v1.3.4-76-g8363432.exe](./installer/release/OriginPXRD_Installer_v1.3.4-76-g8363432.exe)
