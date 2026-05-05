@@ -5,7 +5,10 @@ nav_order: 3
 
 # Release Notes
 ## Release 1.3.5
-
+<!--start release link-->
+Installer: [OriginPXRD_Installer_v1.3.5-18-g72cf644.exe](./installer/release/OriginPXRD_Installer_v1.3.5-18-g72cf644.exe)
+Zip Package: [OriginPXRD_v1.3.5-18-g72cf644.zip](./manual_install/OriginPXRD_v1.3.5-18-g72cf644.zip)
+<!--end release link-->
 Mostly backend fixes. Full website release
 
 * Github pages website has been fully deployed
