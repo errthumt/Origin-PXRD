@@ -1,4 +1,8 @@
-# How To Use the Plugin <!-- omit from toc -->
+---
+nav_order: 5
+---
+
+# Options Summary <!-- omit from toc -->
 
 
 ## On This Page: <!-- omit from toc -->

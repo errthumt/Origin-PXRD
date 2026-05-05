@@ -13,6 +13,13 @@ This plugin is primarily used by Kovnir and Zaikina research groups at Iowa Stat
 
 Instructions for how to install and use the plugin, as well as release notes, can now be found on the sidebar to the left.
 
+# Where to go from here?
+* [Updating or Installing the Plugin](./install_guide/)
+* Having trouble installing or using the plugin? [Visit the FAQ](./faq.md) or fill out a bug report below.
+* Looking for examples on how this plugin can be useful to you? [See some examples.](./examples.md)
+* Looking for more details on how to use a feature? Visit the [Options Summary](./instructions.md)
+* Curious about how the plugin simulates CIF patterns? Visit the [CIF Calculation Method](./phase_frac.md)
+
 ## Bug reports or Feature Requests
 * <ins>**No GitHub Account?**</ins> [use this form](https://forms.office.com/r/9bfw1zLiDh)
 * <ins>**If you have a GitHub account:**</ins>
