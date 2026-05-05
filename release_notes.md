@@ -5,6 +5,11 @@ nav_order: 3
 
 # Release Notes
 ## Release 1.3.4
+
+- Installer: [OriginPXRD_Installer_v1.3.4-60-gf8beeb9.exe](./installer/release/OriginPXRD_Installer_v1.3.4-60-gf8beeb9.exe)
+- Zip Package: [OriginPXRD_v1.3.4-60-gf8beeb9.zip](./manual_install/OriginPXRD_v1.3.4-60-gf8beeb9.zip)
+<!--end release link-->
+
 Minor Bugfixes, improvements to phase fraction analysis
 
 * Phase Fraction analysis now allows you to [choose your fraction type.](./phase_frac.md#choosing-your-phase-fraction)
