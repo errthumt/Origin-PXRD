@@ -130,7 +130,8 @@ def update_recent_links(version: str):
 
     # Files to update (paths only; nest level computed automatically)
     files = [
-        REPO_ROOT / "install_guide" / "index.md"
+        REPO_ROOT / "install_guide" / "index.md",
+        REPO_ROOT / "release_notes.md"
     ]
 
     # ------------------------------------------------------------
@@ -228,6 +229,24 @@ def update_recent_links(version: str):
 
         # Replace zip block if present
         text = recent_zip_pattern.sub(zip_block, text)
+
+        # ------------------------------------------------------------
+        # Release notes replacement logic (no insertion)
+        # ------------------------------------------------------------
+
+        # Build the release notes block using the computed nest level
+        release_block = release_notes_lines(nest_level)
+
+        # 1. Try replacing an existing full release block
+        if release_notes_existing_pattern.search(text):
+            text = release_notes_existing_pattern.sub(release_block, text)
+
+        # 2. Otherwise, try replacing a header-only match
+        elif release_notes_new_pattern.search(text):
+            text = release_notes_new_pattern.sub(release_block, text)
+
+        # 3. Otherwise: do nothing (no release notes section in this file)
+
 
         # Write back using UTF‑8
         md_file.write_text(text, encoding="utf-8")
