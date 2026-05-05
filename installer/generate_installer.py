@@ -252,6 +252,58 @@ def update_recent_links(version: str):
         md_file.write_text(text, encoding="utf-8")
         print(f"Updated links in: {md_file} (nest level {nest_level})")
 
+def git_cache_installer(file_path: Path):
+    """
+    Force-add a file to Git once, commit it, and mark it assume-unchanged
+    so future local changes or deletions do not affect origin.
+    """
+    rel = file_path.relative_to(REPO_ROOT)
+
+    # Force-add the file even if ignored
+    subprocess.run(["git", "add", "-f", str(rel)], cwd=REPO_ROOT)
+
+    # Commit it (optional but recommended)
+    subprocess.run(
+        ["git", "commit", "-m", f"Cache installer at {rel}"], 
+        cwd=REPO_ROOT
+    )
+
+    # Mark assume-unchanged so local edits/deletes don't propagate
+    subprocess.run(
+        ["git", "update-index", "--assume-unchanged", str(rel)],
+        cwd=REPO_ROOT
+    )
+
+    print(f"Cached installer: {rel}")
+
+def git_uncache_installer(file_path: Path):
+    """
+    Remove a one-time cached installer from origin without deleting
+    the local file. This reverses git_cache_installer().
+    """
+    rel = file_path.relative_to(REPO_ROOT)
+
+    # Stop ignoring local changes
+    subprocess.run(
+        ["git", "update-index", "--no-assume-unchanged", str(rel)],
+        cwd=REPO_ROOT
+    )
+
+    # Stage the deletion (but do NOT delete locally)
+    subprocess.run(
+        ["git", "rm", "--cached", str(rel)],
+        cwd=REPO_ROOT
+    )
+
+    # Commit the removal
+    subprocess.run(
+        ["git", "commit", "-m", f"Remove or relocate cached installer {rel}"],
+        cwd=REPO_ROOT
+    )
+
+    print(f"Removed cached unstable installer from origin: {rel}")
+
+
 
 def relocate_old_versions(version: str):
     """
@@ -281,7 +333,10 @@ def relocate_old_versions(version: str):
         if installer_pattern.match(name) and version not in name:
             dest = unstable_installer / name
             print(f"Moving old installer: {file} → {dest}")
+            git_uncache_installer(file)
             file.replace(dest)
+            git_cache_installer(dest)
+
 
     # --- Process zip files ---
     for file in manual_dir.glob("OriginPXRD_v*.zip"):
@@ -290,6 +345,7 @@ def relocate_old_versions(version: str):
             dest = unstable_manual / name
             print(f"Moving old zip: {file} → {dest}")
             file.replace(dest)
+            git_cache_installer(dest)
 
 def update_all_release_links():
     """

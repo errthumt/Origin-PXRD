@@ -1,5 +1,7 @@
+installer/release/
 installer/release/unstable/
 manual_install/unstable/
+manual_install
 
 installer/historical/
 manual_install/historical/
