@@ -31,7 +31,7 @@ UI tweaks, annealing profiles
 
 * Added version checking so that users are notified when a new version is available.
 * Added tooltips back to PXRD menu
-* Added new [Annealing Profiles Dropdown](#new-annealing-profiles-dropdown).
+* Added new [Annealing Profiles Dropdown](./instructions.md#new-annealing-profiles-dropdown).
 
 ## Release 1.3.0
 Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
@@ -39,14 +39,14 @@ Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
 This release contains features that are difficult to test without a fresh install of Origin. If you are able to use the full import dialog after installing, give Travis the good news!
 
 * **All import commands have been moved into an official X-Function dialog.** *This also allows users to create and save their own import settings using Origin's native themes functionality!*
-* New [in-depth installation guide](/install_guide/install_guide.md) with screenshots.
+* New [in-depth installation guide](./install_guide/) with screenshots.
 * Updated file selection dialogs to start in folder containing current saved project.
 * Updated CIF workflow to prevent errors when cancelling out of menus.
 * (Feature Request: David) Changed default CuKa step size to 0.02
 * Column selections for transformations are now done using Origin's native column selection instead of a UI.
 * Q-Space columns now allow for column selection.
 * Added CIF import preset for 11-ID-C March 2026
-* (Feature Request: Kirill) \[BETA] Added [phase fraction analysis option](#beta-phase-fraction-analysis) for CIF imports.
+* (Feature Request: Kirill) \[BETA] Added [phase fraction analysis option](./instructions.md#beta-phase-fraction-analysis) for CIF imports.
 * <ins>**Hotfix 1:**</ins> Improved phase fractions for more "realistic" relative intensities.
 
 ## Release 1.2.5

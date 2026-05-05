@@ -113,7 +113,7 @@ Phase Fractions are specified under the **Phase-Scaled** columns only. All the o
 - You can check the value of Z calculated for your structure in the hidden user parameter row.
   - Select the entire fraction row and right-click > edit column label rows...
   - Find the Z label and select "Show" before clicking OK.
-- If you suspect that Z is not being correctly calculated for your structure, reach out to Travis or [fill out a bug report.](#bug-reports-or-feature-requests)
+- If you suspect that Z is not being correctly calculated for your structure, reach out to Travis or [fill out a bug report.](./#bug-reports-or-feature-requests)
 
 ---
 ## <span>[NEW\]</span> Annealing Profiles Dropdown
@@ -168,7 +168,7 @@ Once you have entered all the calibration data for your furnace, you can print a
 | Ramp Width | All ramp sections will be this width by default. Individual sections will automatically widen for longer labels. |
 | Dwell Width | All dwell section will be this width by default. Individual sections will automatically widen for longer labels. |
 | Font Size | Text label font size |
-| Font | Text label font family. Can't use your preferred font? [Submit a feature request.](#bug-reports-or-feature-requests) |
+| Font | Text label font family. Can't use your preferred font? [Submit a feature request.](./#bug-reports-or-feature-requests) |
 | Text Offset | The amount of space added between the line graph and text labels. |
 | Line Width | Thickness of the line graph |
 | Margins | Adjust the margins around the diagram when saving. Text labels may occasionally be cut off by margins, increase the offending margin accordingly. |

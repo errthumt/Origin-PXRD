@@ -62,7 +62,7 @@ nav_order: 2
 
         ![cleanup cmd window](../assets/cleanup_cmd.png)
 ---
-1. Review the [instructions for use](../README.md#instructions-for-use) for further guidance.
+1. Review the [instructions for use](../instructions.md) for further guidance.
 
 # Manual Install (Origin 2022-2024)
 **Disclaimer:** This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later. 
@@ -111,4 +111,4 @@ nav_order: 2
     ![package installation window](../assets/package_install.png)
 ---
 1. After the python packages have been installed (CMD line should end with "Press any key to continue..."), close and restart Origin with a fresh project.
-2.  Review the [instructions for use](../README.md#instructions-for-use) for further guidance.
+2.  Review the [instructions for use](../instructions.md) for further guidance.
