@@ -291,6 +291,61 @@ def relocate_old_versions(version: str):
             print(f"Moving old zip: {file} → {dest}")
             file.replace(dest)
 
+def update_all_release_links():
+    """
+    One-time utility:
+      1. Scans REPO_ROOT/release_notes.md for all '## Release {base_version}' headers.
+      2. For each base version, finds the newest matching hotfix installer in
+         REPO_ROOT/installer/release/.
+      3. Calls update_recent_links(version) for each discovered hotfix version.
+    """
+
+    release_notes_path = REPO_ROOT / "release_notes.md"
+    installer_dir = REPO_ROOT / "installer" / "release"
+
+    # --- Step 1: Extract base versions from release_notes.md ---
+    base_versions = []
+    release_header_pattern = re.compile(r"^## Release (\d+\.\d+\.\d+)", re.MULTILINE)
+
+    text = release_notes_path.read_text(encoding="utf-8")
+    for match in release_header_pattern.finditer(text):
+        base_versions.append(match.group(1))
+
+    print("Found base versions:", base_versions)
+
+    # --- Step 2: For each base version, find the newest hotfix version ---
+    hotfix_versions = []
+
+    for base in base_versions:
+        # Matches:
+        #   OriginPXRD_Installer_v1.4.2.exe
+        #   OriginPXRD_Installer_v1.4.2-16-gabc123.exe
+        pattern = re.compile(
+            rf"OriginPXRD_Installer_v({re.escape(base)}(?:-\d+-g[0-9a-f]+)?)\.exe$"
+        )
+
+        newest = None
+
+        for file in installer_dir.glob("OriginPXRD_Installer_v*.exe"):
+            m = pattern.match(file.name)
+            if m:
+                version = m.group(1)
+                # git-describe versions sort lexicographically
+                if newest is None or version > newest:
+                    newest = version
+
+        if newest:
+            hotfix_versions.append(newest)
+            print(f"Base {base} → newest hotfix version: {newest}")
+        else:
+            print(f"WARNING: No installer found for base version {base}")
+
+    # --- Step 3: Update recent links for each hotfix version ---
+    for version in hotfix_versions:
+        print(f"\nUpdating recent links for version: {version}")
+        update_recent_links(version)
+
+
 # 1. Get version from Git
 version = get_git_version()
 print(f"Using version: {version}")
@@ -315,3 +370,6 @@ print(f"Installer generated: OriginPXRD_Installer_v{version}.exe")
 relocate_old_versions(version)
 
 update_recent_links(version)
+
+# OCCASIONAL UTILITY:
+update_all_release_links()  # Uncomment to scan release_notes.md and update all links to the newest hotfix versions
