@@ -344,6 +344,7 @@ def relocate_old_versions(version: str):
         if zip_pattern.match(name) and version not in name:
             dest = unstable_manual / name
             print(f"Moving old zip: {file} → {dest}")
+            git_uncache_installer(file)
             file.replace(dest)
             git_cache_installer(dest)
 
