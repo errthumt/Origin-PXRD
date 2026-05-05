@@ -6,8 +6,8 @@ nav_order: 3
 # Release Notes
 ## Release 1.3.4
 
-Installer: [OriginPXRD_Installer_v1.3.4-69-g1cd7b7b.exe](./installer/release/OriginPXRD_Installer_v1.3.4-69-g1cd7b7b.exe)
-Zip Package: [OriginPXRD_v1.3.4-69-g1cd7b7b.zip](./manual_install/OriginPXRD_v1.3.4-69-g1cd7b7b.zip)
+- Installer: [OriginPXRD_Installer_v1.3.4-76-g8363432.exe](./installer/release/OriginPXRD_Installer_v1.3.4-76-g8363432.exe)
+- Zip Package: [OriginPXRD_v1.3.4-76-g8363432.zip](./manual_install/OriginPXRD_v1.3.4-76-g8363432.zip)
 <!--end release link-->
 
 
