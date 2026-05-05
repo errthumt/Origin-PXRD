@@ -2,6 +2,7 @@ import subprocess
 from pathlib import Path
 import shutil
 import zipfile
+import re
 
 # Directories
 INSTALLER_ROOT = Path(__file__).parent
@@ -88,6 +89,9 @@ def get_git_version():
     # Remove leading "v" if present
     return version.lstrip("v")
 
+def get_base_version(version: str) -> str:
+    return version.split("-")[0]
+
 def to_nsis_version(version: str) -> str:
     """
     Convert a git describe version into a valid NSIS X.X.X.X version.
@@ -96,7 +100,7 @@ def to_nsis_version(version: str) -> str:
         "1.2.1-3-g0c354ba" -> "1.2.1.3"
         "0.0.0-a1b2c3"     -> "0.0.0.0"
     """
-    base = version.split("-")[0]          # "1.2.1"
+    base = get_base_version(version)          # "1.2.1"
     parts = base.split(".")               # ["1","2","1"]
 
     # Pad to 3 components
@@ -117,76 +121,117 @@ def to_nsis_version(version: str) -> str:
 
 def update_recent_links(version: str):
     """
-    Update the 'recent installer' and 'recent zip' links in:
-      - root/README.md
-      - root/installer/release/readme.md
-      - root/manual_install/readme.md
+    Update the 'recent installer' and 'recent zip' links in selected Markdown files.
 
     Replaces the blocks:
       <!--start recent installer link--> ... <!--end recent installer link-->
       <!--start recent zip link--> ... <!--end recent zip link-->
     """
 
-    # Files to update
+    # Files to update (paths only; nest level computed automatically)
     files = [
-        #REPO_ROOT / "index.md",
-        REPO_ROOT / "install_guide" / "index.md",
-        #INSTALLER_ROOT / "release" / "readme.md",
-        #REPO_ROOT / "manual_install" / "readme.md",
+        REPO_ROOT / "install_guide" / "index.md"
     ]
 
-    # New URLs
-    new_installer_url = f"../installer/release/OriginPXRD_Installer_v{version}.exe"
+    # ------------------------------------------------------------
+    # Helper: compute nest level relative to repo root
+    # ------------------------------------------------------------
+    def compute_nest_level(md_file: Path, repo_root: Path) -> int:
+        """
+        Compute how many directory levels `md_file` is below `repo_root`.
+
+        Example:
+            repo_root = /home/user/project
+            md_file   = /home/user/project/docs/sub/page.md
+            → nest_level = 2
+        """
+        rel = md_file.relative_to(repo_root)
+        # rel.parents includes the file itself as the first parent, so subtract 1
+        return len(rel.parents) - 1
+
+    # ------------------------------------------------------------
+    # URL + line builders (nest-level aware)
+    # ------------------------------------------------------------
+    def installer_url(nest_level=0):
+        return f"{'../'*nest_level if nest_level > 0 else './'}installer/release/OriginPXRD_Installer_v{version}.exe"
     
-    new_zip_url = f"../manual_install/OriginPXRD_v{version}.zip"
+    def zip_url(nest_level=0):
+        return f"{'../'*nest_level if nest_level > 0 else './'}manual_install/OriginPXRD_v{version}.zip"
 
-    # Markdown lines
-    installer_line = (
-        f"[Click Here to Download the most recent installer]({new_installer_url})"
-    )
-    zip_line = (
-        f"[Click Here to Download the most recent zip package]({new_zip_url})"
-    )
+    def recent_installer_line(nest_level=0):
+        return f"[Click Here to Download the most recent installer]({installer_url(nest_level)})"
+    
+    def recent_zip_line(nest_level=0):
+        return f"[Click Here to Download the most recent zip package]({zip_url(nest_level)})"
 
-    import re
+    def release_notes_lines(nest_level=0):
+        inst = installer_url(nest_level)
+        zipf = zip_url(nest_level)
+        return (
+            f"## Release {get_base_version(version)}\n\n"
+            f"- Installer: [OriginPXRD_Installer_v{version}.exe]({inst})\n"
+            f"- Zip Package: [OriginPXRD_v{version}.zip]({zipf})\n"
+            f"<!--end release link-->\n"
+        )
 
-    # Regex patterns
-    installer_pattern = re.compile(
+
+    # ------------------------------------------------------------
+    # Regex patterns (unchanged)
+    # ------------------------------------------------------------
+    recent_installer_pattern = re.compile(
         r"<!--start recent installer link-->.*?<!--end recent installer link-->",
         flags=re.DOTALL,
     )
-    zip_pattern = re.compile(
+    recent_zip_pattern = re.compile(
         r"<!--start recent zip link-->.*?<!--end recent zip link-->",
         flags=re.DOTALL,
     )
 
-    # Replacement blocks
-    installer_block = (
-        f"<!--start recent installer link-->\n{installer_line}\n<!--end recent installer link-->"
-    )
-    zip_block = (
-        f"<!--start recent zip link-->\n{zip_line}\n<!--end recent zip link-->"
+    release_notes_new_pattern = re.compile(
+        fr"## Release {get_base_version(version)}"
     )
 
+    release_notes_existing_pattern = re.compile(
+        fr"## Release {get_base_version(version)}*?<!--end release link-->",
+        flags=re.DOTALL,
+    )
+
+    # ------------------------------------------------------------
     # Apply replacements to each file
+    # ------------------------------------------------------------
     for md_file in files:
         if not md_file.exists():
             print(f"Skipping missing file: {md_file}")
             continue
 
+        # Compute nest level automatically
+        nest_level = compute_nest_level(md_file, REPO_ROOT)
+
+        # Build replacement blocks using the computed nest level
+        installer_block = (
+            f"<!--start recent installer link-->\n"
+            f"{recent_installer_line(nest_level)}\n"
+            f"<!--end recent installer link-->"
+        )
+
+        zip_block = (
+            f"<!--start recent zip link-->\n"
+            f"{recent_zip_line(nest_level)}\n"
+            f"<!--end recent zip link-->"
+        )
+
         # Read using UTF‑8 to avoid CP1252 decode errors
         text = md_file.read_text(encoding="utf-8")
 
         # Replace installer block if present
-        text = installer_pattern.sub(installer_block, text)
+        text = recent_installer_pattern.sub(installer_block, text)
 
         # Replace zip block if present
-        text = zip_pattern.sub(zip_block, text)
+        text = recent_zip_pattern.sub(zip_block, text)
 
         # Write back using UTF‑8
         md_file.write_text(text, encoding="utf-8")
-        print(f"Updated links in: {md_file}")
-
+        print(f"Updated links in: {md_file} (nest level {nest_level})")
 
 
 
