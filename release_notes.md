@@ -6,9 +6,10 @@ nav_order: 3
 # Release Notes
 ## Release 1.3.4
 
-- Installer: [OriginPXRD_Installer_v1.3.4-60-gf8beeb9.exe](./installer/release/OriginPXRD_Installer_v1.3.4-60-gf8beeb9.exe)
-- Zip Package: [OriginPXRD_v1.3.4-60-gf8beeb9.zip](./manual_install/OriginPXRD_v1.3.4-60-gf8beeb9.zip)
+- Installer: [OriginPXRD_Installer_v1.3.4-65-g93d0faa.exe](./installer/release/OriginPXRD_Installer_v1.3.4-65-g93d0faa.exe)
+- Zip Package: [OriginPXRD_v1.3.4-65-g93d0faa.zip](./manual_install/OriginPXRD_v1.3.4-65-g93d0faa.zip)
 <!--end release link-->
+
 
 Minor Bugfixes, improvements to phase fraction analysis
 
