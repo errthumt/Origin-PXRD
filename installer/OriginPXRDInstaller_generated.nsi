@@ -1,24 +1,24 @@
 !define APPNAME "Origin PXRD Tools"
 !define COMPANY "Kovnir Group - Iowa State Dept of Chemistry"
-!define VERSION "1.3.4-65-g93d0faa"
+!define VERSION "1.3.4-68-g047a495"
 
 ; -----------------------------
 ; Version metadata (fixes "Name")
 ; -----------------------------
-Name "${APPNAME} 1.3.4-65-g93d0faa"
-OutFile "release\OriginPXRD_Installer_v1.3.4-65-g93d0faa.exe"
+Name "${APPNAME} 1.3.4-68-g047a495"
+OutFile "release\OriginPXRD_Installer_v1.3.4-68-g047a495.exe"
 
-VIProductVersion "1.3.4.65"
-VIFileVersion    "1.3.4.65"
+VIProductVersion "1.3.4.68"
+VIFileVersion    "1.3.4.68"
 
 VIAddVersionKey "ProductName"        "${APPNAME}"
 VIAddVersionKey "FileDescription"    "${APPNAME} Installer"
 VIAddVersionKey "CompanyName"        "${COMPANY}"
 VIAddVersionKey "LegalCopyright"     "© ${COMPANY}"
-VIAddVersionKey "ProductVersion"     "1.3.4-65-g93d0faa"
-VIAddVersionKey "FileVersion"        "1.3.4-65-g93d0faa"
+VIAddVersionKey "ProductVersion"     "1.3.4-68-g047a495"
+VIAddVersionKey "FileVersion"        "1.3.4-68-g047a495"
 VIAddVersionKey "InternalName"       "${APPNAME}"
-VIAddVersionKey "OriginalFilename"   "OriginPXRD_Installer_v1.3.4-65-g93d0faa.exe"
+VIAddVersionKey "OriginalFilename"   "OriginPXRD_Installer_v1.3.4-68-g047a495.exe"
 
 RequestExecutionLevel user
 SetCompressor /SOLID lzma
@@ -33,7 +33,7 @@ Var TempDir
 Section "Install"
 
     ; Create a unique temp directory
-    StrCpy $TempDir "$TEMP\OriginPXRD_1.3.4-65-g93d0faa"
+    StrCpy $TempDir "$TEMP\OriginPXRD_1.3.4-68-g047a495"
     CreateDirectory "$TempDir"
 
     ; Extract build folder contents into temp dir

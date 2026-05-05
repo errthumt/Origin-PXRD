@@ -372,4 +372,4 @@ relocate_old_versions(version)
 update_recent_links(version)
 
 # OCCASIONAL UTILITY:
-update_all_release_links()  # Uncomment to scan release_notes.md and update all links to the newest hotfix versions
+# update_all_release_links()  # Uncomment to scan release_notes.md and update all links to the newest hotfix versions
