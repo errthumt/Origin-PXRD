@@ -71,14 +71,14 @@ def notify_if_outdated(local_version,ignore_version,version_file):
             A new version of Origin-PXRD is available:\n
             Latest Version: {latest}\n
             Your Version: {local_version}\n
-            Would you like to go to the updated GitHub page?\n
+            Would you like to open the most recent release in your browser?\n
             (Press \"Cancel\" to ignore until next release.)"
             '''
         op.lt_exec(lt_cmd)
         t = op.lt_int('t')
         if t==1:
             import webbrowser
-            webbrowser.open("https://www.github.com/errthumt/Origin-PXRD")
+            webbrowser.open("https://errthumt.github.io/Origin-PXRD/release_notes.html")
             return
         elif t == 4:
             # User clicked Cancel → ignore this specific version until next release
