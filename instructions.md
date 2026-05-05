@@ -93,7 +93,7 @@ If you have your own set of custom parameters that you like to use for your own 
 | Normalization Mode | | Specify whether to normalize imported or calculated patterns.<br>During CIF import, an extra option is available to add scaling for each imported CIF by the relative phase fractions in your analysis. See the Phase Fraction section below. |
 | Specify Fraction Type | | Choose which phase fraction you want to specify when scaling your patterns. More information on each type can be found on the [CIF Calculation Method Page](./phase_frac.md#choosing-your-phase-fraction) |
 
-### <span>\[BETA\]</span> Phase Fraction Analysis
+### <span>[BETA\]</span> Phase Fraction Analysis
 If you select this option under **Normalization Mode** during CIF import, the files will be imported as usual (without normalization), but additional columns will be added to scale phases by their relative fractions present in your analysis. Column types are specified by 'Norm Type' row:
 - **Raw Data**: Original, non-normalized calculated patterns
 - **Phase-scaled**: Scales original patterns by the value in the 'Phase Fraction' row. <ins>Edits to phase fractions will affect all columns except original</ins>
@@ -179,7 +179,7 @@ Once you have entered all the calibration data for your furnace, you can print a
 Installed graph templates can be found in Plot > User Templates
 * <ins>**Stacked PXRD:**</ins> Each plot is offset by one unit. Good for displaying multiple normalized patterns.
 * <ins>**Sample+Refs:**</ins> The first added plots are displayed as full-sized patterns on the top portion. Additional patterns can be added to the "Reference Patterns" layer to be displayed below at 1/2 scale.
-* <ins>**In-Situ Contour:**</ins> Typical in-situ contour plot. Intended for data sets normalized to [0,1]. Can be constructed to use a parameter row (such as the "Temp" row generated during In-Situ import) as the y-axis.
+* <ins>**In-Situ Contour:**</ins> Typical in-situ contour plot. Intended for data sets normalized to [0,1\]. Can be constructed to use a parameter row (such as the "Temp" row generated during In-Situ import) as the y-axis.
 * <ins>**In-Situ Browser**</ins> Puts all selected columns into a "browser" graph that allows you to scroll through many patterns. Select multiple rows on the left panel to overlay patterns.
 
 ---
