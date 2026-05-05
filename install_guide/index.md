@@ -2,6 +2,8 @@
 title: Installation Instructions
 nav_order: 2
 ---
+# To Update the Plugin:
+Follow the same installation instructions below. Most required python packages will already be installed, and the necessary files will automatically be overwritten.
 
 # Installation Instructions
 
