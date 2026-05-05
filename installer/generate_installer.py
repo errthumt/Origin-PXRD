@@ -193,7 +193,7 @@ def update_recent_links(version: str):
     )
 
     release_notes_existing_pattern = re.compile(
-        fr"## Release {re.escape(get_base_version(version))}.*?<!--end release link-->",
+        fr"## Release {re.escape(get_base_version(version))}\n<!--start release link-->.*?<!--end release link-->",
         flags=re.DOTALL,
     )
 
