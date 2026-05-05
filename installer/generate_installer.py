@@ -169,9 +169,10 @@ def update_recent_links(version: str):
         inst = installer_url(nest_level)
         zipf = zip_url(nest_level)
         return (
-            f"## Release {get_base_version(version)}\n\n"
-            f"- Installer: [OriginPXRD_Installer_v{version}.exe]({inst})\n"
-            f"- Zip Package: [OriginPXRD_v{version}.zip]({zipf})\n"
+            f"## Release {get_base_version(version)}\n"
+            "<!--start release link-->\n"
+            f"Installer: [OriginPXRD_Installer_v{version}.exe]({inst})\n"
+            f"Zip Package: [OriginPXRD_v{version}.zip]({zipf})\n"
             f"<!--end release link-->"
         )
 
@@ -193,7 +194,7 @@ def update_recent_links(version: str):
     )
 
     release_notes_existing_pattern = re.compile(
-        fr"## Release {re.escape(get_base_version(version))}.*?<!--end release link-->",
+        fr"## Release {re.escape(get_base_version(version))}\n<!--start release link-->.*?<!--end release link-->",
         flags=re.DOTALL,
     )
 
@@ -344,6 +345,7 @@ def relocate_old_versions(version: str):
         if zip_pattern.match(name) and version not in name:
             dest = unstable_manual / name
             print(f"Moving old zip: {file} → {dest}")
+            git_uncache_installer(file)
             file.replace(dest)
             git_cache_installer(dest)
 
@@ -424,7 +426,9 @@ subprocess.check_call([str(MAKENSIS), str(nsi_output)])
 print(f"Installer generated: OriginPXRD_Installer_v{version}.exe")
 
 installer_path = REPO_ROOT / "installer" / "release" / f"OriginPXRD_Installer_v{version}.exe"
+zip_path = REPO_ROOT / "manual_install" / f"OriginPXRD_v{version}.zip"
 git_cache_installer(installer_path)
+git_cache_installer(zip_path)
 
 relocate_old_versions(version)
 
