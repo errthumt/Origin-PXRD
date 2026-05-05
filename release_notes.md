@@ -16,8 +16,8 @@ Mostly backend fixes. Full website release
 
 ## Release 1.3.4
 
-- Installer: [OriginPXRD_Installer_v1.3.4-76-g8363432.exe](./installer/release/OriginPXRD_Installer_v1.3.4-76-g8363432.exe)
-- Zip Package: [OriginPXRD_v1.3.4-76-g8363432.zip](./manual_install/OriginPXRD_v1.3.4-76-g8363432.zip)
+Installer: [OriginPXRD_Installer_v1.3.4-83-g3162c72.exe](./installer/release/OriginPXRD_Installer_v1.3.4-83-g3162c72.exe)
+Zip Package: [OriginPXRD_v1.3.4-83-g3162c72.zip](./manual_install/OriginPXRD_v1.3.4-83-g3162c72.zip)
 <!--end release link-->
 
 
