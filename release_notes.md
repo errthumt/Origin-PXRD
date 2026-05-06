@@ -6,8 +6,9 @@ nav_order: 3
 # Release Notes
 ## Release 1.3.5
 <!--start release link-->
-Installer: [OriginPXRD_Installer_v1.3.5-18-g72cf644.exe](./installer/release/OriginPXRD_Installer_v1.3.5-18-g72cf644.exe)
-Zip Package: [OriginPXRD_v1.3.5-18-g72cf644.zip](./manual_install/OriginPXRD_v1.3.5-18-g72cf644.zip)
+Installer: [OriginPXRD_Installer_v1.3.5-26-gad3017e.exe](./installer/release/OriginPXRD_Installer_v1.3.5-26-gad3017e.exe)
+
+Zip Package: [OriginPXRD_v1.3.5-26-gad3017e.zip](./manual_install/OriginPXRD_v1.3.5-26-gad3017e.zip)
 <!--end release link-->
 Mostly backend fixes. Full website release
 
@@ -20,6 +21,7 @@ Mostly backend fixes. Full website release
 ## Release 1.3.4
 <!--start release link-->
 Installer: [OriginPXRD_Installer_v1.3.4-76-g8363432.exe](./installer/release/OriginPXRD_Installer_v1.3.4-83-g3162c72.exe)
+
 Zip Package: [OriginPXRD_v1.3.4-76-g8363432.zip](./manual_install/OriginPXRD_v1.3.4-83-g3162c72.zip)
 <!--end release link-->
 Minor Bugfixes, improvements to phase fraction analysis
@@ -32,6 +34,7 @@ Minor Bugfixes, improvements to phase fraction analysis
 ## Release 1.3.3
 <!--start release link-->
 Installer: [OriginPXRD_Installer_v1.3.3-6-ge33aeb8.exe](./installer/release/OriginPXRD_Installer_v1.3.3-6-ge33aeb8.exe)
+
 Zip Package: [OriginPXRD_v1.3.3-6-ge33aeb8.zip](./manual_install/OriginPXRD_v1.3.3-6-ge33aeb8.zip)
 <!--end release link-->
 Furnace Calibrations, Copy/Pasting Annealing Diagrams
@@ -44,6 +47,7 @@ Furnace Calibrations, Copy/Pasting Annealing Diagrams
 ## Release 1.3.2
 <!--start release link-->
 Installer: [OriginPXRD_Installer_v1.3.2.exe](./installer/release/OriginPXRD_Installer_v1.3.2.exe)
+
 Zip Package: [OriginPXRD_v1.3.2.zip](./manual_install/OriginPXRD_v1.3.2.zip)
 <!--end release link-->
 Improved workflow for installation
@@ -54,6 +58,7 @@ Improved workflow for installation
 ## Release 1.3.1
 <!--start release link-->
 Installer: [OriginPXRD_Installer_v1.3.1-2-g8df0677.exe](./installer/release/OriginPXRD_Installer_v1.3.1-2-g8df0677.exe)
+
 Zip Package: [OriginPXRD_v1.3.1-2-g8df0677.zip](./manual_install/OriginPXRD_v1.3.1-2-g8df0677.zip)
 <!--end release link-->
 UI tweaks, annealing profiles
@@ -65,6 +70,7 @@ UI tweaks, annealing profiles
 ## Release 1.3.0
 <!--start release link-->
 Installer: [OriginPXRD_Installer_v1.3.0-1-hotfix.exe](./installer/release/OriginPXRD_Installer_v1.3.0-1-hotfix.exe)
+
 Zip Package: [OriginPXRD_v1.3.0-1-hotfix.zip](./manual_install/OriginPXRD_v1.3.0-1-hotfix.zip)
 <!--end release link-->
 Feature Requests, bugfixes, UI overhaul (I finally learned to code in C)
@@ -85,6 +91,7 @@ This release contains features that are difficult to test without a fresh instal
 ## Release 1.2.5
 <!--start release link-->
 Installer: [OriginPXRD_Installer_v1.2.5.exe](./installer/release/OriginPXRD_Installer_v1.2.5.exe)
+
 Zip Package: [OriginPXRD_v1.2.5.zip](./manual_install/OriginPXRD_v1.2.5.zip)
 <!--end release link-->
 The first public GitHub release.
