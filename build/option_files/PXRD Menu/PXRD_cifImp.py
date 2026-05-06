@@ -272,7 +272,14 @@ def clean_parameters(params):
         if not new_val:
             new_params[key] = def_val
         elif def_type == bool:
-            new_params[key] = new_val.lower() == 'true'
+            if type(new_val) == str:
+                new_params[key] = new_val.lower() == 'true'
+            else:
+                try:
+                    new_params[key] = bool(new_val)
+                except:
+                    print(f"Incompatible type passed for '{key}'. Defaulting to '{def_val}'")
+                    new_params[key] = def_val
         elif def_type != type(new_val):
             try:
                 new_params[key] = def_type(new_val)
@@ -438,7 +445,7 @@ if __name__ == "__main__":
     paramString = sys.argv[1] if len(sys.argv) > 1 else ""
     params = parse_params(paramString)
     cleaned_params = clean_parameters(params)
-
+    print(cleaned_params)
 
 
     import_cif_files(cleaned_params)

@@ -1140,6 +1140,7 @@ int CIF_NORM_NROW=22;
 			<![CDATA[string lt_cmd;
 string file_mode;
 string norm_mode;
+string doublet_string = doublet ? "true" : "false";
 bool phase_frac;
 bool do_q=false;
 
@@ -1150,7 +1151,7 @@ if(import_type==0) {
 
 else {
 	lt_cmd = "run -pyf PXRD_cifImp.py \"";
-	lt_cmd += "doublet:" + doublet;
+	lt_cmd += "doublet:" + doublet_string;
     lt_cmd += ", wavelength1:" + wavelength1;
     lt_cmd += ", weight1:" + weight1;
     lt_cmd += ", wavelength2:" + wavelength2;
