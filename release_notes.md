@@ -6,9 +6,9 @@ nav_order: 3
 # Release Notes
 ## Release 1.3.5
 <!--start release link-->
-Installer: [OriginPXRD_Installer_v1.3.5-18-g72cf644.exe](./installer/release/OriginPXRD_Installer_v1.3.5-18-g72cf644.exe)
+Installer: [OriginPXRD_Installer_v1.3.5-26-gad3017e.exe](./installer/release/OriginPXRD_Installer_v1.3.5-26-gad3017e.exe)
 
-Zip Package: [OriginPXRD_v1.3.5-18-g72cf644.zip](./manual_install/OriginPXRD_v1.3.5-18-g72cf644.zip)
+Zip Package: [OriginPXRD_v1.3.5-26-gad3017e.zip](./manual_install/OriginPXRD_v1.3.5-26-gad3017e.zip)
 <!--end release link-->
 Mostly backend fixes. Full website release
 
