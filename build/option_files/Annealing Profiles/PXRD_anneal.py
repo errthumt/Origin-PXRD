@@ -19,6 +19,8 @@ import os
 from matplotlib.transforms import ScaledTranslation
 from pathlib import Path
 
+from cif2xrd.paramUtils import clean_parameters, parse_params, default_params #type:ignore
+
 START = "start"
 RAMP = "ramp"
 DWELL = "dwell"
@@ -397,7 +399,7 @@ def make_anneal_template():
     wks = wbook[0]
     op.lt_exec("wks.labels(-O)")
 
-default_parameters = { # string (file path to save PNG, e.g. "C:/Users/Me/Desktop/anneal_profile.png")
+default_params["anneal"] = {
     "start_temp":      25,   # int
     "min_height":      6.0,   # float
     "add_temps":       "",   # comma‑separated string of numbers, e.g. "500,600,700"
@@ -414,40 +416,7 @@ default_parameters = { # string (file path to save PNG, e.g. "C:/Users/Me/Deskto
 }
 
 
-def clean_parameters(params):
-    new_params = {}
-    for key in default_parameters:
-        def_val = default_parameters[key]
-        def_type = type(def_val)
-
-        new_val = params.get(key)
-        if not new_val:
-            new_params[key] = def_val
-        elif def_type == bool:
-            new_params[key] = new_val.lower() == 'true'
-        elif def_type != type(new_val):
-            try:
-                new_params[key] = def_type(new_val)
-            except:
-                print(f"Incompatible type passed for '{key}'. Defaulting to '{def_val}'")
-                new_params[key] = def_val
-        else:
-            new_params[key] = params[key]
-
-    return new_params
-
-def parse_params(s):
-    items = s.split(',')
-    out = {}
-    for item in items:
-        try:
-            key, val = item.split(':')
-            out[key.strip()] = val.strip()
-        except:
-            print(f"Error parsing option '{item}'. Excluding from parsed parameters")
-    return out
-
-def make_anneal_plot(cleaned_params=default_parameters):
+def make_anneal_plot(cleaned_params=default_params["anneal"]):
     wb = op.find_book()
     wks = wb[0]
 
@@ -494,5 +463,5 @@ if __name__ == "__main__":
     else:
         param_string = sys.argv[2] if len(sys.argv)>2 else ""
         params = parse_params(param_string)
-        cleaned_params = clean_parameters(params)
+        cleaned_params = clean_parameters(params, defaults=default_params["anneal"])
         make_anneal_plot(cleaned_params)
