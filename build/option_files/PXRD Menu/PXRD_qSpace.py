@@ -1,7 +1,4 @@
 import originpro as op
-import numpy as np
-import tkinter as tk
-from tkinter import simpledialog
 import sys
 
 # Column formulas require letters instead of column indices

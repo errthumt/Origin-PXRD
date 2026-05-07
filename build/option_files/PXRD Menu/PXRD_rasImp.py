@@ -1,7 +1,8 @@
 import originpro as op
 import os
 import sys
-import json
+
+from cif2xrd.paramUtils import clean_parameters, parse_params, default_params #type: ignore
 
 # Import ras_files contained in labtalk fname$ variable
 def import_ras_files(normalize=True, book_name='RAS Imports'):
@@ -124,48 +125,18 @@ def import_ras_from_file_dialog(normalize=True,book_name='RAS Imports'):
         return
     import_ras_files(normalize,book_name)
 
-def parse_params(s):
-    items = s.split(',')
-    out = {}
-    for item in items:
-        key, val = item.split(':')
-        out[key.strip()] = val.strip()
-    return out
-
-default_parameters = {
+default_params["RAS"] = {
     "book_name":"RAS Imports",
     "file_mode":"files",
     "normalize_mode":True
 }
-
-def clean_parameters(params):
-    new_params = {}
-    for key in default_parameters:
-        def_val = default_parameters[key]
-        def_type = type(def_val)
-
-        new_val = params.get(key)
-        if not new_val:
-            new_params[key] = def_val
-        elif def_type == bool:
-            new_params[key] = new_val.lower() == 'true'
-        elif def_type != type(new_val):
-            try:
-                new_params[key] = def_type(new_val)
-            except:
-                print(f"Incompatible type passed for '{key}'. Defaulting to '{def_val}'")
-                new_params[key] = def_val
-        else:
-            new_params[key] = params[key]
-
-    return new_params
 
 # Dispatch based on labtalk arguments.
 if __name__ == "__main__":
     paramString = sys.argv[1] if len(sys.argv) > 1 else ""
 
     params = parse_params(paramString)
-    cleaned_params = clean_parameters(params)
+    cleaned_params = clean_parameters(params, defaults=default_params["RAS"])
     mode = cleaned_params["file_mode"]
     normalize = cleaned_params["normalize_mode"]
     book_name = cleaned_params["book_name"]
