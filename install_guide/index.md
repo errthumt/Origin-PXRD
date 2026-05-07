@@ -39,7 +39,7 @@ Follow the same installation instructions below. Most required python packages w
 # Automatic Install (Origin 2025 or later):
 
 <!--start recent installer link-->
-[Click Here to Download the most recent installer](../installer/release/OriginPXRD_Installer_v1.4.0.exe)
+[Click Here to Download the most recent installer](../installer/release/OriginPXRD_Installer_v1.4.0-4-g56226f8.exe)
 <!--end recent installer link-->
 
 1. Download and run the installer at the link above. You may need to tell your browser to trust the file. Once run, it will open the installation project inside Origin.
@@ -72,7 +72,7 @@ Follow the same installation instructions below. Most required python packages w
 **Disclaimer:** This plugin should work as far back as Origin 2022. However, it has only been tested for 2024 or later. 
 
 <!--start recent zip link-->
-[Click Here to Download the most recent zip package](../manual_install/OriginPXRD_v1.4.0.zip)
+[Click Here to Download the most recent zip package](../manual_install/OriginPXRD_v1.4.0-4-g56226f8.zip)
 <!--end recent zip link-->
 
 1. Locate your Origin User Files Folder.

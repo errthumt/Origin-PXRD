@@ -5,6 +5,11 @@ nav_order: 3
 
 # Release Notes
 ## Release 1.4.0
+<!--start release link-->
+Installer: [OriginPXRD_Installer_v1.4.0-4-g56226f8.exe](./installer/release/OriginPXRD_Installer_v1.4.0-4-g56226f8.exe)
+
+Zip Package: [OriginPXRD_v1.4.0-4-g56226f8.zip](./manual_install/OriginPXRD_v1.4.0-4-g56226f8.zip)
+<!--end release link-->
 A huge code overhaul that has very little effect on the user experience.
 
 **Menu options did not change between 1.3.5 and 1.4.0, but the code executed by those menus has been streamlined and made accessible to python runtimes outside of Origin's embedded python.**
