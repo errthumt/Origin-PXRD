@@ -1145,12 +1145,12 @@ bool phase_frac;
 bool do_q=false;
 
 if(import_type==0) {
-	lt_cmd = "run -pyf PXRD_rasImp.py \"";
+	lt_cmd = "py.PXRD.import_ras_from_xf(\"";
 	norm_mode = (norm_mode_ras==0 ? "true" : "false");
 }
 
 else {
-	lt_cmd = "run -pyf PXRD_cifImp.py \"";
+	lt_cmd = "py.PXRD.import_cifs_from_xf(\"";
 	lt_cmd += "doublet:" + doublet_string;
     lt_cmd += ", wavelength1:" + wavelength1;
     lt_cmd += ", weight1:" + weight1;
@@ -1179,16 +1179,16 @@ file_mode = (selection_type==0 ? "files" : "folder");
 lt_cmd += "file_mode:" + file_mode;
 lt_cmd += ", normalize_mode:" + norm_mode;
 lt_cmd += ", book_name:" + book_name;
-lt_cmd += "\";";
+lt_cmd += "\");";
 
 if(phase_frac) {
-	lt_cmd += "run -pyf PXRD_phaseFrac.py \"";
+	lt_cmd += "py.PXRD.add_phase_fractions(\"";
 
 	if(frac_mode==1) {lt_cmd += "weight";} else if(frac_mode==2) {lt_cmd += "cell";} else {lt_cmd += "moles";}
 		
-	lt_cmd += "\";";
+	lt_cmd += "\");";
 }
-if(do_q) lt_cmd += "run -pyf PXRD_qSpace.py \"all_deg\";";
+if(do_q) lt_cmd += "py.PXRD.transform_columns(\"deg\",\"qspace\");";
 
 LT_execute(lt_cmd);
 

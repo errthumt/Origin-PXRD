@@ -752,7 +752,7 @@ if(save_file) {
 
 LT_execute(lt_cmd);
 
-lt_cmd = "run -pyf PXRD_anneal.py \"from template\" \"";
+lt_cmd = "py.PXRD.anneal(\"\",\"";
 lt_cmd += "start_temp:" + start_temp;
 lt_cmd += ", min_height:" + min_height;
 lt_cmd += ", add_temps:"  + add_temps;
@@ -767,7 +767,7 @@ lt_cmd += ", r_marg:" + r_marg;
 lt_cmd += ", t_marg:" + t_marg;
 lt_cmd += ", b_marg:" + b_marg;
 
-lt_cmd += "\";";
+lt_cmd += "\");";
 LT_execute(lt_cmd);]]>
 		</code>
 		<event1 NodeID="45" DataID="327" MultilineEditExpShrink="1" DispFormat="33554432" RowHeightRange="5-20" Show="0">
