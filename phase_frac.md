@@ -13,7 +13,7 @@ Unfortunately, the previously established method (in our research group) for gen
 There is, however, an already-established algorithm for scaling intensities by phase fractions which is used in Rietveld refinement. With this in mind, the CIF import module in the plugin is constructed to approximate a Rietveld-simulated powder pattern. It is not meant to be a simulation with enough accuracy to refine structures, but it is enough of an approximation  to visually compare with experimental data, including relative phase fractions.
 
 ## Source Code
-For reference, the main calculation module is in the `calculate_pattern()` module in [PXRD_cifImp.py](../build/option_files/PXRD%20Menu/PXRD_cifImp.py):
+The main calculation is done using a `simPattern` object from `cif2xrd.pattern`. `cif2xrd` is a [python package at PyPI.org](https://pypi.org/project/cif2xrd/) created specifically for use by this plugin. An older, standalone version of the pattern simulation method is included here for reference:
 <details markdown="block">
   <summary>Click to expand code</summary>
 

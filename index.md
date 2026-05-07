@@ -7,6 +7,16 @@ nav_order: 1
 # Origin-PXRD <!-- omit from toc -->
 A plugin for importing experimental patterns and calculating theoretical patterns for PXRD in OriginLab's OriginPro software.
 
+The python code for calculating theoretical patterns from CIF files has been moved to a PyPI package, `cif2xrd`, to be used by any python runtime. Visit the [PyPI page](https://pypi.org/project/cif2xrd/) or the `cif2xrd` [GitHub](https://github.com/errthumt/cif2xrd) for more information.
+
+This plugin is a companion for `cif2xrd.originlab`. `cif2xrd.originlab` wraps the simulation code into commands for importing patterns directly into OriginPro, with additional features such as:
+* Dynamically scaling by phase fraction.
+* Adding dynamic X columns in Q-space instead of 2θ.
+* Square or Square-root intensities.
+* Import experimental data in matching format (currently only supported for Rigaku *.RAS file format)
+
+Origin-PXRD goes even further by wrapping `cif2xrd.originlab` into a convenient dropdown menu, and adds another menu for [managing annealing profiles](./instructions.md#new-annealing-profiles-dropdown) for solid-state synthesis. 
+
 This plugin is primarily used by Kovnir and Zaikina research groups at Iowa State University, Department of Chemistry
 
 _**Are you NOT from Kovnir or Zaikina group and want to use this plugin?**_ Fill out a feature request below to let me know what you're using it for.
