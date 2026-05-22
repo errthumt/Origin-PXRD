@@ -356,8 +356,17 @@ def anneal(template_mode:str="", argstring:str=""):
                     op.lt_exec(fr'type -b popupmsg$;') 
                     kwargs["add_temps"] = []
 
+    class OriginProfile(Profile):
+        def __init__(self, **kwargs):
+            if "add_temps" in kwargs:
+                try:
+                    kwargs["add_temps"] = [int(float(x)) for x in str(kwargs["add_temps"]).split(";") if str(kwargs["add_temps"]).strip() != ""]
+                except Exception as e:
+                    popup = f'Your "Add Temps" input could not be read correctly: \'{kwargs["add_temps"]}\'. Exception:\n{e}'
+                    op.set_lt_str("popupmsg$", popup)
+                    op.lt_exec('type -b popupmsg$')
+                    kwargs["add_temps"] = []
             super().__init__(**kwargs)
-
 
         def plot_to_origin(self):
             fig = self.plot()
