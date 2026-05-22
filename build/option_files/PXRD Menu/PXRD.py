@@ -1,11 +1,11 @@
-from cif2xrd.originlab import ( #type: ignore
+from cif2xrd.originlab import (
     import_cifs_from_xf,
     add_phase_fractions,
     import_ras_from_xf,
     lt_cleanup
 )
 
-from cif2xrd.originlab.transforms import transform_columns #type: ignore
+from cif2xrd.originlab.transforms import transform_columns
 
 def checkVersion():
     import urllib.request
@@ -286,6 +286,7 @@ def anneal(template_mode:str="", argstring:str=""):
         category=UserWarning,
         module="matplotlib.projections"
     )
+
     import matplotlib.pyplot as plt
     import originpro as op #type: ignore
     from itertools import zip_longest
@@ -294,67 +295,10 @@ def anneal(template_mode:str="", argstring:str=""):
     from pathlib import Path
 
     from cif2xrd.paramUtils import clean_parameters, parse_params, default_params #type:ignore
-
     from cif2xrd.furnace import Profile, RAMP
 
 
-    def crop_axes_to_content(ax, l_marg=0, r_marg=0, t_marg=0, b_marg=0, pad=2):
-        """
-        Remove whitespace by shrinking axis limits to tightly wrap
-        all lines, text, and annotations on the Axes.
-        pad is in display (pixel) units.
-        """
-        fig = ax.figure
-        fig.canvas.draw()  # ensure all artists have valid extents
 
-        # Collect all bounding boxes in display coords
-        bboxes = []
-
-        # Lines, markers, etc.
-        for line in ax.lines:
-            bboxes.append(line.get_window_extent())
-
-        # Text objects (labels, annotations, etc.)
-        for txt in ax.texts:
-            bboxes.append(txt.get_window_extent(renderer=fig.canvas.get_renderer()))
-
-        # Collections (e.g., patches, arrows)
-        for coll in ax.collections:
-            try:
-                bboxes.append(coll.get_window_extent(fig.canvas.get_renderer()))
-            except Exception:
-                pass
-
-        # Merge into a single bounding box
-        if not bboxes:
-            return  # nothing to crop
-
-        from matplotlib.transforms import Bbox
-        full = Bbox.union(bboxes)
-
-        # Add padding in display units
-        full = full.expanded((full.width + 2*pad)/full.width,
-                            (full.height + 2*pad)/full.height)
-
-        # Convert display → data coordinates
-        inv = ax.transData.inverted()
-        x0, y0 = inv.transform((full.x0, full.y0))
-        x1, y1 = inv.transform((full.x1, full.y1))
-
-        # Apply new limits
-        ax.set_xlim(x0-l_marg, x1+r_marg)
-        ax.set_ylim(y0-b_marg, y1+t_marg)
-
-    class OriginProfile(Profile):
-        def __init__(self, **kwargs):
-            if "add_temps" in kwargs:
-                try:
-                    kwargs["add_temps"] = [int(float(x)) for x in str(kwargs["add_temps"]).split(";") if str(kwargs["add_temps"]).strip() != ""]
-                except Exception as e:
-                    popup = f"Your 'Add Temps' values could not be read correctly: '{kwargs['add_temps']}'. Exception:\n{e}"
-                    op.set_lt_str("popupmsg$", popup)
-                    op.lt_exec(fr'type -b popupmsg$;') 
-                    kwargs["add_temps"] = []
 
     class OriginProfile(Profile):
         def __init__(self, **kwargs):
@@ -378,6 +322,7 @@ def anneal(template_mode:str="", argstring:str=""):
 
             fig.savefig(save_file, bbox_inches='tight', pad_inches=0)
 
+            plt.close(fig)
 
     def make_anneal_template():
         wbook = op.load_book('PXRD_anneal_template.ogwu')
