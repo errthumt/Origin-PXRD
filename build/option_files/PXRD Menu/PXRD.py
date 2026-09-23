@@ -1,12 +1,44 @@
+import originpro as op
+
+op.lt_exec('break -bm "Loading Python Plugins for Origin-PXRD...";')
+
+def progress_bar(msg="Origin-PXRD is working in the background..."):
+    def wrapper(func):
+        def decorated(*args, **kwargs):
+            op.lt_exec(f'break -bm "{msg}";')
+            result = func(*args, **kwargs)
+            op.lt_exec('break -end;')
+            return result
+        return decorated
+    return wrapper
+
+
 from cif2xrd.originlab import (
-    import_cifs_from_xf,
-    add_phase_fractions,
-    import_ras_from_xf,
-    lt_cleanup
+    import_cifs_from_xf as import_cifs,
+    add_phase_fractions as addpf,
+    import_ras_from_xf as import_ras,
+    lt_cleanup as ltc
 )
+
+@progress_bar("Importing Calculated CIF Patterns...")
+def import_cifs_from_xf(*args, **kwargs):
+    return import_cifs(*args, **kwargs)
+
+@progress_bar("Adding Phase Fractions...")
+def add_phase_fractions(*args, **kwargs):
+    return addpf(*args, **kwargs)
+
+@progress_bar("Importing Rigaku RAS Patterns...")
+def import_ras_from_xf(*args, **kwargs):
+    return import_ras(*args, **kwargs)
+
+@progress_bar("Cleaning up...")
+def lt_cleanup(*args, **kwargs):
+    return ltc(*args, **kwargs)
 
 from cif2xrd.originlab.transforms import transform_columns
 
+@progress_bar("Checking Origin-PXRD Version...")
 def checkVersion():
     import urllib.request
 
@@ -132,6 +164,7 @@ def checkVersion():
     LOCAL_VERSION, ignore_version, version_file = get_installed_version()
     notify_if_outdated(LOCAL_VERSION,ignore_version, version_file)
 
+@progress_bar("Processing In-Situ 11-ID-C data...")
 def process11ID():
     import re
     import originpro as op #type: ignore
@@ -276,6 +309,7 @@ def process11ID():
         # Auto-width resize
         op.lt_exec(f'wcolwidth {col+1} -1')
 
+@progress_bar()
 def anneal(template_mode:str="", argstring:str=""):
     import warnings
 
@@ -290,8 +324,8 @@ def anneal(template_mode:str="", argstring:str=""):
     import matplotlib.pyplot as plt
     import originpro as op #type: ignore
     from itertools import zip_longest
-    import sys
-    from matplotlib.transforms import ScaledTranslation
+    # import sys
+    # from matplotlib.transforms import ScaledTranslation
     from pathlib import Path
 
     from cif2xrd.paramUtils import clean_parameters, parse_params, default_params #type:ignore
@@ -395,7 +429,7 @@ def anneal(template_mode:str="", argstring:str=""):
         cleaned_params = clean_parameters(params, defaults=default_params["anneal"])
         make_anneal_plot(cleaned_params)
 
-
+@progress_bar()
 def editFurnace(mode:str):
     import json
     import os
@@ -512,3 +546,6 @@ def editFurnace(mode:str):
         dispatch[mode]()
     else:
         print(f"Unknown mode: {mode}. Valid modes are: {list(dispatch.keys())}")
+
+
+op.lt_exec('break -end;')
