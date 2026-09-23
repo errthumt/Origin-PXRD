@@ -4,6 +4,13 @@ nav_order: 3
 ---
 
 # Release Notes
+## Release 1.4.1
+
+* FIXED: Missing RAS import filter has been located. RAS files can now be imported again
+* FIXED: Default CuKa resolution has been changed to 0.02 instead of 0.2, which was a typo and lead to broad, jagged peaks.
+* Added a progress window when running Python to avoid confusion as to if the operation failed or is just taking longer to run Python.
+
+
 ## Release 1.4.0
 <!--start release link-->
 Installer: [OriginPXRD_Installer_v1.4.0-4-g56226f8.exe](./installer/release/OriginPXRD_Installer_v1.4.0-4-g56226f8.exe)
