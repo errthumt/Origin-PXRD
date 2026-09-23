@@ -5,6 +5,11 @@ nav_order: 3
 
 # Release Notes
 ## Release 1.4.1
+<!--start release link-->
+Installer: [OriginPXRD_Installer_v1.4.1.exe](./installer/release/OriginPXRD_Installer_v1.4.1.exe)
+
+Zip Package: [OriginPXRD_v1.4.1.zip](./manual_install/OriginPXRD_v1.4.1.zip)
+<!--end release link-->
 
 * FIXED: Missing RAS import filter has been located. RAS files can now be imported again
 * FIXED: Default CuKa resolution has been changed to 0.02 instead of 0.2, which was a typo and lead to broad, jagged peaks.
